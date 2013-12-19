@@ -1,7 +1,10 @@
 package net.kirauks.andwake.packets;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import android.util.Log;
 
 public class WolPacket extends Packet{
 	private final static int DEFAULT_PORT = 9;
@@ -43,10 +46,10 @@ public class WolPacket extends Packet{
         	wolBytes[i] = (byte) 0xff;
 	    }
 	    //Fill 16 * Mac
-	    for(int i=6; i < macBytes.length; i += macBytes.length){
+	    for(int i=6; i < wolBytes.length; i += macBytes.length){
 	        System.arraycopy(macBytes, 0, wolBytes, i, macBytes.length);
 	    }
-	    
+
 	    return wolBytes;
 	}
 	
