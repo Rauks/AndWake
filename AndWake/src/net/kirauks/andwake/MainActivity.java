@@ -1,6 +1,7 @@
 package net.kirauks.andwake;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
 
 import net.kirauks.andwake.packets.Emitter;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -81,16 +83,25 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setTabListener(this));
         }
         
+        
         new AsyncTask<Void, Void, Void>(){
-			@Override
+        	private Packet wol = new WolPacket("kirauks.net", "6C:62:6D:43:D8:BB"); 
+        	
+        	@Override
 			protected Void doInBackground(Void... params) {
-				Packet wol = new WolPacket("78.223.87.7", "6C:62:6D:43:D8:BB", 9);
-		        try {
-					new Emitter(wol).send();
+				
+				try {
+					new Emitter(this.wol).send();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				Toast.makeText(MainActivity.this.getApplicationContext(), this.wol.toString(), Toast.LENGTH_LONG).show();
 			}
         	
         }.execute(null, null, null);

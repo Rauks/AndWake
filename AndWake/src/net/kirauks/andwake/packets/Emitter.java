@@ -17,6 +17,8 @@ public class Emitter {
 		int port = this.packet.getPort();
 		String address = this.packet.getAddress();
 		
+		
+		
 		final InetAddress inet = InetAddress.getByName(address);
 		final DatagramPacket packet = new DatagramPacket(bytes, bytes.length, inet, port);
         final DatagramSocket socket = new DatagramSocket();
