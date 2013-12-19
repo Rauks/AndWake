@@ -89,12 +89,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         	
         	@Override
 			protected Void doInBackground(Void... params) {
-				
+				/*
 				try {
 					new Emitter(this.wol).send();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				*/
 				return null;
 			}
 
@@ -135,6 +136,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    	private static final int COUNT_PAGES = 3;
+    	private static final int PAGE_FAVORITES = 0;
+    	private static final int PAGE_GROUPS = 1;
+    	private static final int PAGE_COMPUTERS = 2;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -142,59 +147,36 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a DummySectionFragment (defined as a static inner class
-            // below) with the page number as its lone argument.
-            Fragment fragment = new DummySectionFragment();
-            Bundle args = new Bundle();
-            args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-            fragment.setArguments(args);
-            return fragment;
+        	switch(position){
+        		case PAGE_FAVORITES:
+        			return new FavoritesFragment();
+        		case PAGE_GROUPS:
+        			return new GroupsFragment();
+        		case PAGE_COMPUTERS:
+        			return new ComputersFragment();
+    			default:
+        			return new FavoritesFragment();
+        	}
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return COUNT_PAGES;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
             switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                case PAGE_FAVORITES:
+                    return getString(R.string.favorites_title).toUpperCase(l);
+                case PAGE_GROUPS:
+                    return getString(R.string.groups_title).toUpperCase(l);
+                case PAGE_COMPUTERS:
+                    return getString(R.string.computers_title).toUpperCase(l);
             }
             return null;
         }
     }
-
-    /**
-     * A dummy fragment representing a section of the app, but that simply
-     * displays dummy text.
-     */
-    public static class DummySectionFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        public DummySectionFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
 }

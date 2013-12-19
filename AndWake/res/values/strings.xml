@@ -3,8 +3,8 @@
 
     <string name="app_name">AndWake</string>
     <string name="action_settings">Settings</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="groups_title">Groups</string>
+    <string name="computers_title">Computers</string>
 
 </resources>
