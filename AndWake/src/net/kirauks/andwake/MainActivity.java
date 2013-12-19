@@ -1,9 +1,15 @@
 package net.kirauks.andwake;
 
+import java.io.IOException;
 import java.util.Locale;
+
+import net.kirauks.andwake.packets.Emitter;
+import net.kirauks.andwake.packets.Packet;
+import net.kirauks.andwake.packets.WolPacket;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -74,6 +80,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        
+        new AsyncTask<Void, Void, Void>(){
+			@Override
+			protected Void doInBackground(Void... params) {
+				Packet wol = new WolPacket("78.223.87.7", "6C:62:6D:43:D8:BB", 9);
+		        try {
+					new Emitter(wol).send();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+        	
+        }.execute(null, null, null);
+        
     }
 
     @Override
