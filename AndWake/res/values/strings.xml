@@ -9,5 +9,14 @@
     <string name="menu_add_computer">New Computer</string>
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_add_computer_name">Name :</string>
+    <string name="dialog_add_computer_name_hint">MyComputer</string>
+    <string name="dialog_add_computer_mac">Mac Adress :</string>
+    <string name="dialog_add_computer_mac_hint">FF</string>
+    <string name="dialog_add_computer_address">IP Adress :</string>
+    <string name="dialog_add_computer_address_hint">192.168.0.255</string>
+    <string name="dialog_add_computer_port">Port :</string>
+    <string name="dialog_add_computer_port_defaut">9</string>
+    <string name="dialog_add_computer_port_hint">9</string>
 
 </resources>

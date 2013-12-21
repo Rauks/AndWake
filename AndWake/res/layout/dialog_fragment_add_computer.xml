@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/dialog_add_computer_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_add_computer_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/dialog_add_computer_name_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/dialog_add_computer_name_hint"
+        android:inputType="textCapWords"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/dialog_add_computer_mac_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_add_computer_mac"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/dialog_add_computer_mac_field_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/dialog_add_computer_mac_hint"
+            android:inputType="textCapCharacters"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/dialog_add_computer_mac_field_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/dialog_add_computer_mac_hint"
+            android:inputType="textCapCharacters"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/dialog_add_computer_mac_field_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/dialog_add_computer_mac_hint"
+            android:inputType="textCapCharacters"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/dialog_add_computer_mac_field_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/dialog_add_computer_mac_hint"
+            android:inputType="textCapCharacters"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/dialog_add_computer_mac_field_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/dialog_add_computer_mac_hint"
+            android:inputType="textCapCharacters"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/dialog_add_computer_mac_field_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/dialog_add_computer_mac_hint"
+            android:inputType="textCapCharacters"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dialog_add_computer_address_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_add_computer_address"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/dialog_add_computer_address_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/dialog_add_computer_address_hint"
+        android:inputType="textUri"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_add_computer_port"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/dialog_add_computer_port_hint"
+        android:inputType="number"
+        android:singleLine="true"
+        android:text="@string/dialog_add_computer_port_defaut" />
+
+</LinearLayout>
