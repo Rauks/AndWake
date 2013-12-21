@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Group {
 	private String name;
-	private ArrayList<Target> children;
+	private ArrayList<Computer> children;
 	
 	public Group(String name){
 		this.name = name;
-		this.children = new ArrayList<Target>();
+		this.children = new ArrayList<Computer>();
 	}
 	
-	public List<Target> getChildren(){
+	public List<Computer> getChildren(){
 		return this.children;
 	}
 	public String getName(){

@@ -1,13 +1,13 @@
 package net.kirauks.andwake.targets;
 
-public class Target{
+public class Computer{
 	private String name;
 	private String mac;
 	private String adress;
 	
-	public Target(){}
+	public Computer(){}
 	
-	public Target(String name, String mac, String adress){
+	public Computer(String name, String mac, String adress){
 		this.name = name;
 		this.mac = mac;
 		this.adress = adress;
