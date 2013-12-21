@@ -7,5 +7,7 @@
     <string name="groups_title">Groups</string>
     <string name="computers_title">Computers</string>
     <string name="menu_add_computer">New Computer</string>
+    <string name="dialog_ok">Ok</string>
+    <string name="dialog_cancel">Cancel</string>
 
 </resources>

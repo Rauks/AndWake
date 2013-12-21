@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -98,6 +99,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.menu_add_computer:
+                new AddComputerDialogFragment().show(this.getFragmentManager(), "add_computer_dialog");
+                return true;
+            case R.id.menu_add_group:
+                new AddGroupDialogFragment().show(this.getFragmentManager(), "add_group_dialog");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     	this.mViewPager.setCurrentItem(tab.getPosition());
     }
@@ -158,4 +174,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             return null;
         }
     }
+
+	public void doAddComputer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doAddGroup() {
+		// TODO Auto-generated method stub
+		
+	}
 }
