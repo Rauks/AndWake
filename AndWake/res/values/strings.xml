@@ -3,11 +3,11 @@
 
     <string name="app_name">AndWake</string>
     <string name="menu_add_group">New Group</string>
-    <string name="favorites_title">Favorites</string>
-    <string name="groups_title">Groups</string>
-    <string name="computers_title">Computers</string>
+    <string name="fragment_favorites_title">Favorites</string>
+    <string name="fragment_groups_title">Groups</string>
+    <string name="fragment_computers_title">Computers</string>
     <string name="menu_add_computer">New Computer</string>
-    <string name="dialog_ok">Ok</string>
+    <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_add_computer_name">Name :</string>
     <string name="dialog_add_computer_name_hint">MyComputer</string>
@@ -23,5 +23,10 @@
     <string name="dialog_add_computer_error_mac_hex">Invalid mac address</string>
     <string name="dialog_add_computer_error_port_empty">Port could not be empty</string>
     <string name="dialog_add_computer_error_address_empty">Network address could not be empty</string>
+    <string name="list_element_computer_wake">Wake</string>
+    <string name="list_element_computer_port_separator">:</string>
+    <string name="toast_wake_init">Sending wake packet&#8230;</string>
+    <string name="toast_wake_done">Wake packet sended.</string>
+    <string name="toast_wake_error">Error during packet sending.</string>
 
 </resources>

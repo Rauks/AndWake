@@ -62,31 +62,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 .setText(this.mSectionsPagerAdapter.getPageTitle(i))
                 .setTabListener(this));
         }
-        
-        /*
-        new AsyncTask<Void, Void, Void>(){
-        	private Packet wol = new WolPacket("kirauks.net", "6C:62:6D:43:D8:BB"); 
-        	
-        	@Override
-			protected Void doInBackground(Void... params) {
-				
-				try {
-					//new Emitter(this.wol).send();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				return null;
-			}
-
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				Toast.makeText(MainActivity.this.getApplicationContext(), this.wol.toString(), Toast.LENGTH_LONG).show();
-			}
-        	
-        }.execute(null, null, null);
-        */
     }
 
     @Override
@@ -174,11 +149,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             Locale l = Locale.getDefault();
             switch (position) {
                 case PAGE_FAVORITES:
-                    return getString(R.string.favorites_title).toUpperCase(l);
+                    return getString(R.string.fragment_favorites_title).toUpperCase(l);
                 case PAGE_GROUPS:
-                    return getString(R.string.groups_title).toUpperCase(l);
+                    return getString(R.string.fragment_groups_title).toUpperCase(l);
                 case PAGE_COMPUTERS:
-                    return getString(R.string.computers_title).toUpperCase(l);
+                    return getString(R.string.fragment_computers_title).toUpperCase(l);
             }
             return null;
         }
