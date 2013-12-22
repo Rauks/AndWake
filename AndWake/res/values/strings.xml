@@ -18,5 +18,6 @@
     <string name="dialog_add_computer_port">Port :</string>
     <string name="dialog_add_computer_port_defaut">9</string>
     <string name="dialog_add_computer_port_hint">9</string>
+    <string name="dialog_add_computer_mac_separator">:</string>
 
 </resources>

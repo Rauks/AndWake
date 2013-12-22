@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     android:orientation="vertical" >
 
     <TextView
@@ -17,8 +18,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/dialog_add_computer_name_hint"
-        android:inputType="textCapWords"
-        android:singleLine="true" >
+        android:inputType="textCapWords|textNoSuggestions"
+        android:nextFocusDown="@+id/dialog_add_computer_mac_field_1"
+        android:nextFocusForward="@+id/dialog_add_computer_port_field"
+        android:nextFocusLeft="@id/dialog_add_computer_port_field"
+        android:nextFocusRight="@id/dialog_add_computer_mac_field_1"
+        android:nextFocusUp="@id/dialog_add_computer_port_field"
+        android:singleLine="true"
+        android:textAllCaps="false" >
 
         <requestFocus />
     </EditText>
@@ -35,64 +42,112 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/dialog_add_computer_mac_field_1"
+            android:id="@id/dialog_add_computer_mac_field_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEF"
             android:ems="10"
             android:hint="@string/dialog_add_computer_mac_hint"
-            android:inputType="textCapCharacters"
-            android:singleLine="true" />
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="2"
+       		android:nextFocusDown="@+id/dialog_add_computer_mac_field_2"
+    	    android:nextFocusForward="@id/dialog_add_computer_name_field"
+    	    android:nextFocusLeft="@id/dialog_add_computer_name_field"
+    	    android:nextFocusRight="@id/dialog_add_computer_mac_field_2"
+    	    android:nextFocusUp="@id/dialog_add_computer_name_field"
+            android:singleLine="true"
+            android:textAllCaps="true" />
 
         <EditText
-            android:id="@+id/dialog_add_computer_mac_field_2"
+            android:id="@id/dialog_add_computer_mac_field_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEF"
             android:ems="10"
             android:hint="@string/dialog_add_computer_mac_hint"
-            android:inputType="textCapCharacters"
-            android:singleLine="true" />
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="2"
+       		android:nextFocusDown="@+id/dialog_add_computer_mac_field_3"
+    	    android:nextFocusForward="@id/dialog_add_computer_mac_field_1"
+    	    android:nextFocusLeft="@id/dialog_add_computer_mac_field_1"
+    	    android:nextFocusRight="@id/dialog_add_computer_mac_field_3"
+    	    android:nextFocusUp="@id/dialog_add_computer_mac_field_1"
+            android:singleLine="true"
+            android:textAllCaps="true" />
 
         <EditText
-            android:id="@+id/dialog_add_computer_mac_field_3"
+            android:id="@id/dialog_add_computer_mac_field_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEF"
             android:ems="10"
             android:hint="@string/dialog_add_computer_mac_hint"
-            android:inputType="textCapCharacters"
-            android:singleLine="true" />
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="2"
+       		android:nextFocusDown="@+id/dialog_add_computer_mac_field_4"
+    	    android:nextFocusForward="@id/dialog_add_computer_mac_field_2"
+    	    android:nextFocusLeft="@id/dialog_add_computer_mac_field_2"
+    	    android:nextFocusRight="@id/dialog_add_computer_mac_field_4"
+    	    android:nextFocusUp="@id/dialog_add_computer_mac_field_2"
+            android:singleLine="true"
+            android:textAllCaps="true" />
 
         <EditText
-            android:id="@+id/dialog_add_computer_mac_field_4"
+            android:id="@id/dialog_add_computer_mac_field_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEF"
             android:ems="10"
             android:hint="@string/dialog_add_computer_mac_hint"
-            android:inputType="textCapCharacters"
-            android:singleLine="true" />
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="2"
+       		android:nextFocusDown="@+id/dialog_add_computer_mac_field_5"
+    	    android:nextFocusForward="@id/dialog_add_computer_mac_field_3"
+    	    android:nextFocusLeft="@id/dialog_add_computer_mac_field_3"
+    	    android:nextFocusRight="@id/dialog_add_computer_mac_field_5"
+    	    android:nextFocusUp="@id/dialog_add_computer_mac_field_3"
+            android:singleLine="true"
+            android:textAllCaps="true" />
 
         <EditText
-            android:id="@+id/dialog_add_computer_mac_field_5"
+            android:id="@id/dialog_add_computer_mac_field_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEF"
             android:ems="10"
             android:hint="@string/dialog_add_computer_mac_hint"
-            android:inputType="textCapCharacters"
-            android:singleLine="true" />
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="2"
+       		android:nextFocusDown="@+id/dialog_add_computer_mac_field_6"
+    	    android:nextFocusForward="@id/dialog_add_computer_mac_field_4"
+    	    android:nextFocusLeft="@id/dialog_add_computer_mac_field_4"
+    	    android:nextFocusRight="@id/dialog_add_computer_mac_field_6"
+    	    android:nextFocusUp="@id/dialog_add_computer_mac_field_4"
+            android:singleLine="true"
+            android:textAllCaps="true" />
 
         <EditText
-            android:id="@+id/dialog_add_computer_mac_field_6"
+            android:id="@id/dialog_add_computer_mac_field_6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEF"
             android:ems="10"
             android:hint="@string/dialog_add_computer_mac_hint"
-            android:inputType="textCapCharacters"
-            android:singleLine="true" />
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="2"
+       		android:nextFocusDown="@+id/dialog_add_computer_address_field"
+    	    android:nextFocusForward="@id/dialog_add_computer_mac_field_5"
+    	    android:nextFocusLeft="@id/dialog_add_computer_mac_field_5"
+    	    android:nextFocusRight="@id/dialog_add_computer_address_field"
+    	    android:nextFocusUp="@id/dialog_add_computer_mac_field_5"
+            android:singleLine="true"
+            android:textAllCaps="true" />
 
     </LinearLayout>
 
@@ -104,29 +159,42 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/dialog_add_computer_address_field"
+        android:id="@id/dialog_add_computer_address_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/dialog_add_computer_address_hint"
         android:inputType="textUri"
-        android:singleLine="true" />
+       	android:nextFocusDown="@id/dialog_add_computer_port_field"
+        android:nextFocusForward="@id/dialog_add_computer_mac_field_6"
+   	    android:nextFocusLeft="@id/dialog_add_computer_mac_field_6"
+   	    android:nextFocusRight="@id/dialog_add_computer_port_field"
+   	    android:nextFocusUp="@id/dialog_add_computer_mac_field_6"
+        android:singleLine="true"
+        android:textAllCaps="false" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/dialog_add_computer_port_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dialog_add_computer_port"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@id/dialog_add_computer_port_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:digits="0123456789"
         android:ems="10"
         android:hint="@string/dialog_add_computer_port_hint"
         android:inputType="number"
+       	android:nextFocusDown="@id/dialog_add_computer_name_field"
+        android:nextFocusForward="@id/dialog_add_computer_address_field"
+   	    android:nextFocusLeft="@id/dialog_add_computer_address_field"
+   	    android:nextFocusRight="@id/dialog_add_computer_name_field"
+   	    android:nextFocusUp="@id/dialog_add_computer_address_field"
         android:singleLine="true"
+        android:textAllCaps="false"
         android:text="@string/dialog_add_computer_port_defaut" />
 
 </LinearLayout>

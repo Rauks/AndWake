@@ -25,21 +25,21 @@ public final class R {
     }
     public static final class id {
         public static final int dialog_add_computer_address_field=0x7f08000b;
-        public static final int dialog_add_computer_address_label=0x7f08000a;
-        public static final int dialog_add_computer_mac_field_1=0x7f080004;
-        public static final int dialog_add_computer_mac_field_2=0x7f080005;
-        public static final int dialog_add_computer_mac_field_3=0x7f080006;
-        public static final int dialog_add_computer_mac_field_4=0x7f080007;
-        public static final int dialog_add_computer_mac_field_5=0x7f080008;
-        public static final int dialog_add_computer_mac_field_6=0x7f080009;
-        public static final int dialog_add_computer_mac_label=0x7f080003;
+        public static final int dialog_add_computer_address_label=0x7f08000c;
+        public static final int dialog_add_computer_mac_field_1=0x7f080003;
+        public static final int dialog_add_computer_mac_field_2=0x7f080006;
+        public static final int dialog_add_computer_mac_field_3=0x7f080007;
+        public static final int dialog_add_computer_mac_field_4=0x7f080008;
+        public static final int dialog_add_computer_mac_field_5=0x7f080009;
+        public static final int dialog_add_computer_mac_field_6=0x7f08000a;
+        public static final int dialog_add_computer_mac_label=0x7f080005;
         public static final int dialog_add_computer_name_field=0x7f080002;
         public static final int dialog_add_computer_name_label=0x7f080001;
-        public static final int editText1=0x7f08000d;
+        public static final int dialog_add_computer_port_field=0x7f080004;
+        public static final int dialog_add_computer_port_label=0x7f08000d;
         public static final int menu_add_computer=0x7f08000e;
         public static final int menu_add_group=0x7f08000f;
         public static final int pager=0x7f080000;
-        public static final int textView1=0x7f08000c;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -58,6 +58,7 @@ public final class R {
         public static final int dialog_add_computer_address_hint=0x7f05000d;
         public static final int dialog_add_computer_mac=0x7f05000a;
         public static final int dialog_add_computer_mac_hint=0x7f05000b;
+        public static final int dialog_add_computer_mac_separator=0x7f050011;
         public static final int dialog_add_computer_name=0x7f050008;
         public static final int dialog_add_computer_name_hint=0x7f050009;
         public static final int dialog_add_computer_port=0x7f05000e;
