@@ -2,13 +2,9 @@ package net.kirauks.andwake;
 
 import java.util.Locale;
 
-import net.kirauks.andwake.packets.Packet;
-import net.kirauks.andwake.packets.WolPacket;
-import net.kirauks.andwake.targets.db.DatabaseHelper;
-
+import net.kirauks.andwake.targets.db.ComputerDataSource;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,7 +13,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -36,11 +31,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     ViewPager mViewPager;
     
-    private DatabaseHelper mDatabase;
+    ComputerDataSource computerDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        //Datasources init
+        this.computerDataSource = new ComputerDataSource(this);
+        this.computerDataSource.open();
+        
         setContentView(R.layout.activity_main);
 
         final ActionBar actionBar = getActionBar();
@@ -63,21 +63,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 .setTabListener(this));
         }
         
-        //Database init
-        this.mDatabase = new DatabaseHelper(this);
-        
+        /*
         new AsyncTask<Void, Void, Void>(){
         	private Packet wol = new WolPacket("kirauks.net", "6C:62:6D:43:D8:BB"); 
         	
         	@Override
 			protected Void doInBackground(Void... params) {
-				/*
+				
 				try {
-					new Emitter(this.wol).send();
+					//new Emitter(this.wol).send();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				*/
+				
 				return null;
 			}
 
@@ -88,10 +86,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			}
         	
         }.execute(null, null, null);
-        
+        */
     }
 
     @Override
+	protected void onPause() {
+        this.computerDataSource.close();
+		super.onPause();
+	}
+	@Override
+	protected void onResume() {
+        this.computerDataSource.open();
+		super.onResume();
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -175,9 +184,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
-	public void doAddComputer() {
-		// TODO Auto-generated method stub
-		
+    private String getFragmentTag(int pos){
+        return "android:switcher:" + R.id.pager + ":" + pos;
+    }
+    
+	public void doAddComputer(String name, String mac, String address, int port) {
+		this.computerDataSource.createComputer(name, mac, address, port);
+		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
+		ComputersFragment f = (ComputersFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
+		f.updateList();
 	}
 
 	public void doAddGroup() {

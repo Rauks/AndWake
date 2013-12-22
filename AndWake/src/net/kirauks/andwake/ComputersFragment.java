@@ -1,15 +1,26 @@
 package net.kirauks.andwake;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import java.util.List;
 
-public class ComputersFragment extends Fragment {
+import net.kirauks.andwake.targets.Computer;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.widget.ArrayAdapter;
+
+public class ComputersFragment extends ListFragment{
+	public ComputersFragment(){}
+	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_computers, container, false);
-        return rootView;
-    }
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		this.updateList();
+	}
+	
+	public void updateList() {
+		List<Computer> values = ((MainActivity)this.getActivity()).computerDataSource.getAllComputers();
+		ArrayAdapter<Computer> adapter = new ArrayAdapter<Computer>(this.getActivity(),
+		    android.R.layout.simple_list_item_1, values);
+		this.setListAdapter(adapter);
+	}
 }

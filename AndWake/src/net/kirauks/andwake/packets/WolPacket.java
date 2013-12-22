@@ -1,10 +1,7 @@
 package net.kirauks.andwake.packets;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import android.util.Log;
 
 public class WolPacket extends Packet{
 	private final static int DEFAULT_PORT = 9;
