@@ -72,14 +72,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
 	protected void onPause() {
-        this.computerDataSource.close();
 		super.onPause();
+        this.computerDataSource.close();
 	}
 	@Override
 	protected void onResume() {
         this.computerDataSource.open();
 		super.onResume();
 	}
+	
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
