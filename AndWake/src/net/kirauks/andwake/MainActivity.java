@@ -1,10 +1,15 @@
 package net.kirauks.andwake;
 
+import java.io.IOException;
 import java.util.Locale;
 
+import net.kirauks.andwake.packets.Emitter;
+import net.kirauks.andwake.packets.Packet;
+import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.db.ComputerDataSource;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +18,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -87,10 +93,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.menu_add_computer:
-                new AddComputerDialogFragment().show(this.getFragmentManager(), "add_computer_dialog");
-                return true;
+            	this.showAddComputer();
+            	return true;
             case R.id.menu_add_group:
-                new AddGroupDialogFragment().show(this.getFragmentManager(), "add_group_dialog");
+            	this.showAddGroup();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -163,15 +169,65 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         return "android:switcher:" + R.id.pager + ":" + pos;
     }
     
+    public void showAddComputer(){
+        new ComputerDialogFragment().show(this.getFragmentManager(), "add_computer_dialog");
+    }
 	public void doAddComputer(String name, String mac, String address, int port) {
 		this.computerDataSource.createComputer(name, mac, address, port);
 		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
 		ComputersFragment f = (ComputersFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
 		f.updateList();
 	}
-
+	public void showEditComputer(Computer item) {
+		ComputerDialogFragment dialog = new ComputerDialogFragment();
+		dialog.setEdit(item);
+		dialog.show(this.getFragmentManager(), "edit_computer_dialog");
+		
+	}
+	public void doEditComputer(long id, String name, String mac, String address, int port) {
+		this.computerDataSource.updateComputer(id, name, mac, address, port);
+		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
+		ComputersFragment f = (ComputersFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
+		f.updateList();
+	}
+	public void showDeleteComputer(Computer item) {
+		Toast.makeText(this, "Long click", Toast.LENGTH_SHORT).show();	
+	}
+    
+    public void showAddGroup(){
+        new AddGroupDialogFragment().show(this.getFragmentManager(), "add_group_dialog");
+    }
 	public void doAddGroup() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void doSendPacket(final Packet packet){
+		new AsyncTask<Void, Void, Void>(){
+			boolean sendError = false;
+        	
+        	@Override
+			protected Void doInBackground(Void... params) {
+				try {
+					new Emitter(packet).send();
+				} catch (IOException e) {
+					this.sendError = true;
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				if(sendError){
+					Toast.makeText(MainActivity.this, R.string.toast_wake_error, Toast.LENGTH_SHORT).show();
+				}
+				else{
+					Toast.makeText(MainActivity.this, R.string.toast_wake_done, Toast.LENGTH_SHORT).show();
+				}
+			}
+        }.execute(null, null, null);
+
+		Toast.makeText(MainActivity.this, R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
 	}
 }

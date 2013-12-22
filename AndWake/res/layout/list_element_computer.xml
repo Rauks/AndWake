@@ -16,14 +16,14 @@
             android:id="@+id/list_element_computer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_add_computer_name_hint"
+            android:text="@string/dialog_computer_name_hint"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/list_element_computer_mac"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_add_computer_mac_hint"
+            android:text="@string/dialog_computer_mac_hint"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
@@ -34,7 +34,7 @@
                 android:id="@+id/list_element_computer_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dialog_add_computer_address_hint"
+                android:text="@string/dialog_computer_address_hint"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
@@ -48,7 +48,7 @@
                 android:id="@+id/list_element_computer_port"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dialog_add_computer_port_hint"
+                android:text="@string/dialog_computer_port_hint"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </LinearLayout>

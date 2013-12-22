@@ -50,14 +50,24 @@ public class ComputerDataSource {
 	    cursor.close();
 	    return newComputer;
 	}
+
+	public void updateComputer(long id, String name, String mac, String address, int port) {
+		ContentValues values = new ContentValues();
+	    values.put(DatabaseHelper.TARGETS_TABLE_FIELD_NAME, name);
+	    values.put(DatabaseHelper.TARGETS_TABLE_FIELD_ADDRESS, address);
+	    values.put(DatabaseHelper.TARGETS_TABLE_FIELD_MAC, mac);
+	    values.put(DatabaseHelper.TARGETS_TABLE_FIELD_PORT, String.valueOf(port));
+	    values.put(DatabaseHelper.TARGETS_TABLE_FIELD_GROUPS, "");
+		this.db.update(DatabaseHelper.TARGETS_TABLE_NAME, values, DatabaseHelper.TARGETS_TABLE_FIELD_ID + " = " + id, null);
+	}
 	
 	public void deleteComputer(Computer computer) {
 	    long id = computer.getId();
 	    this.db.delete(DatabaseHelper.TARGETS_TABLE_NAME, DatabaseHelper.TARGETS_TABLE_FIELD_ID
 	        + " = " + id, null);
-	  }
+	}
 
-	  public List<Computer> getAllComputers() {
+	public List<Computer> getAllComputers() {
 	    List<Computer> computers = new ArrayList<Computer>();
 	    Cursor cursor = this.db.query(DatabaseHelper.TARGETS_TABLE_NAME, this.allColumns, 
 	    	null, null, null, null, null);
@@ -69,7 +79,7 @@ public class ComputerDataSource {
 	    }
 	    cursor.close();
 	    return computers;
-	  }
+	}
 	
 	private Computer cursorToComputer(Cursor cursor) {
 		Computer computer = new Computer();
