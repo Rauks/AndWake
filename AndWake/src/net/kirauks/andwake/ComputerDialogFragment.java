@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class ComputerDialogFragment extends DialogFragment{
-	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -39,7 +38,7 @@ public class ComputerDialogFragment extends DialogFragment{
 		            }
 		        });
 				
-				Computer content = ComputerDialogFragment.this.content;
+				Computer content = ComputerDialogFragment.this.edit;
 				if(content != null){
 					EditText nameField = (EditText)dialog.findViewById(R.id.dialog_computer_name_field);
 					EditText macField1 = (EditText)dialog.findViewById(R.id.dialog_computer_mac_field_1);
@@ -65,7 +64,7 @@ public class ComputerDialogFragment extends DialogFragment{
 			}
 		});
 		
-		if(this.content == null){
+		if(this.edit == null){
 			dialog.setTitle(R.string.dialog_computer_title_add);
 		}
 		else{
@@ -144,16 +143,16 @@ public class ComputerDialogFragment extends DialogFragment{
 		String address = addressField.getText().toString();
 		int port = Integer.parseInt(portField.getText().toString());
 		
-		if(this.content != null){
-			((MainActivity) this.getActivity()).doEditComputer(this.content.getId(), name, mac , address, port);
+		if(this.edit != null){
+			((MainActivity) this.getActivity()).doEditComputer(this.edit.getId(), name, mac , address, port);
 		}
 		else{
 			((MainActivity) this.getActivity()).doAddComputer(name, mac , address, port);
 		}
 	}
 
-	private Computer content;
+	private Computer edit;
 	public void setEdit(Computer item) {
-		this.content = item;
+		this.edit = item;
 	}
 }

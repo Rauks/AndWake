@@ -16,13 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ComputersFragment extends ListFragment{
-	public ComputersFragment(){}
-	
+public class ComputersFragment extends ListFragment{	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		this.updateList();
 	}
 	
