@@ -42,13 +42,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     		"CREATE TRIGGER delete_link_target_group_target BEFORE DELETE ON " + TARGETS_TABLE_NAME + " " +
 	        "FOR EACH ROW BEGIN " +
 	        "DELETE FROM " + LINK_TARGET_GROUP_TABLE_NAME + 
-	        " WHERE " + LINK_TARGET_GROUP_TABLE_NAME + "." + LINK_TARGET_GROUP_FIELD_TARGET + " = " + TARGETS_TABLE_NAME + "." + TARGETS_TABLE_FIELD_ID + "; " +
+	        " WHERE " + LINK_TARGET_GROUP_FIELD_TARGET + " = OLD." + TARGETS_TABLE_FIELD_ID + "; " +
 	        "END";
     private static final String LINK_TARGET_GROUP_DELETE_GROUP_TRIGGER =
     		"CREATE TRIGGER delete_link_target_group_group BEFORE DELETE ON " + GROUPS_TABLE_NAME + " " +
 	        "FOR EACH ROW BEGIN " +
 	        "DELETE FROM " + LINK_TARGET_GROUP_TABLE_NAME + 
-	        " WHERE " + LINK_TARGET_GROUP_TABLE_NAME + "." + LINK_TARGET_GROUP_FIELD_GROUP + " = " + GROUPS_TABLE_NAME + "." + GROUPS_TABLE_FIELD_ID + "; " +
+	        " WHERE " + LINK_TARGET_GROUP_FIELD_GROUP + " = OLD." + GROUPS_TABLE_FIELD_ID + "; " +
 	        "END";
 	
 	public DatabaseHelper(Context context) {

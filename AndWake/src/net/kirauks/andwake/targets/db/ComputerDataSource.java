@@ -57,9 +57,8 @@ public class ComputerDataSource {
 	}
 	
 	public void deleteComputer(Computer computer) {
-	    long id = computer.getId();
-	    this.db.delete(DatabaseHelper.TARGETS_TABLE_NAME, DatabaseHelper.TARGETS_TABLE_FIELD_ID
-	        + " = " + id, null);
+	    this.db.delete(DatabaseHelper.TARGETS_TABLE_NAME, 
+	    	DatabaseHelper.TARGETS_TABLE_FIELD_ID + " = " + computer.getId(), null);
 	}
 
 	public List<Computer> getAllComputers() {

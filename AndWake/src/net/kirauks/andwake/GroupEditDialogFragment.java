@@ -4,7 +4,7 @@ import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.utils.FormValidator;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class GroupDialogFragment extends DialogFragment{
+public class GroupEditDialogFragment extends DialogFragment{
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -29,14 +29,14 @@ public class GroupDialogFragment extends DialogFragment{
 				okButton.setOnClickListener(new View.OnClickListener() {
 		            @Override
 		            public void onClick(View view) {
-		            	if(GroupDialogFragment.this.validateForm()){
+		            	if(GroupEditDialogFragment.this.validateForm()){
 		            		dialog.dismiss();
-		            		GroupDialogFragment.this.handlePositiveClick();
+		            		GroupEditDialogFragment.this.handlePositiveClick();
 		            	}
 		            }
 		        });
 				
-				Group content = GroupDialogFragment.this.edit;
+				Group content = GroupEditDialogFragment.this.edit;
 				if(content != null){
 					EditText nameField = (EditText)dialog.findViewById(R.id.dialog_group_name_field);
 					

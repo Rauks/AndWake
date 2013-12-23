@@ -5,7 +5,7 @@ import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.utils.FormValidator;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ComputerDialogFragment extends DialogFragment{
+public class ComputerEditDialogFragment extends DialogFragment{
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -31,14 +31,14 @@ public class ComputerDialogFragment extends DialogFragment{
 				okButton.setOnClickListener(new View.OnClickListener() {
 		            @Override
 		            public void onClick(View view) {
-		            	if(ComputerDialogFragment.this.validateForm()){
+		            	if(ComputerEditDialogFragment.this.validateForm()){
 		            		dialog.dismiss();
-		            		ComputerDialogFragment.this.handlePositiveClick();
+		            		ComputerEditDialogFragment.this.handlePositiveClick();
 		            	}
 		            }
 		        });
 				
-				Computer content = ComputerDialogFragment.this.edit;
+				Computer content = ComputerEditDialogFragment.this.edit;
 				if(content != null){
 					EditText nameField = (EditText)dialog.findViewById(R.id.dialog_computer_name_field);
 					EditText macField1 = (EditText)dialog.findViewById(R.id.dialog_computer_mac_field_1);

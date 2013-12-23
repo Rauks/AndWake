@@ -10,6 +10,7 @@ import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.ComputerDataSource;
 import net.kirauks.andwake.targets.db.GroupDataSource;
 import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -89,7 +90,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		super.onResume();
 	}
 	
-
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -116,19 +116,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     	this.mViewPager.setCurrentItem(tab.getPosition());
     }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+	@Override
+	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {}
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {}
+	
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
     	private static final int COUNT_PAGES = 3;
     	private static final int PAGE_FAVORITES = 0;
@@ -179,7 +171,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     public void showAddComputer(){
-        new ComputerDialogFragment().show(this.getFragmentManager(), "add_computer_dialog");
+        new ComputerEditDialogFragment().show(this.getSupportFragmentManager(), "add_computer_dialog");
     }
     public void goAndRefreshComputersFragmentList(){
 		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
@@ -191,9 +183,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		this.goAndRefreshComputersFragmentList();
 	}
 	public void showEditComputer(Computer item) {
-		ComputerDialogFragment dialog = new ComputerDialogFragment();
+		ComputerEditDialogFragment dialog = new ComputerEditDialogFragment();
 		dialog.setEdit(item);
-		dialog.show(this.getFragmentManager(), "edit_computer_dialog");
+		dialog.show(this.getSupportFragmentManager(), "edit_computer_dialog");
 		
 	}
 	public void doEditComputer(Computer edit){
@@ -201,11 +193,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		this.goAndRefreshComputersFragmentList();
 	}
 	public void showDeleteComputer(Computer item) {
-		Toast.makeText(this, "Long click", Toast.LENGTH_SHORT).show();	
+		ComputerDeleteDialogFragment dialog = new ComputerDeleteDialogFragment();
+		dialog.setDelete(item);
+		dialog.show(this.getSupportFragmentManager(), "delete_computer_dialog");
+	}
+	public void doDeleteComputer(Computer delete){
+		this.computerDataSource.deleteComputer(delete);
+		this.goAndRefreshComputersFragmentList();
 	}
     
     public void showAddGroup(){
-        new GroupDialogFragment().show(this.getFragmentManager(), "add_group_dialog");
+        new GroupEditDialogFragment().show(this.getSupportFragmentManager(), "add_group_dialog");
     }
     public void goAndRefreshGroupsFragmentList(){
 		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
@@ -217,16 +215,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		this.goAndRefreshGroupsFragmentList();
 	}
 	public void showEditGroup(Group item){
-		GroupDialogFragment dialog = new GroupDialogFragment();
+		GroupEditDialogFragment dialog = new GroupEditDialogFragment();
 		dialog.setEdit(item);
-		dialog.show(this.getFragmentManager(), "edit_group_dialog");
+		dialog.show(this.getSupportFragmentManager(), "edit_group_dialog");
 	}
 	public void doEditGroup(Group edit){
 		this.groupDataSource.updateGroup(edit);
 		this.goAndRefreshGroupsFragmentList();
 	}
 	public void showDeleteGroup(Group item) {
-		Toast.makeText(this, "Long click", Toast.LENGTH_SHORT).show();	
+		GroupDeleteDialogFragment dialog = new GroupDeleteDialogFragment();
+		dialog.setDelete(item);
+		dialog.show(this.getSupportFragmentManager(), "delete_group_dialog");
+	}
+	public void doDeleteGroup(Group delete){
+		this.groupDataSource.deleteGroup(delete);
+		this.goAndRefreshGroupsFragmentList();
 	}
 	
 	public void doSendPacket(final Packet packet){
@@ -257,4 +261,5 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		Toast.makeText(MainActivity.this, R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
 	}
+
 }
