@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,14 @@ public class GroupsFragment extends ListFragment{
 			    View v = adapter.getView(i, null, null);
 			    computers.addView(v);
 			}
+			
+			Button wake = (Button) rootView.findViewById(R.id.list_element_group_wake);
+			wake.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					((MainActivity)GroupsFragment.this.getActivity()).doSendWakePacket(item.getChildren());
+				}
+			});
 			
 			rootView.setOnClickListener(new View.OnClickListener() {
 				@Override

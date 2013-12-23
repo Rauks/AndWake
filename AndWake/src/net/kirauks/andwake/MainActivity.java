@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import net.kirauks.andwake.packets.Emitter;
 import net.kirauks.andwake.packets.Packet;
+import net.kirauks.andwake.packets.WolPacket;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.ComputerDataSource;
@@ -234,7 +235,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		this.goAndRefreshGroupsFragmentList();
 	}
 	
-	public void doSendPacket(final Packet packet){
+	public void doSendWakePacket(Computer computer){
+		Packet wakePacket = new WolPacket(computer.getAddress(), computer.getMac(), computer.getPort());
+		this.doSendPacket(wakePacket);
+	}
+	public void doSendWakePacket(List<Computer> computers){
+		for(Computer computer : computers){
+			this.doSendWakePacket(computer);
+		}
+	}
+	private void doSendPacket(final Packet packet){
 		new AsyncTask<Void, Void, Void>(){
 			boolean sendError = false;
         	
@@ -262,5 +272,4 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		Toast.makeText(MainActivity.this, R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
 	}
-
 }

@@ -2,8 +2,6 @@ package net.kirauks.andwake;
 
 import java.util.List;
 
-import net.kirauks.andwake.packets.Packet;
-import net.kirauks.andwake.packets.WolPacket;
 import net.kirauks.andwake.targets.Computer;
 import android.app.Activity;
 import android.content.Context;
@@ -52,11 +50,10 @@ public class ComputersFragment extends ListFragment{
 			port.setText(String.valueOf(item.getPort()));
 			
 			Button wake = (Button) rootView.findViewById(R.id.list_element_computers_wake);
-			final Packet wakePacket = new WolPacket(item.getAddress(), item.getMac(), item.getPort()); 
 			wake.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((MainActivity)ComputersFragment.this.getActivity()).doSendPacket(wakePacket);
+					((MainActivity)ComputersFragment.this.getActivity()).doSendWakePacket(item);
 				}
 			});
 			
