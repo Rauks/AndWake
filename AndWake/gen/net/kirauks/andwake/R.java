@@ -51,8 +51,12 @@ public final class R {
         public static final int list_element_computer_port=0x7f080018;
         public static final int list_element_computer_port_separator=0x7f080017;
         public static final int list_element_computers_wake=0x7f080019;
-        public static final int menu_add_computer=0x7f08001a;
-        public static final int menu_add_group=0x7f08001b;
+        public static final int list_element_group_computer_name=0x7f08001d;
+        public static final int list_element_group_computers=0x7f08001b;
+        public static final int list_element_group_name=0x7f08001a;
+        public static final int list_element_group_wake=0x7f08001c;
+        public static final int menu_add_computer=0x7f08001e;
+        public static final int menu_add_group=0x7f08001f;
         public static final int pager=0x7f080000;
     }
     public static final class layout {
@@ -62,6 +66,8 @@ public final class R {
         public static final int dialog_fragment_delete_group=0x7f030003;
         public static final int dialog_fragment_group=0x7f030004;
         public static final int list_element_computer=0x7f030005;
+        public static final int list_element_group=0x7f030006;
+        public static final int list_element_group_computer=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -100,6 +106,7 @@ public final class R {
         public static final int fragment_groups_title=0x7f050003;
         public static final int list_element_computer_port_separator=0x7f050017;
         public static final int list_element_computer_wake=0x7f050016;
+        public static final int list_element_group_wake=0x7f050026;
         public static final int menu_add_computer=0x7f050005;
         public static final int menu_add_group=0x7f050001;
         public static final int toast_wake_done=0x7f050019;

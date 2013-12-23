@@ -2,6 +2,7 @@ package net.kirauks.andwake;
 
 import java.util.List;
 
+import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class GroupsFragment extends ListFragment{
@@ -22,13 +24,13 @@ public class GroupsFragment extends ListFragment{
 	
 	public void updateList() {
 		List<Group> values = ((MainActivity)this.getActivity()).groupDataSource.getAllGroups();
-		GroupAdapter adapter = new GroupAdapter(this.getActivity(), values);
+		GroupsAdapter adapter = new GroupsAdapter(this.getActivity(), values);
 		this.setListAdapter(adapter);
 	}
 	
-	public class GroupAdapter extends ArrayAdapter<Group>{
-		public GroupAdapter(Context context, List<Group> data) {
-	        super(context, R.layout.list_element_computer, data);
+	public class GroupsAdapter extends ArrayAdapter<Group>{
+		public GroupsAdapter(Context context, List<Group> data) {
+	        super(context, R.layout.list_element_group, data);
 	    }
 
 		@Override
@@ -36,11 +38,13 @@ public class GroupsFragment extends ListFragment{
 			final Group item = this.getItem(position);
 			
 			LayoutInflater inflater = ((Activity)this.getContext()).getLayoutInflater();
-			View rootView = inflater.inflate(R.layout.list_element_computer, parent, false);
+			View rootView = inflater.inflate(R.layout.list_element_group, parent, false);
 			
-			TextView name = (TextView) rootView.findViewById(R.id.list_element_computer_name);
+			TextView name = (TextView) rootView.findViewById(R.id.list_element_group_name);
+			ListView computers = (ListView) rootView.findViewById(R.id.list_element_group_computers);
 			
 			name.setText(item.getName());
+			computers.setAdapter(new GroupComputersAdapter(this.getContext(), item.getChildren()));
 			
 			rootView.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -58,6 +62,25 @@ public class GroupsFragment extends ListFragment{
 			});
 			
 			return rootView;
+		}
+		
+		public class GroupComputersAdapter extends ArrayAdapter<Computer>{
+			public GroupComputersAdapter(Context context, List<Computer> objects) {
+				super(context, R.layout.list_element_group_computer, objects);
+			}
+
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				final Computer item = this.getItem(position);
+
+				LayoutInflater inflater = ((Activity)this.getContext()).getLayoutInflater();
+				View rootView = inflater.inflate(R.layout.list_element_group, parent, false);
+				
+				TextView name = (TextView) rootView.findViewById(R.id.list_element_group_computer_name);
+				name.setText(item.getName());
+				
+				return rootView;
+			}
 		}
 	}
 }
