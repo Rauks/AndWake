@@ -1,6 +1,7 @@
 package net.kirauks.andwake;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import net.kirauks.andwake.packets.Emitter;
@@ -210,8 +211,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		GroupsFragment f = (GroupsFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
 		f.updateList();
     }
-	public void doAddGroup(String name) {
-		this.groupDataSource.createGroup(name, new long[0]);
+	public void doAddGroup(String name, List<Computer> computers) {
+		this.groupDataSource.createGroup(name, computers);
 		this.goAndRefreshGroupsFragmentList();
 	}
 	public void showEditGroup(Group item){

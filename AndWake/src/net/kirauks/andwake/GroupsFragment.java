@@ -79,7 +79,7 @@ public class GroupsFragment extends ListFragment{
 				final Computer item = this.getItem(position);
 
 				LayoutInflater inflater = ((Activity)this.getContext()).getLayoutInflater();
-				View rootView = inflater.inflate(R.layout.list_element_group, parent, false);
+				View rootView = inflater.inflate(R.layout.list_element_group_computer, parent, false);
 				
 				TextView name = (TextView) rootView.findViewById(R.id.list_element_group_computer_name);
 				name.setText(item.getName());

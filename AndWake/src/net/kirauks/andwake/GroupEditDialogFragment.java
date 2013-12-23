@@ -1,5 +1,6 @@
 package net.kirauks.andwake;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.kirauks.andwake.targets.Computer;
@@ -18,10 +19,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class GroupEditDialogFragment extends DialogFragment{
+	List<Computer> selectedComputers = new ArrayList<Computer>();
+	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -87,6 +92,17 @@ public class GroupEditDialogFragment extends DialogFragment{
 			
 			CheckBox check = (CheckBox) rootView.findViewById(R.id.list_element_dialog_group_computer_check);
 			check.setText(item.getName());
+			check.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if(isChecked){
+						GroupEditDialogFragment.this.selectedComputers.add(item);
+					}
+					else{
+						GroupEditDialogFragment.this.selectedComputers.remove(item);
+					}
+				}
+			});
 			
 			Group edit = GroupEditDialogFragment.this.edit;
 			if(edit != null && edit.getChildren().contains(item)){
@@ -119,10 +135,12 @@ public class GroupEditDialogFragment extends DialogFragment{
 		
 		if(this.edit != null){
 			this.edit.setName(name);
+			this.edit.getChildren().clear();
+			this.edit.getChildren().addAll(this.selectedComputers);
 			((MainActivity) this.getActivity()).doEditGroup(this.edit);
 		}
 		else{
-			((MainActivity) this.getActivity()).doAddGroup(name);
+			((MainActivity) this.getActivity()).doAddGroup(name, this.selectedComputers);
 		}
 	}
 

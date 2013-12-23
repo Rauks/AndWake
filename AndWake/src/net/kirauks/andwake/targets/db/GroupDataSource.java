@@ -3,6 +3,7 @@ package net.kirauks.andwake.targets.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,10 +34,18 @@ public class GroupDataSource {
 	    this.db.close();
 	}
 	
-	public Group createGroup(String name, long[] computerIds){
+	public Group createGroup(String name, List<Computer> computers){
 		ContentValues values = new ContentValues();
 	    values.put(DatabaseHelper.GROUPS_TABLE_FIELD_NAME, name);
 	    long insertId = this.db.insert(DatabaseHelper.GROUPS_TABLE_NAME, null, values);
+	    
+	    for(Computer computer : computers){
+			ContentValues linkValues = new ContentValues();
+			linkValues.put(DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET, computer.getId());
+			linkValues.put(DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP, insertId);
+	    	this.db.insert(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, null, linkValues);
+	    }
+	    
 	    Cursor cursor = this.db.query(DatabaseHelper.GROUPS_TABLE_NAME,
 	        this.allColumns, DatabaseHelper.GROUPS_TABLE_FIELD_ID + " = " + insertId, 
 	        null, null, null, null);
@@ -50,6 +59,16 @@ public class GroupDataSource {
 		ContentValues values = new ContentValues();
 	    values.put(DatabaseHelper.GROUPS_TABLE_FIELD_NAME, group.getName());
 		this.db.update(DatabaseHelper.GROUPS_TABLE_NAME, values, DatabaseHelper.GROUPS_TABLE_FIELD_ID + " = " + group.getId(), null);
+		
+		this.db.delete(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP
+		        + " = " + group.getId(), null);
+		
+		for(Computer computer : group.getChildren()){
+			ContentValues linkValues = new ContentValues();
+			linkValues.put(DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET, computer.getId());
+			linkValues.put(DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP, group.getId());
+	    	this.db.insert(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, null, linkValues);
+	    }
 	}
 	
 	public void deleteGroup(Group group) {
