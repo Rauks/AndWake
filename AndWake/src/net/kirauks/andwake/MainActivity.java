@@ -181,11 +181,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void showAddComputer(){
         new ComputerDialogFragment().show(this.getFragmentManager(), "add_computer_dialog");
     }
-	public void doAddComputer(String name, String mac, String address, int port) {
-		this.computerDataSource.createComputer(name, mac, address, port);
+    public void goAndRefreshComputersFragmentList(){
 		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
 		ComputersFragment f = (ComputersFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
 		f.updateList();
+    }
+	public void doAddComputer(String name, String mac, String address, int port) {
+		this.computerDataSource.createComputer(name, mac, address, port);
+		this.goAndRefreshComputersFragmentList();
 	}
 	public void showEditComputer(Computer item) {
 		ComputerDialogFragment dialog = new ComputerDialogFragment();
@@ -195,9 +198,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 	public void doEditComputer(Computer edit){
 		this.computerDataSource.updateComputer(edit);
-		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
-		ComputersFragment f = (ComputersFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
-		f.updateList();
+		this.goAndRefreshComputersFragmentList();
 	}
 	public void showDeleteComputer(Computer item) {
 		Toast.makeText(this, "Long click", Toast.LENGTH_SHORT).show();	
@@ -206,17 +207,26 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void showAddGroup(){
         new GroupDialogFragment().show(this.getFragmentManager(), "add_group_dialog");
     }
+    public void goAndRefreshGroupsFragmentList(){
+		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
+		GroupsFragment f = (GroupsFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
+		f.updateList();
+    }
 	public void doAddGroup(String name) {
 		this.groupDataSource.createGroup(name, new long[0]);
-		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
-		GroupsFragment f = (GroupsFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
-		f.updateList();
+		this.goAndRefreshGroupsFragmentList();
 	}
-	public void doEditGroup(Group item){
-		this.groupDataSource.updateGroup(item);
-		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
-		GroupsFragment f = (GroupsFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
-		f.updateList();
+	public void showEditGroup(Group item){
+		GroupDialogFragment dialog = new GroupDialogFragment();
+		dialog.setEdit(item);
+		dialog.show(this.getFragmentManager(), "edit_group_dialog");
+	}
+	public void doEditGroup(Group edit){
+		this.groupDataSource.updateGroup(edit);
+		this.goAndRefreshGroupsFragmentList();
+	}
+	public void showDeleteGroup(Group item) {
+		Toast.makeText(this, "Long click", Toast.LENGTH_SHORT).show();	
 	}
 	
 	public void doSendPacket(final Packet packet){

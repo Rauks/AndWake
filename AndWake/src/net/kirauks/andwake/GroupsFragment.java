@@ -42,6 +42,21 @@ public class GroupsFragment extends ListFragment{
 			
 			name.setText(item.getName());
 			
+			rootView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					((MainActivity)GroupsFragment.this.getActivity()).showEditGroup(item);		
+				}
+			});
+			
+			rootView.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					((MainActivity)GroupsFragment.this.getActivity()).showDeleteGroup(item);
+					return true;
+				}
+			});
+			
 			return rootView;
 		}
 	}
