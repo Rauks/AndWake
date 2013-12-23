@@ -144,7 +144,11 @@ public class ComputerDialogFragment extends DialogFragment{
 		int port = Integer.parseInt(portField.getText().toString());
 		
 		if(this.edit != null){
-			((MainActivity) this.getActivity()).doEditComputer(this.edit.getId(), name, mac , address, port);
+			this.edit.setName(name);
+			this.edit.setMac(mac);
+			this.edit.setAddress(address);
+			this.edit.setPort(port);
+			((MainActivity) this.getActivity()).doEditComputer(this.edit);
 		}
 		else{
 			((MainActivity) this.getActivity()).doAddComputer(name, mac , address, port);

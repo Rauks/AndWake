@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
+	private long id;
 	private String name;
 	private ArrayList<Computer> children;
 	
-	public Group(String name){
-		this.name = name;
+	public Group(){
 		this.children = new ArrayList<Computer>();
 	}
-	
+
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public List<Computer> getChildren(){
 		return this.children;
 	}

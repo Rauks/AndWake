@@ -6,7 +6,9 @@ import java.util.Locale;
 import net.kirauks.andwake.packets.Emitter;
 import net.kirauks.andwake.packets.Packet;
 import net.kirauks.andwake.targets.Computer;
+import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.ComputerDataSource;
+import net.kirauks.andwake.targets.db.GroupDataSource;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.AsyncTask;
@@ -38,6 +40,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     ViewPager mViewPager;
     
     ComputerDataSource computerDataSource;
+    GroupDataSource groupDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +49,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         //Datasources init
         this.computerDataSource = new ComputerDataSource(this);
         this.computerDataSource.open();
+        this.groupDataSource = new GroupDataSource(this, this.computerDataSource);
+        this.groupDataSource.open();
         
         setContentView(R.layout.activity_main);
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(false);
 
         this.mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -73,11 +79,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
 	protected void onPause() {
 		super.onPause();
+		this.groupDataSource.close();
         this.computerDataSource.close();
 	}
 	@Override
 	protected void onResume() {
         this.computerDataSource.open();
+        this.groupDataSource.open();
 		super.onResume();
 	}
 	
@@ -185,8 +193,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		dialog.show(this.getFragmentManager(), "edit_computer_dialog");
 		
 	}
-	public void doEditComputer(long id, String name, String mac, String address, int port) {
-		this.computerDataSource.updateComputer(id, name, mac, address, port);
+	public void doEditComputer(Computer edit){
+		this.computerDataSource.updateComputer(edit);
 		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
 		ComputersFragment f = (ComputersFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
 		f.updateList();
@@ -196,11 +204,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
     
     public void showAddGroup(){
-        new AddGroupDialogFragment().show(this.getFragmentManager(), "add_group_dialog");
+        new GroupDialogFragment().show(this.getFragmentManager(), "add_group_dialog");
     }
-	public void doAddGroup() {
-		// TODO Auto-generated method stub
-		
+	public void doAddGroup(String name) {
+		this.groupDataSource.createGroup(name, new long[0]);
+		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
+		GroupsFragment f = (GroupsFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
+		f.updateList();
+	}
+	public void doEditGroup(Group item){
+		this.groupDataSource.updateGroup(item);
+		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
+		GroupsFragment f = (GroupsFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
+		f.updateList();
 	}
 	
 	public void doSendPacket(final Packet packet){

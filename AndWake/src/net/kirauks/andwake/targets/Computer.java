@@ -1,18 +1,13 @@
 package net.kirauks.andwake.targets;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Computer{
 	private long id;
 	private String name;
 	private String mac;
 	private String address;
 	private int port;
-	private ArrayList<Group> groups;
 	
 	public Computer(){
-		this.groups = new ArrayList<Group>();
 	}
 	
 	public long getId() {
@@ -20,9 +15,6 @@ public class Computer{
 	}
 	public void setId(long id) {
 		this.id = id;
-	}
-	public List<Group> getGroups() {
-		return groups;
 	}
 	public String getName() {
 		return this.name;
@@ -52,7 +44,6 @@ public class Computer{
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", mac=" + mac
-				+ ", address=" + address + ", port=" + port + ", groups="
-				+ groups + "]";
+				+ ", address=" + address + ", port=" + port + "]";
 	}
 }

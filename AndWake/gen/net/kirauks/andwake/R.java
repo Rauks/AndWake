@@ -40,20 +40,24 @@ public final class R {
         public static final int dialog_computer_port_field=0x7f080005;
         public static final int dialog_computer_port_label=0x7f08000e;
         public static final int dialog_computer_scroll=0x7f080001;
-        public static final int list_element_computer_address=0x7f080011;
-        public static final int list_element_computer_mac=0x7f080010;
-        public static final int list_element_computer_name=0x7f08000f;
-        public static final int list_element_computer_port=0x7f080013;
-        public static final int list_element_computer_port_separator=0x7f080012;
-        public static final int list_element_computers_wake=0x7f080014;
-        public static final int menu_add_computer=0x7f080015;
-        public static final int menu_add_group=0x7f080016;
+        public static final int dialog_group_name_field=0x7f080011;
+        public static final int dialog_group_name_label=0x7f080010;
+        public static final int dialog_group_scroll=0x7f08000f;
+        public static final int list_element_computer_address=0x7f080014;
+        public static final int list_element_computer_mac=0x7f080013;
+        public static final int list_element_computer_name=0x7f080012;
+        public static final int list_element_computer_port=0x7f080016;
+        public static final int list_element_computer_port_separator=0x7f080015;
+        public static final int list_element_computers_wake=0x7f080017;
+        public static final int menu_add_computer=0x7f080018;
+        public static final int menu_add_group=0x7f080019;
         public static final int pager=0x7f080000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int dialog_fragment_computer=0x7f030001;
-        public static final int list_element_computer=0x7f030002;
+        public static final int dialog_fragment_group=0x7f030002;
+        public static final int list_element_computer=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -77,6 +81,11 @@ public final class R {
         public static final int dialog_computer_port_hint=0x7f050010;
         public static final int dialog_computer_title_add=0x7f05001b;
         public static final int dialog_computer_title_edit=0x7f05001c;
+        public static final int dialog_group_error_name_empty=0x7f05001f;
+        public static final int dialog_group_name=0x7f05001d;
+        public static final int dialog_group_name_hint=0x7f05001e;
+        public static final int dialog_group_title_add=0x7f050020;
+        public static final int dialog_group_title_edit=0x7f050021;
         public static final int dialog_ok=0x7f050006;
         public static final int fragment_computers_title=0x7f050004;
         public static final int fragment_favorites_title=0x7f050002;
