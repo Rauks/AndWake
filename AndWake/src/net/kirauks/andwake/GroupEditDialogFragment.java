@@ -1,16 +1,25 @@
 package net.kirauks.andwake;
 
+import java.util.List;
+
+import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.utils.FormValidator;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 public class GroupEditDialogFragment extends DialogFragment{
 	@Override
@@ -36,6 +45,15 @@ public class GroupEditDialogFragment extends DialogFragment{
 		            }
 		        });
 				
+				LinearLayout computers = (LinearLayout)dialog.findViewById(R.id.dialog_group_computers_list);
+				MainActivity activity = (MainActivity)GroupEditDialogFragment.this.getActivity();
+				GroupComputersAdapter adapter = new GroupComputersAdapter(activity, activity.computerDataSource.getAllComputers());
+				
+				for (int i = 0; i < adapter.getCount(); i++) {
+				    View v = adapter.getView(i, null, null);
+				    computers.addView(v);
+				}
+				
 				Group content = GroupEditDialogFragment.this.edit;
 				if(content != null){
 					EditText nameField = (EditText)dialog.findViewById(R.id.dialog_group_name_field);
@@ -54,6 +72,30 @@ public class GroupEditDialogFragment extends DialogFragment{
 		
         return dialog;
     }
+	
+	public class GroupComputersAdapter extends ArrayAdapter<Computer>{
+		public GroupComputersAdapter(Context context, List<Computer> objects) {
+			super(context, R.layout.list_element_dialog_group_computer, objects);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final Computer item = this.getItem(position);
+
+			LayoutInflater inflater = ((Activity)this.getContext()).getLayoutInflater();
+			View rootView = inflater.inflate(R.layout.list_element_dialog_group_computer, parent, false);
+			
+			CheckBox check = (CheckBox) rootView.findViewById(R.id.list_element_dialog_group_computer_check);
+			check.setText(item.getName());
+			
+			Group edit = GroupEditDialogFragment.this.edit;
+			if(edit != null && edit.getChildren().contains(item)){
+				check.setChecked(true);
+			}
+			
+			return rootView;
+		}
+	}
 	
 	private boolean validateForm(){
     	boolean valid = true;

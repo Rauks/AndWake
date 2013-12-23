@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class GroupsFragment extends ListFragment{
@@ -41,10 +41,15 @@ public class GroupsFragment extends ListFragment{
 			View rootView = inflater.inflate(R.layout.list_element_group, parent, false);
 			
 			TextView name = (TextView) rootView.findViewById(R.id.list_element_group_name);
-			ListView computers = (ListView) rootView.findViewById(R.id.list_element_group_computers);
+			LinearLayout computers = (LinearLayout) rootView.findViewById(R.id.list_element_group_computers);
 			
 			name.setText(item.getName());
-			computers.setAdapter(new GroupComputersAdapter(this.getContext(), item.getChildren()));
+			GroupComputersAdapter adapter = new GroupComputersAdapter(this.getContext(), item.getChildren());
+			
+			for (int i = 0; i < adapter.getCount(); i++) {
+			    View v = adapter.getView(i, null, null);
+			    computers.addView(v);
+			}
 			
 			rootView.setOnClickListener(new View.OnClickListener() {
 				@Override
