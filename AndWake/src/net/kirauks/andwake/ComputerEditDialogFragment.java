@@ -15,10 +15,37 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class ComputerEditDialogFragment extends DialogFragment{
+	public static ComputerDeleteDialogFragment newInstance() {
+		ComputerDeleteDialogFragment df = new ComputerDeleteDialogFragment();
+	    Bundle bundle = new Bundle();
+	    df.setArguments(bundle);
+	    return df;
+	}
+	public static ComputerDeleteDialogFragment newInstance(Computer toEdit) {
+		ComputerDeleteDialogFragment df = new ComputerDeleteDialogFragment();
+	    Bundle bundle = new Bundle();
+	    bundle.putParcelable("edit", toEdit);
+	    df.setArguments(bundle);
+	    return df;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		this.setRetainInstance(true);
+		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onDestroyView() {
+	    if (this.getDialog() != null && this.getRetainInstance())
+	        this.getDialog().setDismissMessage(null);
+	    super.onDestroyView();
+	}
+	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-		
+		LayoutInflater inflater = this.getActivity().getLayoutInflater();
+		final Computer toEdit = (Computer)this.getArguments().getParcelable("edit");
 		final AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
             .setView(inflater.inflate(R.layout.dialog_fragment_computer, null))
             .setPositiveButton(R.string.dialog_ok, null)
@@ -38,8 +65,7 @@ public class ComputerEditDialogFragment extends DialogFragment{
 		            }
 		        });
 				
-				Computer content = ComputerEditDialogFragment.this.edit;
-				if(content != null){
+				if(toEdit != null){
 					EditText nameField = (EditText)dialog.findViewById(R.id.dialog_computer_name_field);
 					EditText macField1 = (EditText)dialog.findViewById(R.id.dialog_computer_mac_field_1);
 					EditText macField2 = (EditText)dialog.findViewById(R.id.dialog_computer_mac_field_2);
@@ -50,21 +76,21 @@ public class ComputerEditDialogFragment extends DialogFragment{
 					EditText addressField = (EditText)dialog.findViewById(R.id.dialog_computer_address_field);
 					EditText portField = (EditText)dialog.findViewById(R.id.dialog_computer_port_field);
 					
-					nameField.setText(content.getName());
-					String[] mac = content.getMac().split(String.valueOf(WolPacket.DEFAULT_MAC_SEPARATOR));
+					nameField.setText(toEdit.getName());
+					String[] mac = toEdit.getMac().split(String.valueOf(WolPacket.DEFAULT_MAC_SEPARATOR));
 					macField1.setText(mac[0]);
 					macField2.setText(mac[1]);
 					macField3.setText(mac[2]);
 					macField4.setText(mac[3]);
 					macField5.setText(mac[4]);
 					macField6.setText(mac[5]);
-					addressField.setText(content.getAddress());
-					portField.setText(String.valueOf(content.getPort()));
+					addressField.setText(toEdit.getAddress());
+					portField.setText(String.valueOf(toEdit.getPort()));
 				}
 			}
 		});
 		
-		if(this.edit == null){
+		if(toEdit == null){
 			dialog.setTitle(R.string.dialog_computer_title_add);
 		}
 		else{
@@ -143,20 +169,16 @@ public class ComputerEditDialogFragment extends DialogFragment{
 		String address = addressField.getText().toString();
 		int port = Integer.parseInt(portField.getText().toString());
 		
-		if(this.edit != null){
-			this.edit.setName(name);
-			this.edit.setMac(mac);
-			this.edit.setAddress(address);
-			this.edit.setPort(port);
-			((MainActivity) this.getActivity()).doEditComputer(this.edit);
+		Computer toEdit = (Computer)this.getArguments().getParcelable("edit");
+		if(toEdit != null){
+			toEdit.setName(name);
+			toEdit.setMac(mac);
+			toEdit.setAddress(address);
+			toEdit.setPort(port);
+			((MainActivity) this.getActivity()).doEditComputer(toEdit);
 		}
 		else{
 			((MainActivity) this.getActivity()).doAddComputer(name, mac , address, port);
 		}
-	}
-
-	private Computer edit;
-	public void setEdit(Computer item) {
-		this.edit = item;
 	}
 }

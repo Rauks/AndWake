@@ -25,12 +25,40 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class GroupEditDialogFragment extends DialogFragment{
-	List<Computer> selectedComputers = new ArrayList<Computer>();
+	public static GroupEditDialogFragment newInstance() {
+		GroupEditDialogFragment df = new GroupEditDialogFragment();
+	    Bundle bundle = new Bundle();
+	    df.setArguments(bundle);
+	    return df;
+	}
+	public static GroupEditDialogFragment newInstance(Group toEdit) {
+		GroupEditDialogFragment df = new GroupEditDialogFragment();
+	    Bundle bundle = new Bundle();
+	    bundle.putParcelable("edit", toEdit);
+	    df.selectedComputers.addAll(toEdit.getChildren());
+	    df.setArguments(bundle);
+	    return df;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		this.setRetainInstance(true);
+		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onDestroyView() {
+	    if (this.getDialog() != null && this.getRetainInstance())
+	        this.getDialog().setDismissMessage(null);
+	    super.onDestroyView();
+	}
+	
+	private List<Computer> selectedComputers = new ArrayList<Computer>();
 	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-		
+		LayoutInflater inflater = this.getActivity().getLayoutInflater();
+		final Group toEdit = (Group)this.getArguments().getParcelable("edit");
 		final AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
             .setView(inflater.inflate(R.layout.dialog_fragment_group, null))
             .setPositiveButton(R.string.dialog_ok, null)
@@ -59,16 +87,15 @@ public class GroupEditDialogFragment extends DialogFragment{
 				    computers.addView(v);
 				}
 				
-				Group content = GroupEditDialogFragment.this.edit;
-				if(content != null){
+				if(toEdit != null){
 					EditText nameField = (EditText)dialog.findViewById(R.id.dialog_group_name_field);
 					
-					nameField.setText(content.getName());
+					nameField.setText(toEdit.getName());
 				}
 			}
 		});
 		
-		if(this.edit == null){
+		if(toEdit == null){
 			dialog.setTitle(R.string.dialog_group_title_add);
 		}
 		else{
@@ -96,7 +123,9 @@ public class GroupEditDialogFragment extends DialogFragment{
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					if(isChecked){
-						GroupEditDialogFragment.this.selectedComputers.add(item);
+						if(!GroupEditDialogFragment.this.selectedComputers.contains(item)){
+							GroupEditDialogFragment.this.selectedComputers.add(item);
+						}
 					}
 					else{
 						GroupEditDialogFragment.this.selectedComputers.remove(item);
@@ -104,10 +133,7 @@ public class GroupEditDialogFragment extends DialogFragment{
 				}
 			});
 			
-			Group edit = GroupEditDialogFragment.this.edit;
-			if(edit != null && edit.getChildren().contains(item)){
-				check.setChecked(true);
-			}
+			check.setChecked(GroupEditDialogFragment.this.selectedComputers.contains(item));
 			
 			return rootView;
 		}
@@ -132,20 +158,16 @@ public class GroupEditDialogFragment extends DialogFragment{
 		EditText nameField = (EditText)dialog.findViewById(R.id.dialog_group_name_field);
 		
 		String name = nameField.getText().toString();
-		
-		if(this.edit != null){
-			this.edit.setName(name);
-			this.edit.getChildren().clear();
-			this.edit.getChildren().addAll(this.selectedComputers);
-			((MainActivity) this.getActivity()).doEditGroup(this.edit);
+
+		Group toEdit = (Group)this.getArguments().getParcelable("edit");
+		if(toEdit != null){
+			toEdit.setName(name);
+			toEdit.getChildren().clear();
+			toEdit.getChildren().addAll(this.selectedComputers);
+			((MainActivity) this.getActivity()).doEditGroup(toEdit);
 		}
 		else{
 			((MainActivity) this.getActivity()).doAddGroup(name, this.selectedComputers);
 		}
-	}
-
-	private Group edit;
-	public void setEdit(Group item) {
-		this.edit = item;
 	}
 }

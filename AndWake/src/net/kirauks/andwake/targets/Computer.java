@@ -1,6 +1,9 @@
 package net.kirauks.andwake.targets;
 
-public class Computer{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Computer implements Parcelable{
 	private long id;
 	private String name;
 	private String mac;
@@ -46,6 +49,38 @@ public class Computer{
 		return "Computer [id=" + id + ", name=" + name + ", mac=" + mac
 				+ ", address=" + address + ", port=" + port + "]";
 	}
+	
+	@Override
+	public int describeContents(){
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags){
+		dest.writeLong(this.id);
+		dest.writeString(this.name);
+		dest.writeString(this.mac);
+		dest.writeString(this.address);
+		dest.writeInt(this.port);
+	}
+	
+	public static final Parcelable.Creator<Computer> CREATOR = new Parcelable.Creator<Computer>(){
+	    @Override
+	    public Computer createFromParcel(Parcel source){
+	    	Computer c = new Computer();
+	    	c.setId(source.readLong());
+	    	c.setName(source.readString());
+	    	c.setMac(source.readString());
+	    	c.setAddress(source.readString());
+	    	c.setPort(source.readInt());
+	        return c;
+	    }
+
+	    @Override
+	    public Computer[] newArray(int size){
+	    	return new Computer[size];
+	    }
+	};
 
 	@Override
 	public int hashCode() {

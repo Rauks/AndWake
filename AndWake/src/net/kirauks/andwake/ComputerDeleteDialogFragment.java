@@ -10,9 +10,30 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 
 public class ComputerDeleteDialogFragment extends DialogFragment{
+	public static ComputerDeleteDialogFragment newInstance(Computer toDelete) {
+		ComputerDeleteDialogFragment df = new ComputerDeleteDialogFragment();
+	    Bundle bundle = new Bundle();
+	    bundle.putParcelable("delete", toDelete);
+	    df.setArguments(bundle);
+	    return df;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		this.setRetainInstance(true);
+		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onDestroyView() {
+	    if (this.getDialog() != null && this.getRetainInstance())
+	        this.getDialog().setDismissMessage(null);
+	    super.onDestroyView();
+	}
+
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-		LayoutInflater inflater = getActivity().getLayoutInflater();
+		LayoutInflater inflater = this.getActivity().getLayoutInflater();
 		
 		AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
 			.setTitle(R.string.dialog_delete_computer_title)
@@ -30,13 +51,9 @@ public class ComputerDeleteDialogFragment extends DialogFragment{
 	}
 	
 	private void handlePositiveClick(){
-		if(this.delete != null){
-			((MainActivity) this.getActivity()).doDeleteComputer(this.delete);
+		Computer toDelete = (Computer)this.getArguments().getParcelable("delete");
+		if(toDelete != null){
+			((MainActivity) this.getActivity()).doDeleteComputer(toDelete);
 		}
-	}
-	
-	private Computer delete;
-	public void setDelete(Computer item){
-		this.delete = item;
 	}
 }

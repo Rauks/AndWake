@@ -3,7 +3,10 @@ package net.kirauks.andwake.targets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Group {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Group implements Parcelable{
 	private long id;
 	private String name;
 	private ArrayList<Computer> children;
@@ -32,6 +35,34 @@ public class Group {
 	public String toString(){
 		return this.name;
 	}
+	
+	@Override
+	public int describeContents(){
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags){
+		dest.writeLong(this.id);
+		dest.writeString(this.name);
+		dest.writeTypedList(this.children);
+	}
+	
+	public static final Parcelable.Creator<Group> CREATOR = new Parcelable.Creator<Group>(){
+	    @Override
+	    public Group createFromParcel(Parcel source){
+	    	Group g = new Group();
+	    	g.setId(source.readLong());
+	    	g.setName(source.readString());
+	    	source.readTypedList(g.getChildren(), Computer.CREATOR);
+	        return g;
+	    }
+
+	    @Override
+	    public Group[] newArray(int size){
+	    	return new Group[size];
+	    }
+	};
 
 	@Override
 	public int hashCode() {

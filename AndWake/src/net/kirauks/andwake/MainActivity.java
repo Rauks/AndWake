@@ -171,23 +171,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private String getFragmentTag(int pos){
         return "android:switcher:" + R.id.pager + ":" + pos;
     }
-    
-    public void showAddComputer(){
-        new ComputerEditDialogFragment().show(this.getSupportFragmentManager(), "add_computer_dialog");
-    }
+
     public void goAndRefreshComputersFragmentList(){
 		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
 		ComputersFragment f = (ComputersFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
 		f.updateList();
+    }
+    public void showAddComputer(){
+        ComputerEditDialogFragment.newInstance().show(this.getSupportFragmentManager(), "add_computer_dialog");
     }
 	public void doAddComputer(String name, String mac, String address, int port) {
 		this.computerDataSource.createComputer(name, mac, address, port);
 		this.goAndRefreshComputersFragmentList();
 	}
 	public void showEditComputer(Computer item) {
-		ComputerEditDialogFragment dialog = new ComputerEditDialogFragment();
-		dialog.setEdit(item);
-		dialog.show(this.getSupportFragmentManager(), "edit_computer_dialog");
+		ComputerEditDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "edit_computer_dialog");
 		
 	}
 	public void doEditComputer(Computer edit){
@@ -195,40 +193,34 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		this.goAndRefreshComputersFragmentList();
 	}
 	public void showDeleteComputer(Computer item) {
-		ComputerDeleteDialogFragment dialog = new ComputerDeleteDialogFragment();
-		dialog.setDelete(item);
-		dialog.show(this.getSupportFragmentManager(), "delete_computer_dialog");
+		ComputerDeleteDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "delete_computer_dialog");
 	}
 	public void doDeleteComputer(Computer delete){
 		this.computerDataSource.deleteComputer(delete);
 		this.goAndRefreshComputersFragmentList();
 	}
     
-    public void showAddGroup(){
-        new GroupEditDialogFragment().show(this.getSupportFragmentManager(), "add_group_dialog");
-    }
     public void goAndRefreshGroupsFragmentList(){
 		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
 		GroupsFragment f = (GroupsFragment)this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
 		f.updateList();
+    }
+    public void showAddGroup(){
+        GroupEditDialogFragment.newInstance().show(this.getSupportFragmentManager(), "add_group_dialog");
     }
 	public void doAddGroup(String name, List<Computer> computers) {
 		this.groupDataSource.createGroup(name, computers);
 		this.goAndRefreshGroupsFragmentList();
 	}
 	public void showEditGroup(Group item){
-		GroupEditDialogFragment dialog = new GroupEditDialogFragment();
-		dialog.setEdit(item);
-		dialog.show(this.getSupportFragmentManager(), "edit_group_dialog");
+		GroupEditDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "edit_group_dialog");
 	}
 	public void doEditGroup(Group edit){
 		this.groupDataSource.updateGroup(edit);
 		this.goAndRefreshGroupsFragmentList();
 	}
 	public void showDeleteGroup(Group item) {
-		GroupDeleteDialogFragment dialog = new GroupDeleteDialogFragment();
-		dialog.setDelete(item);
-		dialog.show(this.getSupportFragmentManager(), "delete_group_dialog");
+		GroupDeleteDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "delete_group_dialog");
 	}
 	public void doDeleteGroup(Group delete){
 		this.groupDataSource.deleteGroup(delete);
