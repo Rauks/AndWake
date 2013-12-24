@@ -17,14 +17,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class ComputerEditDialogFragment extends DialogFragment{
-	public static ComputerDeleteDialogFragment newInstance() {
-		ComputerDeleteDialogFragment df = new ComputerDeleteDialogFragment();
+	public static ComputerEditDialogFragment newInstance() {
+		ComputerEditDialogFragment df = new ComputerEditDialogFragment();
 	    Bundle bundle = new Bundle();
 	    df.setArguments(bundle);
 	    return df;
 	}
-	public static ComputerDeleteDialogFragment newInstance(Computer toEdit) {
-		ComputerDeleteDialogFragment df = new ComputerDeleteDialogFragment();
+	public static ComputerEditDialogFragment newInstance(Computer toEdit) {
+		ComputerEditDialogFragment df = new ComputerEditDialogFragment();
 	    Bundle bundle = new Bundle();
 	    bundle.putParcelable("edit", toEdit);
 	    df.setArguments(bundle);
@@ -49,6 +49,7 @@ public class ComputerEditDialogFragment extends DialogFragment{
 		LayoutInflater inflater = this.getActivity().getLayoutInflater();
 		final Computer toEdit = (Computer)this.getArguments().getParcelable("edit");
 		final AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
+			.setIcon(R.drawable.ic_action_edit)
             .setView(inflater.inflate(R.layout.dialog_fragment_computer, null))
             .setPositiveButton(R.string.dialog_ok, null)
             .setNegativeButton(R.string.dialog_cancel, null)

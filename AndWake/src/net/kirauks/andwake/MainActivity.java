@@ -16,9 +16,7 @@ import net.kirauks.andwake.packets.Packet;
 import net.kirauks.andwake.packets.WolPacket;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
-import net.kirauks.andwake.targets.db.ComputerDataSource;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
-import net.kirauks.andwake.targets.db.GroupDataSource;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
@@ -192,7 +190,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 	public void showEditComputer(Computer item) {
 		ComputerEditDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "edit_computer_dialog");
-		
 	}
 	public void doEditComputer(Computer edit){
 		this.dataSourceHelper.getComputerDataSource().updateComputer(edit);

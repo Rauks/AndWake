@@ -62,6 +62,7 @@ public class GroupEditDialogFragment extends DialogFragment{
 		LayoutInflater inflater = this.getActivity().getLayoutInflater();
 		final Group toEdit = (Group)this.getArguments().getParcelable("edit");
 		final AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
+			.setIcon(R.drawable.ic_action_edit)
             .setView(inflater.inflate(R.layout.dialog_fragment_group, null))
             .setPositiveButton(R.string.dialog_ok, null)
             .setNegativeButton(R.string.dialog_cancel, null)
