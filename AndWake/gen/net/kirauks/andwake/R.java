@@ -118,6 +118,10 @@ public final class R {
         public static final int menu_add_group=0x7f050001;
         public static final int toast_wake_done=0x7f050019;
         public static final int toast_wake_error=0x7f05001a;
+        public static final int toast_wake_group_done=0x7f050029;
+        public static final int toast_wake_group_empty_error=0x7f05002b;
+        public static final int toast_wake_group_error=0x7f05002a;
+        public static final int toast_wake_group_init=0x7f050028;
         public static final int toast_wake_init=0x7f050018;
     }
     public static final class style {

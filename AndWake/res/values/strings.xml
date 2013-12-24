@@ -26,8 +26,8 @@
     <string name="list_element_computer_wake">Wake</string>
     <string name="list_element_computer_port_separator">:</string>
     <string name="toast_wake_init">Sending wake packet&#8230;</string>
-    <string name="toast_wake_done">Wake packet sended.</string>
-    <string name="toast_wake_error">Error during packet sending.</string>
+    <string name="toast_wake_done">Wake packet sent.</string>
+    <string name="toast_wake_error">An error has occurred, the packet has not been sent.</string>
     <string name="dialog_computer_title_add">New Computer</string>
     <string name="dialog_computer_title_edit">Edit Computer</string>
     <string name="dialog_group_name">Name :</string>
@@ -41,5 +41,9 @@
     <string name="dialog_delete_group_title">Delete Group</string>
     <string name="list_element_group_wake">Wake All</string>
     <string name="dialog_group_computers">Computers :</string>
+    <string name="toast_wake_group_init">Sending wake packets&#8230;</string>
+    <string name="toast_wake_group_done">All wake packets sent.</string>
+    <string name="toast_wake_group_error">An error has occurred, some packets have not been sent.</string>
+    <string name="toast_wake_group_empty_error">Empty group, no packet have been sent.</string>
 
 </resources>

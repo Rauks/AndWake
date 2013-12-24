@@ -1,6 +1,6 @@
 package net.kirauks.andwake;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,16 +11,16 @@ import net.kirauks.andwake.fragments.FavoritesFragment;
 import net.kirauks.andwake.fragments.GroupDeleteDialogFragment;
 import net.kirauks.andwake.fragments.GroupEditDialogFragment;
 import net.kirauks.andwake.fragments.GroupsFragment;
-import net.kirauks.andwake.packets.Emitter;
 import net.kirauks.andwake.packets.Packet;
 import net.kirauks.andwake.packets.WolPacket;
+import net.kirauks.andwake.packets.task.OnPacketSend;
+import net.kirauks.andwake.packets.task.SendPacketTask;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,21 +32,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-     * will keep every loaded fragment in memory. If this becomes too memory
-     * intensive, it may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    ViewPager mViewPager;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
     
     private DataSourceHelper dataSourceHelper;
     
@@ -232,39 +219,49 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	
 	public void doSendWakePacket(Computer computer){
 		Packet wakePacket = new WolPacket(computer.getAddress(), computer.getMac(), computer.getPort());
-		this.doSendPacket(wakePacket);
+		this.doSendPackets(wakePacket);
 	}
 	public void doSendWakePacket(List<Computer> computers){
+		List<Packet> packets = new ArrayList<Packet>();
 		for(Computer computer : computers){
-			this.doSendWakePacket(computer);
+			packets.add(new WolPacket(computer.getAddress(), computer.getMac(), computer.getPort()));
 		}
+		this.doSendPackets(packets.toArray(new WolPacket[packets.size()]));
 	}
-	private void doSendPacket(final Packet packet){
-		new AsyncTask<Void, Void, Void>(){
-			boolean sendError = false;
-        	
-        	@Override
-			protected Void doInBackground(Void... params) {
-				try {
-					new Emitter(packet).send();
-				} catch (IOException e) {
-					this.sendError = true;
-				}
-				return null;
-			}
-
+	private void doSendPackets(Packet... packets){
+		SendPacketTask task = new SendPacketTask();
+		task.setOnPacketSent(new OnPacketSend() {
 			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				if(sendError){
-					Toast.makeText(MainActivity.this, R.string.toast_wake_error, Toast.LENGTH_SHORT).show();
+			public void onPacketSend(int success, int error) {
+				if(success + error > 1){
+					if(error > 0){
+						Toast.makeText(MainActivity.this, R.string.toast_wake_group_error, Toast.LENGTH_SHORT).show();
+					}
+					else{
+						Toast.makeText(MainActivity.this, R.string.toast_wake_group_done, Toast.LENGTH_SHORT).show();
+					}
 				}
 				else{
-					Toast.makeText(MainActivity.this, R.string.toast_wake_done, Toast.LENGTH_SHORT).show();
+					if(error > 0){
+						Toast.makeText(MainActivity.this, R.string.toast_wake_error, Toast.LENGTH_SHORT).show();
+					}
+					else{
+						Toast.makeText(MainActivity.this, R.string.toast_wake_done, Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
-        }.execute(null, null, null);
-
-		Toast.makeText(MainActivity.this, R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
+		});
+		if(packets.length == 0){
+			Toast.makeText(MainActivity.this, R.string.toast_wake_group_empty_error, Toast.LENGTH_SHORT).show();
+		}
+		else{ 
+			if(packets.length > 1){
+				Toast.makeText(MainActivity.this, R.string.toast_wake_group_init, Toast.LENGTH_SHORT).show();
+			}
+			else{
+				Toast.makeText(MainActivity.this, R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
+			}
+			task.execute(packets);
+		}
 	}
 }
