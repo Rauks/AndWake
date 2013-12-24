@@ -1,7 +1,9 @@
-package net.kirauks.andwake;
+package net.kirauks.andwake.fragments;
 
 import java.util.List;
 
+import net.kirauks.andwake.MainActivity;
+import net.kirauks.andwake.R;
 import net.kirauks.andwake.targets.Computer;
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +24,7 @@ public class ComputersFragment extends ListFragment{
 	}
 	
 	public void updateList() {
-		List<Computer> values = ((MainActivity)this.getActivity()).computerDataSource.getAllComputers();
+		List<Computer> values = ((MainActivity)this.getActivity()).getDataSourceHelper().getComputerDataSource().getAllComputers();
 		ComputersAdapter adapter = new ComputersAdapter(this.getActivity(), values);
 		this.setListAdapter(adapter);
 	}

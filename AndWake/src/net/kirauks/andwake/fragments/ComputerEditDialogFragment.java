@@ -1,5 +1,7 @@
-package net.kirauks.andwake;
+package net.kirauks.andwake.fragments;
 
+import net.kirauks.andwake.MainActivity;
+import net.kirauks.andwake.R;
 import net.kirauks.andwake.packets.WolPacket;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.utils.FormValidator;

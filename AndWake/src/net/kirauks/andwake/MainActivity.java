@@ -4,12 +4,20 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import net.kirauks.andwake.fragments.ComputerDeleteDialogFragment;
+import net.kirauks.andwake.fragments.ComputerEditDialogFragment;
+import net.kirauks.andwake.fragments.ComputersFragment;
+import net.kirauks.andwake.fragments.FavoritesFragment;
+import net.kirauks.andwake.fragments.GroupDeleteDialogFragment;
+import net.kirauks.andwake.fragments.GroupEditDialogFragment;
+import net.kirauks.andwake.fragments.GroupsFragment;
 import net.kirauks.andwake.packets.Emitter;
 import net.kirauks.andwake.packets.Packet;
 import net.kirauks.andwake.packets.WolPacket;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.ComputerDataSource;
+import net.kirauks.andwake.targets.db.DataSourceHelper;
 import net.kirauks.andwake.targets.db.GroupDataSource;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -42,18 +50,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     ViewPager mViewPager;
     
-    ComputerDataSource computerDataSource;
-    GroupDataSource groupDataSource;
-
+    private DataSourceHelper dataSourceHelper;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        //Datasources init
-        this.computerDataSource = new ComputerDataSource(this);
-        this.computerDataSource.open();
-        this.groupDataSource = new GroupDataSource(this, this.computerDataSource);
-        this.groupDataSource.open();
+        this.dataSourceHelper = new DataSourceHelper(this);
+        this.dataSourceHelper.open();
         
         setContentView(R.layout.activity_main);
 
@@ -78,17 +82,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 .setTabListener(this));
         }
     }
+    
+    public DataSourceHelper getDataSourceHelper() {
+		return dataSourceHelper;
+	}
 
-    @Override
+	@Override
 	protected void onPause() {
 		super.onPause();
-		this.groupDataSource.close();
-        this.computerDataSource.close();
+		this.dataSourceHelper.close();
 	}
 	@Override
 	protected void onResume() {
-        this.computerDataSource.open();
-        this.groupDataSource.open();
+        this.dataSourceHelper.open();
 		super.onResume();
 	}
 	
@@ -181,7 +187,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         ComputerEditDialogFragment.newInstance().show(this.getSupportFragmentManager(), "add_computer_dialog");
     }
 	public void doAddComputer(String name, String mac, String address, int port) {
-		this.computerDataSource.createComputer(name, mac, address, port);
+		this.dataSourceHelper.getComputerDataSource().createComputer(name, mac, address, port);
 		this.goAndRefreshComputersFragmentList();
 	}
 	public void showEditComputer(Computer item) {
@@ -189,14 +195,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		
 	}
 	public void doEditComputer(Computer edit){
-		this.computerDataSource.updateComputer(edit);
+		this.dataSourceHelper.getComputerDataSource().updateComputer(edit);
 		this.goAndRefreshComputersFragmentList();
 	}
 	public void showDeleteComputer(Computer item) {
 		ComputerDeleteDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "delete_computer_dialog");
 	}
 	public void doDeleteComputer(Computer delete){
-		this.computerDataSource.deleteComputer(delete);
+		this.dataSourceHelper.getComputerDataSource().deleteComputer(delete);
 		this.goAndRefreshComputersFragmentList();
 	}
     
@@ -209,21 +215,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         GroupEditDialogFragment.newInstance().show(this.getSupportFragmentManager(), "add_group_dialog");
     }
 	public void doAddGroup(String name, List<Computer> computers) {
-		this.groupDataSource.createGroup(name, computers);
+		this.dataSourceHelper.getGroupDataSource().createGroup(name, computers);
 		this.goAndRefreshGroupsFragmentList();
 	}
 	public void showEditGroup(Group item){
 		GroupEditDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "edit_group_dialog");
 	}
 	public void doEditGroup(Group edit){
-		this.groupDataSource.updateGroup(edit);
+		this.dataSourceHelper.getGroupDataSource().updateGroup(edit);
 		this.goAndRefreshGroupsFragmentList();
 	}
 	public void showDeleteGroup(Group item) {
 		GroupDeleteDialogFragment.newInstance(item).show(this.getSupportFragmentManager(), "delete_group_dialog");
 	}
 	public void doDeleteGroup(Group delete){
-		this.groupDataSource.deleteGroup(delete);
+		this.dataSourceHelper.getGroupDataSource().deleteGroup(delete);
 		this.goAndRefreshGroupsFragmentList();
 	}
 	

@@ -1,4 +1,4 @@
-package net.kirauks.andwake;
+package net.kirauks.andwake.fragments;
 
 import android.support.v4.app.ListFragment;
 

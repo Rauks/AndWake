@@ -1,7 +1,9 @@
-package net.kirauks.andwake;
+package net.kirauks.andwake.fragments;
 
 import java.util.List;
 
+import net.kirauks.andwake.MainActivity;
+import net.kirauks.andwake.R;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import android.app.Activity;
@@ -24,7 +26,7 @@ public class GroupsFragment extends ListFragment{
 	}
 	
 	public void updateList() {
-		List<Group> values = ((MainActivity)this.getActivity()).groupDataSource.getAllGroups();
+		List<Group> values = ((MainActivity)this.getActivity()).getDataSourceHelper().getGroupDataSource().getAllGroups();
 		GroupsAdapter adapter = new GroupsAdapter(this.getActivity(), values);
 		this.setListAdapter(adapter);
 	}

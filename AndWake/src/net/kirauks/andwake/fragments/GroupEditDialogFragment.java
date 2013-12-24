@@ -1,8 +1,10 @@
-package net.kirauks.andwake;
+package net.kirauks.andwake.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.kirauks.andwake.MainActivity;
+import net.kirauks.andwake.R;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.utils.FormValidator;
@@ -64,6 +66,22 @@ public class GroupEditDialogFragment extends DialogFragment{
             .setPositiveButton(R.string.dialog_ok, null)
             .setNegativeButton(R.string.dialog_cancel, null)
             .create();
+		
+		if(toEdit == null){
+			dialog.setTitle(R.string.dialog_group_title_add);
+		}
+		else{
+			dialog.setTitle(R.string.dialog_group_title_edit);
+		}
+		
+        return dialog;
+    }
+	@Override
+	public void onActivityCreated(Bundle arg0) {
+		super.onActivityCreated(arg0);
+
+		final Group toEdit = (Group)this.getArguments().getParcelable("edit");
+		final AlertDialog dialog = (AlertDialog)this.getDialog();
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialogInterface) {
@@ -80,7 +98,7 @@ public class GroupEditDialogFragment extends DialogFragment{
 				
 				LinearLayout computers = (LinearLayout)dialog.findViewById(R.id.dialog_group_computers_list);
 				MainActivity activity = (MainActivity)GroupEditDialogFragment.this.getActivity();
-				GroupComputersAdapter adapter = new GroupComputersAdapter(activity, activity.computerDataSource.getAllComputers());
+				GroupComputersAdapter adapter = new GroupComputersAdapter(activity, activity.getDataSourceHelper().getComputerDataSource().getAllComputers());
 				
 				for (int i = 0; i < adapter.getCount(); i++) {
 				    View v = adapter.getView(i, null, null);
@@ -94,16 +112,7 @@ public class GroupEditDialogFragment extends DialogFragment{
 				}
 			}
 		});
-		
-		if(toEdit == null){
-			dialog.setTitle(R.string.dialog_group_title_add);
-		}
-		else{
-			dialog.setTitle(R.string.dialog_group_title_edit);
-		}
-		
-        return dialog;
-    }
+	}
 	
 	public class GroupComputersAdapter extends ArrayAdapter<Computer>{
 		public GroupComputersAdapter(Context context, List<Computer> objects) {
