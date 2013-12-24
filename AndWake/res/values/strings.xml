@@ -25,6 +25,7 @@
     <string name="dialog_computer_error_address_empty">Network address could not be empty</string>
     <string name="list_element_computer_wake">Wake</string>
     <string name="list_element_computer_port_separator">:</string>
+    <string name="list_element_computer_favorite">Favorite</string>
     <string name="toast_wake_init">Sending wake packet&#8230;</string>
     <string name="toast_wake_done">Wake packet sent.</string>
     <string name="toast_wake_error">An error has occurred, the packet has not been sent.</string>
@@ -40,6 +41,7 @@
     <string name="dialog_delete_computer_title">Delete Computer</string>
     <string name="dialog_delete_group_title">Delete Group</string>
     <string name="list_element_group_wake">Wake All</string>
+    <string name="list_element_group_favorite">Favorite</string>
     <string name="dialog_group_computers">Computers :</string>
     <string name="toast_wake_group_init">Sending wake packets&#8230;</string>
     <string name="toast_wake_group_done">All wake packets sent.</string>

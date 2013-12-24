@@ -4,19 +4,28 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" xmlns:tools="http://schemas.android.com/tools">
 
+	<CheckBox
+	    android:id="@+id/list_element_group_favorite"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="5dp"
+	    android:contentDescription="@string/list_element_group_favorite"
+	    style="?android:attr/starStyle" />
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="100"
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/list_element_group_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_group_name_hint"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+       <TextView
+           android:id="@+id/list_element_group_name"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/dialog_group_name_hint"
+           android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <LinearLayout
             android:id="@+id/list_element_group_computers"
@@ -33,7 +42,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:layout_weight="1"
         android:ellipsize="none"
         android:singleLine="true"
         android:text="@string/list_element_group_wake" />
