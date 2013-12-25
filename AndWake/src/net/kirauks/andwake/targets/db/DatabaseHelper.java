@@ -5,6 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
+	private static DatabaseHelper INSTANCE = null;
+	
+	public static DatabaseHelper getInstance(Context context) {
+	    if (INSTANCE == null) {
+	    	INSTANCE = new DatabaseHelper(context.getApplicationContext());
+	    }
+	    return INSTANCE;
+	}
+	  
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "andwake_targets.db";
 	
@@ -51,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	        " WHERE " + LINK_TARGET_GROUP_FIELD_GROUP + " = OLD." + GROUPS_TABLE_FIELD_ID + "; " +
 	        "END";
 	
-	public DatabaseHelper(Context context) {
+	private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

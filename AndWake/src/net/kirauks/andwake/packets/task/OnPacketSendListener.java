@@ -1,5 +1,5 @@
 package net.kirauks.andwake.packets.task;
 
-public interface OnPacketSend {
+public interface OnPacketSendListener {
 	public void onPacketSend(int sucess, int errors);
 }

@@ -13,7 +13,7 @@ import net.kirauks.andwake.fragments.GroupEditDialogFragment;
 import net.kirauks.andwake.fragments.GroupsFragment;
 import net.kirauks.andwake.packets.Packet;
 import net.kirauks.andwake.packets.WolPacket;
-import net.kirauks.andwake.packets.task.OnPacketSend;
+import net.kirauks.andwake.packets.task.OnPacketSendListener;
 import net.kirauks.andwake.packets.task.SendPacketTask;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
@@ -31,7 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener, OnPacketSendListener {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     
@@ -124,7 +124,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             super(fm);
         }
 
-        @Override
+		@Override
         public Fragment getItem(int position) {
         	switch(position){
         		case PAGE_FAVORITES:
@@ -230,27 +230,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 	private void doSendPackets(Packet... packets){
 		SendPacketTask task = new SendPacketTask();
-		task.setOnPacketSent(new OnPacketSend() {
-			@Override
-			public void onPacketSend(int success, int error) {
-				if(success + error > 1){
-					if(error > 0){
-						Toast.makeText(MainActivity.this, R.string.toast_wake_group_error, Toast.LENGTH_SHORT).show();
-					}
-					else{
-						Toast.makeText(MainActivity.this, R.string.toast_wake_group_done, Toast.LENGTH_SHORT).show();
-					}
-				}
-				else{
-					if(error > 0){
-						Toast.makeText(MainActivity.this, R.string.toast_wake_error, Toast.LENGTH_SHORT).show();
-					}
-					else{
-						Toast.makeText(MainActivity.this, R.string.toast_wake_done, Toast.LENGTH_SHORT).show();
-					}
-				}
-			}
-		});
+		task.setOnPacketSendListener(this);
 		if(packets.length == 0){
 			Toast.makeText(MainActivity.this, R.string.toast_wake_group_empty_error, Toast.LENGTH_SHORT).show();
 		}
@@ -262,6 +242,26 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				Toast.makeText(MainActivity.this, R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
 			}
 			task.execute(packets);
+		}
+	}
+
+	@Override
+	public void onPacketSend(int success, int error) {
+		if(success + error > 1){
+			if(error > 0){
+				Toast.makeText(MainActivity.this, R.string.toast_wake_group_error, Toast.LENGTH_SHORT).show();
+			}
+			else{
+				Toast.makeText(MainActivity.this, R.string.toast_wake_group_done, Toast.LENGTH_SHORT).show();
+			}
+		}
+		else{
+			if(error > 0){
+				Toast.makeText(MainActivity.this, R.string.toast_wake_error, Toast.LENGTH_SHORT).show();
+			}
+			else{
+				Toast.makeText(MainActivity.this, R.string.toast_wake_done, Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }

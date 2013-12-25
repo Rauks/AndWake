@@ -23,8 +23,8 @@ public final class R {
     public static final class drawable {
         public static final int ic_action_discard=0x7f020000;
         public static final int ic_action_edit=0x7f020001;
-        public static final int ic_action_new=0x7f020002;
-        public static final int ic_action_new_label=0x7f020003;
+        public static final int ic_action_labels=0x7f020002;
+        public static final int ic_action_new=0x7f020003;
         public static final int ic_launcher=0x7f020004;
     }
     public static final class id {
@@ -62,9 +62,10 @@ public final class R {
         public static final int list_element_group_favorite=0x7f08001e;
         public static final int list_element_group_name=0x7f08001f;
         public static final int list_element_group_wake=0x7f080021;
-        public static final int menu_add_computer=0x7f080023;
-        public static final int menu_add_group=0x7f080024;
+        public static final int menu_add_computer=0x7f080024;
+        public static final int menu_add_group=0x7f080025;
         public static final int pager=0x7f080000;
+        public static final int tab_main_title=0x7f080023;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -76,6 +77,7 @@ public final class R {
         public static final int list_element_dialog_group_computer=0x7f030006;
         public static final int list_element_group=0x7f030007;
         public static final int list_element_group_computer=0x7f030008;
+        public static final int tab_main=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -152,8 +154,8 @@ public final class R {
          */
         public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f060001;
+        public static final int LightTabWidget=0x7f060002;
     }
 }

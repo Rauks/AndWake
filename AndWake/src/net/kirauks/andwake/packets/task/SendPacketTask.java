@@ -9,9 +9,9 @@ import android.os.AsyncTask;
 public class SendPacketTask extends AsyncTask<Packet, Void, Void>{
 	private int sendError;
 	private int sendSucess;
-	private OnPacketSend onSendHandler;
+	private OnPacketSendListener onSendHandler;
 	
-	public void setOnPacketSent(OnPacketSend handler){
+	public void setOnPacketSendListener(OnPacketSendListener handler){
 		this.onSendHandler = handler;
 	}
 	

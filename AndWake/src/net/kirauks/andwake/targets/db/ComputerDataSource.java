@@ -20,7 +20,7 @@ public class ComputerDataSource {
 			DatabaseHelper.TARGETS_TABLE_FIELD_PORT};
 	
 	public ComputerDataSource(Context context) {
-	    this.dbHelper = new DatabaseHelper(context);
+	    this.dbHelper = DatabaseHelper.getInstance(context);
 	}
 	
 	public void open() throws SQLException {
@@ -28,7 +28,9 @@ public class ComputerDataSource {
 	}
 	
 	public void close() {
-	    this.db.close();
+		if(this.db.isOpen()){
+		    this.db.close();
+		}
 	}
 	
 	public Computer createComputer(String name, String mac, String address, int port){

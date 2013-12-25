@@ -22,7 +22,7 @@ public class GroupDataSource {
 	private ComputerDataSource computerDataSource;
 	
 	public GroupDataSource(Context context, ComputerDataSource computerDataSource) {
-	    this.dbHelper = new DatabaseHelper(context);
+	    this.dbHelper = DatabaseHelper.getInstance(context);
 	    this.computerDataSource = computerDataSource;
 	}
 	
