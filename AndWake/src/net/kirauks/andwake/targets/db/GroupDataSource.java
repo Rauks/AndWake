@@ -27,11 +27,14 @@ public class GroupDataSource {
 	}
 	
 	public void open() throws SQLException {
+		this.close();
 	    this.db = this.dbHelper.getWritableDatabase();
 	}
 	
 	public void close() {
-	    this.db.close();
+		if(this.db != null && this.db.isOpen()){
+		    this.db.close();
+		}
 	}
 	
 	public Group createGroup(String name, List<Computer> computers){

@@ -24,11 +24,12 @@ public class ComputerDataSource {
 	}
 	
 	public void open() throws SQLException {
+		this.close();
 	    this.db = this.dbHelper.getWritableDatabase();
 	}
 	
 	public void close() {
-		if(this.db.isOpen()){
+		if(this.db != null && this.db.isOpen()){
 		    this.db.close();
 		}
 	}
