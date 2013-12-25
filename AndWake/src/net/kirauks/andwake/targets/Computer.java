@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 public class Computer implements Parcelable{
 	private long id;
-	private String name;
-	private String mac;
-	private String address;
-	private int port;
+	private String name = "";
+	private String mac = "";
+	private String address = "";
+	private int port = 0;
 	
 	public Computer(){
 	}

@@ -14,11 +14,20 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:tabWidgetStyle">@style/LightTabWidget</item>
+        
     </style>
     
-    <style name="LightTabWidget" parent="@android:style/Widget.TabWidget">
-		<item name="android:singleLine">true</item>
-	</style>
+    <!-- Widgets theme. -->
+    <style name="Widget">
+        <item name="android:textColor">#fff</item>
+    </style>
+    <style name="Widget.Text">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">7dp</item>
+    </style>
+    <style name="Widget.Button">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">7dp</item>
+    </style>
 
 </resources>

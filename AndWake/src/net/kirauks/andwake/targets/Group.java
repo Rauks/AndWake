@@ -8,7 +8,7 @@ import android.os.Parcelable;
 
 public class Group implements Parcelable{
 	private long id;
-	private String name;
+	private String name = "";
 	private ArrayList<Computer> children;
 	
 	public Group(){

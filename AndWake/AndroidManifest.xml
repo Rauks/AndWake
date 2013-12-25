@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
         
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,6 +15,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <!-- Application -->
         <activity
             android:name="net.kirauks.andwake.MainActivity"
             android:label="@string/app_name" >
@@ -24,6 +26,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Wake Target Widget -->
+		<receiver 
+		    android:name="net.kirauks.andwake.appwidget.WakeTargetWidget">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+				<action android:name="net.kirauks.andwake.appwidget.ACTION_WAKE_TARGET" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider"
+				android:resource="@xml/appwidget_wake_target_metadata" />
+		</receiver>
+		
+		<!-- Wake Target Configure Activity -->
+		<activity 
+		    android:name="net.kirauks.andwake.appwidget.WakeTargetWidgetConfigure" 
+		    android:theme="@android:style/Theme.Dialog">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+			</intent-filter>
+		</activity>
     </application>
 
 </manifest>

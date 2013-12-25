@@ -1,6 +1,5 @@
 package net.kirauks.andwake;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,10 +10,7 @@ import net.kirauks.andwake.fragments.FavoritesFragment;
 import net.kirauks.andwake.fragments.GroupDeleteDialogFragment;
 import net.kirauks.andwake.fragments.GroupEditDialogFragment;
 import net.kirauks.andwake.fragments.GroupsFragment;
-import net.kirauks.andwake.packets.Packet;
-import net.kirauks.andwake.packets.WolPacket;
-import net.kirauks.andwake.packets.task.OnPacketSendListener;
-import net.kirauks.andwake.packets.task.SendPacketTask;
+import net.kirauks.andwake.packets.WolPacketSendHelper;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
@@ -29,9 +25,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, OnPacketSendListener {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     
@@ -218,50 +213,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 	
 	public void doSendWakePacket(Computer computer){
-		Packet wakePacket = new WolPacket(computer.getAddress(), computer.getMac(), computer.getPort());
-		this.doSendPackets(wakePacket);
+		new WolPacketSendHelper(this).doSendWakePacket(computer);
 	}
 	public void doSendWakePacket(List<Computer> computers){
-		List<Packet> packets = new ArrayList<Packet>();
-		for(Computer computer : computers){
-			packets.add(new WolPacket(computer.getAddress(), computer.getMac(), computer.getPort()));
-		}
-		this.doSendPackets(packets.toArray(new WolPacket[packets.size()]));
-	}
-	private void doSendPackets(Packet... packets){
-		SendPacketTask task = new SendPacketTask();
-		task.setOnPacketSendListener(this);
-		if(packets.length == 0){
-			Toast.makeText(MainActivity.this, R.string.toast_wake_group_empty_error, Toast.LENGTH_SHORT).show();
-		}
-		else{ 
-			if(packets.length > 1){
-				Toast.makeText(MainActivity.this, R.string.toast_wake_group_init, Toast.LENGTH_SHORT).show();
-			}
-			else{
-				Toast.makeText(MainActivity.this, R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
-			}
-			task.execute(packets);
-		}
-	}
-
-	@Override
-	public void onPacketSend(int success, int error) {
-		if(success + error > 1){
-			if(error > 0){
-				Toast.makeText(MainActivity.this, R.string.toast_wake_group_error, Toast.LENGTH_SHORT).show();
-			}
-			else{
-				Toast.makeText(MainActivity.this, R.string.toast_wake_group_done, Toast.LENGTH_SHORT).show();
-			}
-		}
-		else{
-			if(error > 0){
-				Toast.makeText(MainActivity.this, R.string.toast_wake_error, Toast.LENGTH_SHORT).show();
-			}
-			else{
-				Toast.makeText(MainActivity.this, R.string.toast_wake_done, Toast.LENGTH_SHORT).show();
-			}
-		}
+		new WolPacketSendHelper(this).doSendWakePacket(computers);
 	}
 }
