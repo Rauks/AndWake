@@ -3,6 +3,7 @@ package net.kirauks.andwake.appwidget.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.kirauks.andwake.R;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.AlertDialog;
@@ -29,7 +30,7 @@ public class ConfigureTargetDialogFragment extends ConfigureDialogFragment {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				this.getActivity());
-		builder.setTitle("WidgetConfig")
+		builder.setTitle(R.string.appwidget_computer_dialog_config_title)
 				.setItems(
 					computersNames.toArray(new String[computersNames.size()]),
 					new DialogInterface.OnClickListener() {

@@ -2,6 +2,10 @@
 <resources>
 
     <string name="app_name">AndWake</string>
+    <string name="appwidget_computer_name">AndWake Computer</string>
+    <string name="appwidget_computer_dialog_config_title">Select Computer</string>
+    <string name="appwidget_group_name">AndWake Group</string>
+    <string name="appwidget_group_dialog_config_title">Select Group</string>
     <string name="menu_add_group">New Group</string>
     <string name="fragment_favorites_title">Favorites</string>
     <string name="fragment_groups_title">Groups</string>

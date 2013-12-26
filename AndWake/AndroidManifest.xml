@@ -29,7 +29,8 @@
         
         <!-- Wake Target Widget -->
 		<receiver 
-		    android:name="net.kirauks.andwake.appwidget.WakeTargetWidget">
+		    android:name="net.kirauks.andwake.appwidget.WakeTargetWidget"
+            android:label="@string/appwidget_computer_name" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 				<action android:name="net.kirauks.andwake.appwidget.ACTION_WAKE_TARGET" />
