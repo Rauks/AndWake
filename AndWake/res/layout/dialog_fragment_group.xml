@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/dialog_group_name_hint"
+            android:inputType="text|textCapWords"
             android:singleLine="true" >
 
             <requestFocus />
