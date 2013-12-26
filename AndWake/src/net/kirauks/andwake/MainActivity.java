@@ -19,7 +19,6 @@ import android.app.ActionBar.Tab;
 import android.appwidget.AppWidgetManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -149,7 +148,6 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 
 		this.dataSourceHelper = new DataSourceHelper(this);
-		this.dataSourceHelper.open();
 
 		this.setContentView(R.layout.activity_main);
 
@@ -197,18 +195,6 @@ public class MainActivity extends FragmentActivity implements
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		this.dataSourceHelper.close();
-	}
-
-	@Override
-	protected void onResume() {
-		this.dataSourceHelper.open();
-		super.onResume();
 	}
 
 	@Override

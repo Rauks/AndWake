@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.kirauks.andwake.targets.Computer;
-import net.kirauks.andwake.targets.db.ComputerDataSource;
+import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -19,11 +19,9 @@ public class ConfigureTargetDialogFragment extends ConfigureDialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		ComputerDataSource db = new ComputerDataSource(this.getActivity());
-		db.open();
-		final List<Computer> computers = db.getAllComputers();
-		db.close();
-
+		DataSourceHelper db = new DataSourceHelper(this.getActivity());
+		final List<Computer> computers = db.getComputerDataSource().getAllComputers();
+		
 		final List<String> computersNames = new ArrayList<String>();
 		for (Computer c : computers) {
 			computersNames.add(c.getName());

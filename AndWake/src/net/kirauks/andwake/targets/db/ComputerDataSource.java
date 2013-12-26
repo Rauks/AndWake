@@ -7,11 +7,9 @@ import net.kirauks.andwake.targets.Computer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class ComputerDataSource {
-	private SQLiteDatabase db;
 	private final DatabaseHelper dbHelper;
 	private final String[] allColumns = {
 			DatabaseHelper.TARGETS_TABLE_FIELD_ID,
@@ -24,12 +22,6 @@ public class ComputerDataSource {
 		this.dbHelper = DatabaseHelper.getInstance(context);
 	}
 
-	public void close() {
-		if ((this.db != null) && this.db.isOpen()) {
-			this.db.close();
-		}
-	}
-
 	public Computer createComputer(String name, String mac, String address,
 			int port) {
 		ContentValues values = new ContentValues();
@@ -38,14 +30,16 @@ public class ComputerDataSource {
 		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_MAC, mac);
 		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_PORT,
 				String.valueOf(port));
-		long insertId = this.db.insert(DatabaseHelper.TARGETS_TABLE_NAME, null,
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		long insertId = db.insert(DatabaseHelper.TARGETS_TABLE_NAME, null,
 				values);
-		Cursor cursor = this.db.query(DatabaseHelper.TARGETS_TABLE_NAME,
+		Cursor cursor = db.query(DatabaseHelper.TARGETS_TABLE_NAME,
 				this.allColumns, DatabaseHelper.TARGETS_TABLE_FIELD_ID + " = "
 						+ insertId, null, null, null, null);
 		cursor.moveToFirst();
 		Computer newComputer = this.cursorToComputer(cursor);
 		cursor.close();
+		this.dbHelper.closeDatabase();
 		return newComputer;
 	}
 
@@ -60,15 +54,18 @@ public class ComputerDataSource {
 	}
 
 	public void deleteComputer(Computer computer) {
-		this.db.delete(
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		db.delete(
 				DatabaseHelper.TARGETS_TABLE_NAME,
 				DatabaseHelper.TARGETS_TABLE_FIELD_ID + " = "
 						+ computer.getId(), null);
+		this.dbHelper.closeDatabase();
 	}
 
 	public List<Computer> getAllComputers() {
 		List<Computer> computers = new ArrayList<Computer>();
-		Cursor cursor = this.db.query(DatabaseHelper.TARGETS_TABLE_NAME,
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		Cursor cursor = db.query(DatabaseHelper.TARGETS_TABLE_NAME,
 				this.allColumns, null, null, null, null, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -77,6 +74,7 @@ public class ComputerDataSource {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		this.dbHelper.closeDatabase();
 		return computers;
 	}
 
@@ -91,7 +89,8 @@ public class ComputerDataSource {
 			}
 		}
 		sb.append(')');
-		Cursor cursor = this.db.query(DatabaseHelper.TARGETS_TABLE_NAME,
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		Cursor cursor = db.query(DatabaseHelper.TARGETS_TABLE_NAME,
 				this.allColumns, DatabaseHelper.TARGETS_TABLE_FIELD_ID + " IN "
 						+ sb.toString(), null, null, null, null);
 		cursor.moveToFirst();
@@ -101,12 +100,8 @@ public class ComputerDataSource {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		this.dbHelper.closeDatabase();
 		return computers;
-	}
-
-	public void open() throws SQLException {
-		this.close();
-		this.db = this.dbHelper.getWritableDatabase();
 	}
 
 	public void updateComputer(Computer computer) {
@@ -117,10 +112,13 @@ public class ComputerDataSource {
 		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_MAC, computer.getMac());
 		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_PORT,
 				String.valueOf(computer.getPort()));
-		this.db.update(
+
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		db.update(
 				DatabaseHelper.TARGETS_TABLE_NAME,
 				values,
 				DatabaseHelper.TARGETS_TABLE_FIELD_ID + " = "
 						+ computer.getId(), null);
+		this.dbHelper.closeDatabase();
 	}
 }

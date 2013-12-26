@@ -5,7 +5,7 @@ import java.util.List;
 import net.kirauks.andwake.R;
 import net.kirauks.andwake.packets.WolPacketSendHelper;
 import net.kirauks.andwake.targets.Computer;
-import net.kirauks.andwake.targets.db.ComputerDataSource;
+import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -25,10 +25,8 @@ public class WakeTargetWidget extends AppWidgetProvider {
 		long targetId = prefs.getLong(WakeTargetWidget.PREFERENCES_TAG + appWidgetId, 0);
 		Computer target = new Computer();
 		
-		ComputerDataSource db = new ComputerDataSource(context);
-		db.open();
-		final List<Computer> computers = db.getComputers(new long[]{targetId});
-		db.close();
+		DataSourceHelper db = new DataSourceHelper(context);
+		final List<Computer> computers = db.getComputerDataSource().getComputers(new long[]{targetId});
 		
 		if(computers.isEmpty()){
 			target.setName("?");

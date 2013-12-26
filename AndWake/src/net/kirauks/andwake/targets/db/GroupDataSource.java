@@ -8,11 +8,9 @@ import net.kirauks.andwake.targets.Group;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class GroupDataSource {
-	private SQLiteDatabase db;
 	private final DatabaseHelper dbHelper;
 	private final String[] allColumns = { DatabaseHelper.GROUPS_TABLE_FIELD_ID,
 			DatabaseHelper.GROUPS_TABLE_FIELD_NAME };
@@ -28,16 +26,11 @@ public class GroupDataSource {
 		this.computerDataSource = computerDataSource;
 	}
 
-	public void close() {
-		if ((this.db != null) && this.db.isOpen()) {
-			this.db.close();
-		}
-	}
-
 	public Group createGroup(String name, List<Computer> computers) {
 		ContentValues values = new ContentValues();
 		values.put(DatabaseHelper.GROUPS_TABLE_FIELD_NAME, name);
-		long insertId = this.db.insert(DatabaseHelper.GROUPS_TABLE_NAME, null,
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		long insertId = db.insert(DatabaseHelper.GROUPS_TABLE_NAME, null,
 				values);
 
 		for (Computer computer : computers) {
@@ -46,16 +39,17 @@ public class GroupDataSource {
 					computer.getId());
 			linkValues.put(DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP,
 					insertId);
-			this.db.insert(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, null,
+			db.insert(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, null,
 					linkValues);
 		}
 
-		Cursor cursor = this.db.query(DatabaseHelper.GROUPS_TABLE_NAME,
+		Cursor cursor = db.query(DatabaseHelper.GROUPS_TABLE_NAME,
 				this.allColumns, DatabaseHelper.GROUPS_TABLE_FIELD_ID + " = "
 						+ insertId, null, null, null, null);
 		cursor.moveToFirst();
 		Group newComputer = this.cursorToGroup(cursor);
 		cursor.close();
+		this.dbHelper.closeDatabase();
 		return newComputer;
 	}
 
@@ -68,13 +62,16 @@ public class GroupDataSource {
 
 	public void deleteGroup(Group group) {
 		long id = group.getId();
-		this.db.delete(DatabaseHelper.GROUPS_TABLE_NAME,
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		db.delete(DatabaseHelper.GROUPS_TABLE_NAME,
 				DatabaseHelper.GROUPS_TABLE_FIELD_ID + " = " + id, null);
+		this.dbHelper.closeDatabase();
 	}
 
 	public List<Group> getAllGroups() {
 		List<Group> groups = new ArrayList<Group>();
-		Cursor cursor = this.db.query(DatabaseHelper.GROUPS_TABLE_NAME,
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		Cursor cursor = db.query(DatabaseHelper.GROUPS_TABLE_NAME,
 				this.allColumns, null, null, null, null, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -83,17 +80,14 @@ public class GroupDataSource {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		this.dbHelper.closeDatabase();
 		return groups;
-	}
-
-	public void open() throws SQLException {
-		this.close();
-		this.db = this.dbHelper.getWritableDatabase();
 	}
 
 	private Group populateChildren(Group group) {
 		List<Long> ids = new ArrayList<Long>();
-		Cursor cursor = this.db.query(
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		Cursor cursor = db.query(
 				DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME,
 				this.allLinkColumns,
 				DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP + " = "
@@ -104,6 +98,7 @@ public class GroupDataSource {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		this.dbHelper.closeDatabase();
 
 		long[] idsP = new long[ids.size()];
 		for (int i = 0; i < ids.size(); i++) {
@@ -118,11 +113,12 @@ public class GroupDataSource {
 	public void updateGroup(Group group) {
 		ContentValues values = new ContentValues();
 		values.put(DatabaseHelper.GROUPS_TABLE_FIELD_NAME, group.getName());
-		this.db.update(DatabaseHelper.GROUPS_TABLE_NAME, values,
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		db.update(DatabaseHelper.GROUPS_TABLE_NAME, values,
 				DatabaseHelper.GROUPS_TABLE_FIELD_ID + " = " + group.getId(),
 				null);
 
-		this.db.delete(
+		db.delete(
 				DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME,
 				DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP + " = "
 						+ group.getId(), null);
@@ -133,8 +129,9 @@ public class GroupDataSource {
 					computer.getId());
 			linkValues.put(DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP,
 					group.getId());
-			this.db.insert(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, null,
+			db.insert(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, null,
 					linkValues);
 		}
+		this.dbHelper.closeDatabase();
 	}
 }
