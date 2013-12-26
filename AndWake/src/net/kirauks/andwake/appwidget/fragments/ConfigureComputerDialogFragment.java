@@ -13,16 +13,13 @@ import android.os.Bundle;
 
 public class ConfigureComputerDialogFragment extends ConfigureDialogFragment {
 	OnConfigureComputerListener configureListener;
-	
-	public void setOnConfigureComputer(OnConfigureComputerListener configureListener){
-		this.configureListener = configureListener;
-	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		DataSourceHelper db = new DataSourceHelper(this.getActivity());
-		final List<Computer> computers = db.getComputerDataSource().getAllComputers();
-		
+		final List<Computer> computers = db.getComputerDataSource()
+				.getAllComputers();
+
 		final List<String> computersNames = new ArrayList<String>();
 		for (Computer c : computers) {
 			computersNames.add(c.getName());
@@ -32,16 +29,24 @@ public class ConfigureComputerDialogFragment extends ConfigureDialogFragment {
 				this.getActivity());
 		builder.setTitle(R.string.appwidget_computer_dialog_config_title)
 				.setItems(
-					computersNames.toArray(new String[computersNames.size()]),
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							if (ConfigureComputerDialogFragment.this.configureListener != null) {
-								ConfigureComputerDialogFragment.this.configureListener
-										.onConfigureComputer(computers.get(which));
+						computersNames
+								.toArray(new String[computersNames.size()]),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								if (ConfigureComputerDialogFragment.this.configureListener != null) {
+									ConfigureComputerDialogFragment.this.configureListener
+											.onConfigureComputer(computers
+													.get(which));
+								}
 							}
-						}
-					});
+						});
 		return builder.create();
+	}
+
+	public void setOnConfigureComputer(
+			OnConfigureComputerListener configureListener) {
+		this.configureListener = configureListener;
 	}
 }

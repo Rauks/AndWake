@@ -20,23 +20,25 @@ public class WakeGroupWidget extends AppWidgetProvider {
 	public static final String INTENT_WAKE_GROUP = "group";
 	public static final String PREFERENCES_TAG = "appwidget-group-";
 
-	private static Group getTarget(Context context, int appWidgetId){
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		long targetId = prefs.getLong(WakeGroupWidget.PREFERENCES_TAG + appWidgetId, 0);
+	private static Group getTarget(Context context, int appWidgetId) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		long targetId = prefs.getLong(WakeGroupWidget.PREFERENCES_TAG
+				+ appWidgetId, 0);
 		Group target = new Group();
-		
+
 		DataSourceHelper db = new DataSourceHelper(context);
-		final List<Group> groups = db.getGroupDataSource().getGroups(new long[]{targetId});
-		
-		if(groups.isEmpty()){
+		final List<Group> groups = db.getGroupDataSource().getGroups(
+				new long[] { targetId });
+
+		if (groups.isEmpty()) {
 			target.setName("?");
-		}
-		else{
+		} else {
 			target = groups.get(0);
 		}
 		return target;
 	}
-	
+
 	/**
 	 * Update the widget
 	 * 
@@ -46,9 +48,9 @@ public class WakeGroupWidget extends AppWidgetProvider {
 	 */
 	static void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId) {
-		
+
 		Group target = WakeGroupWidget.getTarget(context, appWidgetId);
-		
+
 		// Prepare widget views
 		RemoteViews views = new RemoteViews(context.getPackageName(),
 				R.layout.appwidget_wake_group);
@@ -62,10 +64,9 @@ public class WakeGroupWidget extends AppWidgetProvider {
 		intent.setAction(WakeGroupWidget.ACTION_WAKE_GROUP);
 
 		// Launch intent on widget click
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		views.setOnClickPendingIntent(R.id.appwidget_group_wake,
-				pendingIntent);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+				appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		views.setOnClickPendingIntent(R.id.appwidget_group_wake, pendingIntent);
 
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
@@ -78,9 +79,11 @@ public class WakeGroupWidget extends AppWidgetProvider {
 		super.onReceive(context, intent);
 
 		if (WakeGroupWidget.ACTION_WAKE_GROUP.equals(intent.getAction())) {
-			
-			Group target = intent.getParcelableExtra(WakeGroupWidget.INTENT_WAKE_GROUP);
-			new WolPacketSendHelper(context).doSendWakePacket(target.getChildren());
+
+			Group target = intent
+					.getParcelableExtra(WakeGroupWidget.INTENT_WAKE_GROUP);
+			new WolPacketSendHelper(context).doSendWakePacket(target
+					.getChildren());
 		}
 	}
 

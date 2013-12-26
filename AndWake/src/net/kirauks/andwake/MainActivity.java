@@ -17,8 +17,8 @@ import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.appwidget.AppWidgetManager;
 import android.app.FragmentTransaction;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
@@ -241,19 +241,20 @@ public class MainActivity extends FragmentActivity implements
 		GroupEditDialogFragment.newInstance(item).show(
 				this.getSupportFragmentManager(), "edit_group_dialog");
 	}
-	
-	public void updateAllWidgets(){
-		final Class<?>[] providerClasses = new Class<?>[]{
-			WakeComputerWidget.class,
-			WakeGroupWidget.class
-		};
-		for(Class<?> providerClass : providerClasses){
+
+	public void updateAllWidgets() {
+		final Class<?>[] providerClasses = new Class<?>[] {
+				WakeComputerWidget.class, WakeGroupWidget.class };
+		for (Class<?> providerClass : providerClasses) {
 			Intent intent = new Intent(this, providerClass);
 			intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-			int[] ids = AppWidgetManager.getInstance(this.getApplication()).getAppWidgetIds(new ComponentName(this.getApplication(), providerClass));
+			int[] ids = AppWidgetManager.getInstance(this.getApplication())
+					.getAppWidgetIds(
+							new ComponentName(this.getApplication(),
+									providerClass));
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
 			this.sendBroadcast(intent);
 		}
-		
+
 	}
 }

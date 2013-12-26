@@ -35,7 +35,7 @@ public class WakeGroupWidgetConfigure extends FragmentActivity {
 
 		// If the user closes window, don't create the widget
 		this.setResult(Activity.RESULT_CANCELED);
-		
+
 		// Find widget id from launching intent
 		Intent intent = this.getIntent();
 		Bundle extras = intent.getExtras();
@@ -65,15 +65,18 @@ public class WakeGroupWidgetConfigure extends FragmentActivity {
 		});
 		config.show(this.getSupportFragmentManager(), "configure_widget");
 	}
-	
-	private void onDialogResponse(Group choice){
+
+	private void onDialogResponse(Group choice) {
 		Context context = this.getApplicationContext();
-		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		prefs.edit().putLong(WakeGroupWidget.PREFERENCES_TAG + this.mAppWidgetId, choice.getId()).commit();
-		
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		prefs.edit()
+				.putLong(WakeGroupWidget.PREFERENCES_TAG + this.mAppWidgetId,
+						choice.getId()).commit();
+
 		this.configureWidget(context);
-		
+
 		// Make sure we pass back the original appWidgetId before closing the
 		// activity
 		Intent resultValue = new Intent();

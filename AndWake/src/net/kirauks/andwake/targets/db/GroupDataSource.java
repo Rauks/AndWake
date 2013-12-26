@@ -83,7 +83,7 @@ public class GroupDataSource {
 		this.dbHelper.closeDatabase();
 		return groups;
 	}
-	
+
 	public List<Group> getGroups(long[] ids) {
 		List<Group> groups = new ArrayList<Group>();
 		StringBuilder sb = new StringBuilder();

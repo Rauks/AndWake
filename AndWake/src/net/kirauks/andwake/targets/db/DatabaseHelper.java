@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private AtomicInteger mOpenCounter = new AtomicInteger();
-	
+	private final AtomicInteger mOpenCounter = new AtomicInteger();
+
 	private static DatabaseHelper instance = null;
-    private SQLiteDatabase mDatabase;
+	private SQLiteDatabase mDatabase;
 
 	private static final int DATABASE_VERSION = 1;
 
@@ -79,22 +79,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		super(context, DatabaseHelper.DATABASE_NAME, null,
 				DatabaseHelper.DATABASE_VERSION);
 	}
-	
-    public SQLiteDatabase openDatabase() {
-        if(this.mOpenCounter.incrementAndGet() == 1) {
-            // Opening new database
-            this.mDatabase = DatabaseHelper.instance.getWritableDatabase();
-        }
-        return this.mDatabase;
-    }
 
-    public void closeDatabase() {
-        if(this.mOpenCounter.decrementAndGet() == 0) {
-            // Closing database
-        	this.mDatabase.close();
+	public void closeDatabase() {
+		if (this.mOpenCounter.decrementAndGet() == 0) {
+			// Closing database
+			this.mDatabase.close();
 
-        }
-    }
+		}
+	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -108,5 +100,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+	}
+
+	public SQLiteDatabase openDatabase() {
+		if (this.mOpenCounter.incrementAndGet() == 1) {
+			// Opening new database
+			this.mDatabase = DatabaseHelper.instance.getWritableDatabase();
+		}
+		return this.mDatabase;
 	}
 }
