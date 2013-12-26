@@ -23,11 +23,14 @@
     </style>
     <style name="Widget.Text">
         <item name="android:textSize">20sp</item>
-        <item name="android:padding">7dp</item>
+    </style>
+    <style name="Widget.Text.Sub">
+        <item name="android:textColor">#666</item>
+        <item name="android:textSize">9sp</item>
     </style>
     <style name="Widget.Button">
         <item name="android:textSize">20sp</item>
-        <item name="android:padding">7dp</item>
+        <item name="android:paddingLeft">10dp</item>
     </style>
 
 </resources>

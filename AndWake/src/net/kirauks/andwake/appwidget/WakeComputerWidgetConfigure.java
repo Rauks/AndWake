@@ -1,8 +1,8 @@
 package net.kirauks.andwake.appwidget;
 
-import net.kirauks.andwake.appwidget.fragments.ConfigureTargetDialogFragment;
+import net.kirauks.andwake.appwidget.fragments.ConfigureComputerDialogFragment;
 import net.kirauks.andwake.appwidget.fragments.OnConfigureCancelListener;
-import net.kirauks.andwake.appwidget.fragments.OnConfigureTargetListener;
+import net.kirauks.andwake.appwidget.fragments.OnConfigureComputerListener;
 import net.kirauks.andwake.targets.Computer;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 
-public class WakeTargetWidgetConfigure extends FragmentActivity {
+public class WakeComputerWidgetConfigure extends FragmentActivity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
 	/**
@@ -24,7 +24,7 @@ public class WakeTargetWidgetConfigure extends FragmentActivity {
 	public void configureWidget(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager
 				.getInstance(context);
-		WakeTargetWidget.updateAppWidget(context, appWidgetManager,
+		WakeComputerWidget.updateAppWidget(context, appWidgetManager,
 				this.mAppWidgetId);
 	}
 
@@ -50,17 +50,17 @@ public class WakeTargetWidgetConfigure extends FragmentActivity {
 			this.finish();
 		}
 
-		ConfigureTargetDialogFragment config = new ConfigureTargetDialogFragment();
-		config.setOnConfigureTarget(new OnConfigureTargetListener() {
+		ConfigureComputerDialogFragment config = new ConfigureComputerDialogFragment();
+		config.setOnConfigureComputer(new OnConfigureComputerListener() {
 			@Override
-			public void onConfigureTarget(Computer choice) {
-				WakeTargetWidgetConfigure.this.onDialogResponse(choice);
+			public void onConfigureComputer(Computer choice) {
+				WakeComputerWidgetConfigure.this.onDialogResponse(choice);
 			}
 		});
 		config.setOnConfigureCancel(new OnConfigureCancelListener() {
 			@Override
 			public void onConfigureCancel() {
-				WakeTargetWidgetConfigure.this.finish();
+				WakeComputerWidgetConfigure.this.finish();
 			}
 		});
 		config.show(this.getSupportFragmentManager(), "configure_widget");
@@ -70,7 +70,7 @@ public class WakeTargetWidgetConfigure extends FragmentActivity {
 		Context context = this.getApplicationContext();
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		prefs.edit().putLong(WakeTargetWidget.PREFERENCES_TAG + this.mAppWidgetId, choice.getId()).commit();
+		prefs.edit().putLong(WakeComputerWidget.PREFERENCES_TAG + this.mAppWidgetId, choice.getId()).commit();
 		
 		this.configureWidget(context);
 		

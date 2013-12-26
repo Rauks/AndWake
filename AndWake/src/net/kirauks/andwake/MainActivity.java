@@ -3,7 +3,8 @@ package net.kirauks.andwake;
 import java.util.List;
 import java.util.Locale;
 
-import net.kirauks.andwake.appwidget.WakeTargetWidget;
+import net.kirauks.andwake.appwidget.WakeComputerWidget;
+import net.kirauks.andwake.appwidget.WakeGroupWidget;
 import net.kirauks.andwake.fragments.ComputerDeleteDialogFragment;
 import net.kirauks.andwake.fragments.ComputerEditDialogFragment;
 import net.kirauks.andwake.fragments.ComputersFragment;
@@ -243,7 +244,8 @@ public class MainActivity extends FragmentActivity implements
 	
 	public void updateAllWidgets(){
 		final Class<?>[] providerClasses = new Class<?>[]{
-			WakeTargetWidget.class
+			WakeComputerWidget.class,
+			WakeGroupWidget.class
 		};
 		for(Class<?> providerClass : providerClasses){
 			Intent intent = new Intent(this, providerClass);

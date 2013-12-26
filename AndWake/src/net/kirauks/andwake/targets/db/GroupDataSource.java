@@ -83,6 +83,32 @@ public class GroupDataSource {
 		this.dbHelper.closeDatabase();
 		return groups;
 	}
+	
+	public List<Group> getGroups(long[] ids) {
+		List<Group> groups = new ArrayList<Group>();
+		StringBuilder sb = new StringBuilder();
+		sb.append('(');
+		for (int i = 0; i < ids.length; i++) {
+			sb.append(ids[i]);
+			if (i != (ids.length - 1)) {
+				sb.append(',');
+			}
+		}
+		sb.append(')');
+		SQLiteDatabase db = this.dbHelper.openDatabase();
+		Cursor cursor = db.query(DatabaseHelper.GROUPS_TABLE_NAME,
+				this.allColumns, DatabaseHelper.GROUPS_TABLE_FIELD_ID + " IN "
+						+ sb.toString(), null, null, null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Group group = this.populateChildren(this.cursorToGroup(cursor));
+			groups.add(group);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		this.dbHelper.closeDatabase();
+		return groups;
+	}
 
 	private Group populateChildren(Group group) {
 		List<Long> ids = new ArrayList<Long>();

@@ -40,7 +40,7 @@ public class ComputerDeleteDialogFragment extends DialogFragment {
 
 		AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
 				.setTitle(R.string.dialog_delete_computer_title)
-				.setIcon(R.drawable.ic_action_discard)
+				.setIcon(R.drawable.ic_dialog_discard)
 				.setView(
 						inflater.inflate(
 								R.layout.dialog_fragment_delete_computer, null))

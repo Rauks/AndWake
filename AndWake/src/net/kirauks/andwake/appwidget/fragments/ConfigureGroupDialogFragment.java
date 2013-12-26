@@ -4,41 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.kirauks.andwake.R;
-import net.kirauks.andwake.targets.Computer;
+import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class ConfigureTargetDialogFragment extends ConfigureDialogFragment {
-	OnConfigureTargetListener configureListener;
+public class ConfigureGroupDialogFragment extends ConfigureDialogFragment {
+	OnConfigureGroupListener configureListener;
 	
-	public void setOnConfigureTarget(OnConfigureTargetListener configureListener){
+	public void setOnConfigureGroup(OnConfigureGroupListener configureListener){
 		this.configureListener = configureListener;
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		DataSourceHelper db = new DataSourceHelper(this.getActivity());
-		final List<Computer> computers = db.getComputerDataSource().getAllComputers();
+		final List<Group> groups = db.getGroupDataSource().getAllGroups();
 		
-		final List<String> computersNames = new ArrayList<String>();
-		for (Computer c : computers) {
-			computersNames.add(c.getName());
+		final List<String> groupsNames = new ArrayList<String>();
+		for (Group c : groups) {
+			groupsNames.add(c.getName());
 		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				this.getActivity());
-		builder.setTitle(R.string.appwidget_computer_dialog_config_title)
+		builder.setTitle(R.string.appwidget_group_dialog_config_title)
 				.setItems(
-					computersNames.toArray(new String[computersNames.size()]),
+						groupsNames.toArray(new String[groupsNames.size()]),
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							if (ConfigureTargetDialogFragment.this.configureListener != null) {
-								ConfigureTargetDialogFragment.this.configureListener
-										.onConfigureTarget(computers.get(which));
+							if (ConfigureGroupDialogFragment.this.configureListener != null) {
+								ConfigureGroupDialogFragment.this.configureListener
+										.onConfigureGroup(groups.get(which));
 							}
 						}
 					});

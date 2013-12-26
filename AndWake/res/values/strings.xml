@@ -6,6 +6,13 @@
     <string name="appwidget_computer_dialog_config_title">Select Computer</string>
     <string name="appwidget_group_name">AndWake Group</string>
     <string name="appwidget_group_dialog_config_title">Select Group</string>
+    <string name="appwidget_loading">Loading&#8230;</string>
+    <string name="appwidget_computer_wake">Wake</string>
+    <string name="appwidget_group_wake">Wake All</string>
+    <string name="appwidget_computer_port_separator">:</string>
+    <string name="appwidget_computer_mac">FF:FF:FF:FF:FF:FF</string>
+    <string name="appwidget_computer_address">192.168.0.255</string>
+    <string name="appwidget_computer_port">9</string>
     <string name="menu_add_group">New Group</string>
     <string name="fragment_favorites_title">Favorites</string>
     <string name="fragment_groups_title">Groups</string>
@@ -22,7 +29,6 @@
     <string name="dialog_computer_port">Port :</string>
     <string name="dialog_computer_port_defaut">9</string>
     <string name="dialog_computer_port_hint">9</string>
-    <string name="dialog_computer_mac_separator">:</string>
     <string name="dialog_computer_error_name_empty">Name could not be empty</string>
     <string name="dialog_computer_error_mac_hex">Invalid mac address</string>
     <string name="dialog_computer_error_port_empty">Port could not be empty</string>

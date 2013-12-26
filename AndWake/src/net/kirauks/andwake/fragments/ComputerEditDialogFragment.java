@@ -1,5 +1,7 @@
 package net.kirauks.andwake.fragments;
 
+import java.util.Locale;
+
 import net.kirauks.andwake.MainActivity;
 import net.kirauks.andwake.R;
 import net.kirauks.andwake.packets.WolPacket;
@@ -63,6 +65,7 @@ public class ComputerEditDialogFragment extends DialogFragment {
 				.append(macSep).append(macField5.getText().toString())
 				.append(macSep).append(macField6.getText().toString())
 				.toString();
+		mac = mac.toUpperCase(Locale.US);
 		String address = addressField.getText().toString();
 		int port = Integer.parseInt(portField.getText().toString());
 
@@ -91,7 +94,7 @@ public class ComputerEditDialogFragment extends DialogFragment {
 		final Computer toEdit = (Computer) this.getArguments().getParcelable(
 				"edit");
 		final AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
-				.setIcon(R.drawable.ic_action_edit)
+				.setIcon(R.drawable.ic_dialog_edit)
 				.setView(
 						inflater.inflate(R.layout.dialog_fragment_computer,
 								null))

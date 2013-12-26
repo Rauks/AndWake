@@ -27,21 +27,42 @@
             </intent-filter>
         </activity>
         
-        <!-- Wake Target Widget -->
+        <!-- Wake Computer Widget -->
 		<receiver 
-		    android:name="net.kirauks.andwake.appwidget.WakeTargetWidget"
+		    android:name="net.kirauks.andwake.appwidget.WakeComputerWidget"
             android:label="@string/appwidget_computer_name" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-				<action android:name="net.kirauks.andwake.appwidget.ACTION_WAKE_TARGET" />
+				<action android:name="net.kirauks.andwake.appwidget.ACTION_WAKE_COMPUTER" />
 			</intent-filter>
 			<meta-data android:name="android.appwidget.provider"
-				android:resource="@xml/appwidget_wake_target_metadata" />
+				android:resource="@xml/appwidget_wake_computer_metadata" />
 		</receiver>
 		
-		<!-- Wake Target Configure Activity -->
+		<!-- Wake Computer Configure Activity -->
 		<activity 
-		    android:name="net.kirauks.andwake.appwidget.WakeTargetWidgetConfigure" 
+		    android:name="net.kirauks.andwake.appwidget.WakeComputerWidgetConfigure" 
+		    android:theme="@android:style/Theme.Dialog">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+			</intent-filter>
+		</activity>
+		
+		<!-- Wake Group Widget -->
+		<receiver 
+		    android:name="net.kirauks.andwake.appwidget.WakeGroupWidget"
+            android:label="@string/appwidget_group_name" >
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+				<action android:name="net.kirauks.andwake.appwidget.ACTION_WAKE_GROUP" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider"
+				android:resource="@xml/appwidget_wake_group_metadata" />
+		</receiver>
+		
+		<!-- Wake Group Configure Activity -->
+		<activity 
+		    android:name="net.kirauks.andwake.appwidget.WakeGroupWidgetConfigure" 
 		    android:theme="@android:style/Theme.Dialog">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appwidget_dark_bg"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/appwidget_group_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:contentDescription="@string/appwidget_group_wake"
+        android:src="@drawable/ic_labels" />
+
+    <TextView
+        android:id="@+id/appwidget_group_name"
+        style="@style/Widget.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="100"
+        android:text="@string/appwidget_loading" />
+
+    <Button
+        android:id="@+id/appwidget_group_wake"
+        style="@style/Widget.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/appwidget_button_right"
+        android:drawableRight="@drawable/ic_next_item"
+        android:text="@string/appwidget_group_wake" />
+
+</LinearLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appwidget_dark_bg"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:context=".MainActivity" >
+
+    <ImageView
+        android:id="@+id/appwidget_computer_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:contentDescription="@string/appwidget_computer_wake"
+        android:src="@drawable/ic_dock" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="100"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/appwidget_computer_name"
+            style="@style/Widget.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/appwidget_loading" />
+
+        <TextView
+            android:id="@+id/appwidget_computer_mac"
+        	style="@style/Widget.Text.Sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appwidget_computer_mac" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/appwidget_computer_address"
+        		style="@style/Widget.Text.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appwidget_computer_address" />
+
+            <TextView
+                android:id="@+id/appwidget_computer_port_separator"
+        		style="@style/Widget.Text.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appwidget_computer_port_separator" />
+
+            <TextView
+                android:id="@+id/appwidget_computer_port"
+        		style="@style/Widget.Text.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appwidget_computer_port"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/appwidget_computer_wake"
+        style="@style/Widget.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/appwidget_button_right"
+        android:drawableRight="@drawable/ic_next_item"
+        android:text="@string/appwidget_computer_wake" />
+
+</LinearLayout>
