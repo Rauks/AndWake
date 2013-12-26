@@ -5,6 +5,7 @@ import java.io.IOException;
 import net.kirauks.andwake.packets.Emitter;
 import net.kirauks.andwake.packets.Packet;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class SendPacketTask extends AsyncTask<Packet, Void, Void> {
 	private int sendError;
@@ -20,6 +21,7 @@ public class SendPacketTask extends AsyncTask<Packet, Void, Void> {
 				new Emitter(p).send();
 				this.sendSucess++;
 			} catch (IOException e) {
+				Log.w("SendPacket", e);
 				this.sendError++;
 			}
 		}

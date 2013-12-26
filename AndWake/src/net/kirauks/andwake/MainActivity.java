@@ -3,6 +3,7 @@ package net.kirauks.andwake;
 import java.util.List;
 import java.util.Locale;
 
+import net.kirauks.andwake.appwidget.WakeTargetWidget;
 import net.kirauks.andwake.fragments.ComputerDeleteDialogFragment;
 import net.kirauks.andwake.fragments.ComputerEditDialogFragment;
 import net.kirauks.andwake.fragments.ComputersFragment;
@@ -15,7 +16,11 @@ import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.appwidget.AppWidgetManager;
 import android.app.FragmentTransaction;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -127,6 +132,7 @@ public class MainActivity extends FragmentActivity implements
 				.findFragmentByTag(
 						this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
 		f.updateList();
+		this.updateAllWidgets();
 	}
 
 	public void goAndRefreshGroupsFragmentList() {
@@ -135,6 +141,7 @@ public class MainActivity extends FragmentActivity implements
 				.findFragmentByTag(
 						this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
 		f.updateList();
+		this.updateAllWidgets();
 	}
 
 	@Override
@@ -246,5 +253,19 @@ public class MainActivity extends FragmentActivity implements
 	public void showEditGroup(Group item) {
 		GroupEditDialogFragment.newInstance(item).show(
 				this.getSupportFragmentManager(), "edit_group_dialog");
+	}
+	
+	public void updateAllWidgets(){
+		final Class<?>[] providerClasses = new Class<?>[]{
+			WakeTargetWidget.class
+		};
+		for(Class<?> providerClass : providerClasses){
+			Intent intent = new Intent(this, providerClass);
+			intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+			int[] ids = AppWidgetManager.getInstance(this.getApplication()).getAppWidgetIds(new ComponentName(this.getApplication(), providerClass));
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+			this.sendBroadcast(intent);
+		}
+		
 	}
 }

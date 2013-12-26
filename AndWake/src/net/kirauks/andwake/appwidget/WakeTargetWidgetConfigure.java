@@ -1,12 +1,19 @@
 package net.kirauks.andwake.appwidget;
 
+import net.kirauks.andwake.appwidget.fragments.ConfigureTargetDialogFragment;
+import net.kirauks.andwake.appwidget.fragments.OnConfigureCancelListener;
+import net.kirauks.andwake.appwidget.fragments.OnConfigureTargetListener;
+import net.kirauks.andwake.targets.Computer;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 
-public class WakeTargetWidgetConfigure extends Activity {
+public class WakeTargetWidgetConfigure extends FragmentActivity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
 	/**
@@ -28,7 +35,7 @@ public class WakeTargetWidgetConfigure extends Activity {
 
 		// If the user closes window, don't create the widget
 		this.setResult(Activity.RESULT_CANCELED);
-
+		
 		// Find widget id from launching intent
 		Intent intent = this.getIntent();
 		Bundle extras = intent.getExtras();
@@ -43,8 +50,30 @@ public class WakeTargetWidgetConfigure extends Activity {
 			this.finish();
 		}
 
-		this.configureWidget(this.getApplicationContext());
-
+		ConfigureTargetDialogFragment config = new ConfigureTargetDialogFragment();
+		config.setOnConfigureTarget(new OnConfigureTargetListener() {
+			@Override
+			public void onConfigureTarget(Computer choice) {
+				WakeTargetWidgetConfigure.this.onDialogResponse(choice);
+			}
+		});
+		config.setOnConfigureCancel(new OnConfigureCancelListener() {
+			@Override
+			public void onConfigureCancel() {
+				WakeTargetWidgetConfigure.this.finish();
+			}
+		});
+		config.show(this.getSupportFragmentManager(), "configure_widget");
+	}
+	
+	private void onDialogResponse(Computer choice){
+		Context context = this.getApplicationContext();
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		prefs.edit().putLong(WakeTargetWidget.PREFERENCES_TAG + this.mAppWidgetId, choice.getId()).commit();
+		
+		this.configureWidget(context);
+		
 		// Make sure we pass back the original appWidgetId before closing the
 		// activity
 		Intent resultValue = new Intent();
