@@ -80,13 +80,7 @@ public class ComputerDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        this.setRetainInstance(true);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         LayoutInflater inflater = this.getActivity().getLayoutInflater();
         final Computer toEdit = this.getArguments().getParcelable("edit");
         final AlertDialog dialog = new AlertDialog.Builder(this.getActivity()).setIcon(R.drawable.ic_dialog_edit).setView(inflater.inflate(R.layout.dialog_fragment_computer, null)).setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
@@ -108,18 +102,28 @@ public class ComputerDialogFragment extends DialogFragment {
                         }
                     }
                 });
-
-                if (toEdit != null) {
-                    EditText nameField = (EditText) dialog.findViewById(R.id.dialog_computer_name_field);
-                    EditText macField1 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_1);
-                    EditText macField2 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_2);
-                    EditText macField3 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_3);
-                    EditText macField4 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_4);
-                    EditText macField5 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_5);
-                    EditText macField6 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_6);
-                    EditText addressField = (EditText) dialog.findViewById(R.id.dialog_computer_address_field);
-                    EditText portField = (EditText) dialog.findViewById(R.id.dialog_computer_port_field);
-
+                
+                EditText nameField = (EditText) dialog.findViewById(R.id.dialog_computer_name_field);
+                EditText macField1 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_1);
+                EditText macField2 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_2);
+                EditText macField3 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_3);
+                EditText macField4 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_4);
+                EditText macField5 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_5);
+                EditText macField6 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_6);
+                EditText addressField = (EditText) dialog.findViewById(R.id.dialog_computer_address_field);
+                EditText portField = (EditText) dialog.findViewById(R.id.dialog_computer_port_field);
+                if (savedInstanceState != null) {
+                    nameField.setText(savedInstanceState.getString("input_name"));
+                    macField1.setText(savedInstanceState.getString("input_mac1"));
+                    macField2.setText(savedInstanceState.getString("input_mac2"));
+                    macField3.setText(savedInstanceState.getString("input_mac3"));
+                    macField4.setText(savedInstanceState.getString("input_mac4"));
+                    macField5.setText(savedInstanceState.getString("input_mac5"));
+                    macField6.setText(savedInstanceState.getString("input_mac6"));
+                    addressField.setText(savedInstanceState.getString("input_address"));
+                    portField.setText(savedInstanceState.getString("input_port"));
+                }
+                else if (toEdit != null) {
                     nameField.setText(toEdit.getName());
                     String[] mac = toEdit.getMac().split(String.valueOf(WolPacket.DEFAULT_MAC_SEPARATOR));
                     macField1.setText(mac[0]);
@@ -145,11 +149,30 @@ public class ComputerDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        if ((this.getDialog() != null) && this.getRetainInstance()) {
-            this.getDialog().setDismissMessage(null);
-        }
-        super.onDestroyView();
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        Dialog dialog = this.getDialog();
+        
+        EditText nameField = (EditText) dialog.findViewById(R.id.dialog_computer_name_field);
+        EditText macField1 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_1);
+        EditText macField2 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_2);
+        EditText macField3 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_3);
+        EditText macField4 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_4);
+        EditText macField5 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_5);
+        EditText macField6 = (EditText) dialog.findViewById(R.id.dialog_computer_mac_field_6);
+        EditText addressField = (EditText) dialog.findViewById(R.id.dialog_computer_address_field);
+        EditText portField = (EditText) dialog.findViewById(R.id.dialog_computer_port_field);
+
+        savedInstanceState.putString("input_name", nameField.getText().toString());
+        savedInstanceState.putString("input_mac1", macField1.getText().toString());
+        savedInstanceState.putString("input_mac2", macField2.getText().toString());
+        savedInstanceState.putString("input_mac3", macField3.getText().toString());
+        savedInstanceState.putString("input_mac4", macField4.getText().toString());
+        savedInstanceState.putString("input_mac5", macField5.getText().toString());
+        savedInstanceState.putString("input_mac6", macField6.getText().toString());
+        savedInstanceState.putString("input_address", addressField.getText().toString());
+        savedInstanceState.putString("input_port", portField.getText().toString());
     }
 
     private boolean validateForm() {

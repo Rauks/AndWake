@@ -81,7 +81,7 @@ public class GroupDialogFragment extends DialogFragment {
         return df;
     }
 
-    private final List<Computer> selectedComputers = new ArrayList<Computer>();
+    private final ArrayList<Computer> selectedComputers = new ArrayList<Computer>();
 
     private void handleNegativeClick() {
         ((CancelHandler) this.getActivity()).handleCancel();
@@ -110,11 +110,15 @@ public class GroupDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle arg0) {
-        super.onActivityCreated(arg0);
-
-        final Group toEdit = this.getArguments().getParcelable("edit");
-        final AlertDialog dialog = (AlertDialog) this.getDialog();
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        LayoutInflater inflater = this.getActivity().getLayoutInflater();
+        final Group toEdit = (Group) this.getArguments().getParcelable("edit");
+        final AlertDialog dialog = new AlertDialog.Builder(this.getActivity()).setIcon(R.drawable.ic_dialog_edit).setView(inflater.inflate(R.layout.dialog_fragment_group, null)).setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GroupDialogFragment.this.handleNegativeClick();
+            }
+        }).create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
@@ -128,6 +132,16 @@ public class GroupDialogFragment extends DialogFragment {
                         }
                     }
                 });
+                
+                EditText nameField = (EditText) dialog.findViewById(R.id.dialog_group_name_field);
+                if (savedInstanceState != null){
+                    nameField.setText(savedInstanceState.getString("input_name"));
+                    ArrayList<Computer> savedComputers = savedInstanceState.getParcelableArrayList("input_computers");
+                    GroupDialogFragment.this.selectedComputers.addAll(savedComputers);
+                }
+                else if (toEdit != null) {
+                    nameField.setText(toEdit.getName());
+                }
 
                 LinearLayout computers = (LinearLayout) dialog.findViewById(R.id.dialog_group_computers_list);
                 Context context = GroupDialogFragment.this.getActivity();
@@ -137,33 +151,9 @@ public class GroupDialogFragment extends DialogFragment {
                     View v = adapter.getView(i, null, null);
                     computers.addView(v);
                 }
-
-                if (toEdit != null) {
-                    EditText nameField = (EditText) dialog.findViewById(R.id.dialog_group_name_field);
-
-                    nameField.setText(toEdit.getName());
-                }
             }
         });
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        this.setRetainInstance(true);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = this.getActivity().getLayoutInflater();
-        final Group toEdit = (Group) this.getArguments().getParcelable("edit");
-        final AlertDialog dialog = new AlertDialog.Builder(this.getActivity()).setIcon(R.drawable.ic_dialog_edit).setView(inflater.inflate(R.layout.dialog_fragment_group, null)).setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                GroupDialogFragment.this.handleNegativeClick();
-            }
-        }).create();
-
+        
         if (toEdit == null) {
             dialog.setTitle(R.string.dialog_group_title_add);
         }
@@ -175,13 +165,17 @@ public class GroupDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        if ((this.getDialog() != null) && this.getRetainInstance()) {
-            this.getDialog().setDismissMessage(null);
-        }
-        super.onDestroyView();
-    }
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
 
+        Dialog dialog = this.getDialog();
+        
+        EditText nameField = (EditText) dialog.findViewById(R.id.dialog_group_name_field);
+
+        savedInstanceState.putString("input_name", nameField.getText().toString());
+        savedInstanceState.putParcelableArrayList("input_computers", this.selectedComputers);
+    }
+    
     private boolean validateForm() {
         boolean valid = true;
         Dialog dialog = this.getDialog();

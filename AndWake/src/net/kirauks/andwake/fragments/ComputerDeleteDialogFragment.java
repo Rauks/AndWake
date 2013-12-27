@@ -31,12 +31,6 @@ public class ComputerDeleteDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        this.setRetainInstance(true);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = this.getActivity().getLayoutInflater();
 
@@ -53,13 +47,5 @@ public class ComputerDeleteDialogFragment extends DialogFragment {
         }).create();
 
         return dialog;
-    }
-
-    @Override
-    public void onDestroyView() {
-        if ((this.getDialog() != null) && this.getRetainInstance()) {
-            this.getDialog().setDismissMessage(null);
-        }
-        super.onDestroyView();
     }
 }
