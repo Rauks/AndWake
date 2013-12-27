@@ -13,36 +13,31 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 public class ConfigureGroupDialogFragment extends ConfigureDialogFragment {
-	private OnConfigureGroupListener configureListener;
+    private OnConfigureGroupListener configureListener;
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		DataSourceHelper db = new DataSourceHelper(this.getActivity());
-		final List<Group> groups = db.getGroupDataSource().getAllGroups();
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        DataSourceHelper db = new DataSourceHelper(this.getActivity());
+        final List<Group> groups = db.getGroupDataSource().getAllGroups();
 
-		final List<String> groupsNames = new ArrayList<String>();
-		for (Group c : groups) {
-			groupsNames.add(c.getName());
-		}
+        final List<String> groupsNames = new ArrayList<String>();
+        for (Group c : groups) {
+            groupsNames.add(c.getName());
+        }
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				this.getActivity());
-		builder.setTitle(R.string.appwidget_group_dialog_config_title)
-				.setItems(groupsNames.toArray(new String[groupsNames.size()]),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								if (ConfigureGroupDialogFragment.this.configureListener != null) {
-									ConfigureGroupDialogFragment.this.configureListener
-											.onConfigureGroup(groups.get(which));
-								}
-							}
-						});
-		return builder.create();
-	}
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+        builder.setTitle(R.string.appwidget_group_dialog_config_title).setItems(groupsNames.toArray(new String[groupsNames.size()]), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (ConfigureGroupDialogFragment.this.configureListener != null) {
+                    ConfigureGroupDialogFragment.this.configureListener.onConfigureGroup(groups.get(which));
+                }
+            }
+        });
+        return builder.create();
+    }
 
-	public void setOnConfigureGroup(OnConfigureGroupListener configureListener) {
-		this.configureListener = configureListener;
-	}
+    public void setOnConfigureGroup(OnConfigureGroupListener configureListener) {
+        this.configureListener = configureListener;
+    }
 }

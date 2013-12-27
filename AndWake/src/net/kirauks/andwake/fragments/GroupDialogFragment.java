@@ -31,182 +31,167 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class GroupDialogFragment extends DialogFragment {
-	public class GroupComputersAdapter extends ArrayAdapter<Computer> {
-		public GroupComputersAdapter(Context context, List<Computer> objects) {
-			super(context, R.layout.list_element_dialog_group_computer, objects);
-		}
+    public class GroupComputersAdapter extends ArrayAdapter<Computer> {
+        public GroupComputersAdapter(Context context, List<Computer> objects) {
+            super(context, R.layout.list_element_dialog_group_computer, objects);
+        }
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final Computer item = this.getItem(position);
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final Computer item = this.getItem(position);
 
-			LayoutInflater inflater = ((Activity) this.getContext())
-					.getLayoutInflater();
-			View rootView = inflater.inflate(
-					R.layout.list_element_dialog_group_computer, parent, false);
+            LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
+            View rootView = inflater.inflate(R.layout.list_element_dialog_group_computer, parent, false);
 
-			CheckBox check = (CheckBox) rootView
-					.findViewById(R.id.list_element_dialog_group_computer_check);
-			check.setText(item.getName());
-			check.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView,
-						boolean isChecked) {
-					if (isChecked) {
-						if (!GroupDialogFragment.this.selectedComputers
-								.contains(item)) {
-							GroupDialogFragment.this.selectedComputers
-									.add(item);
-						}
-					} else {
-						GroupDialogFragment.this.selectedComputers
-								.remove(item);
-					}
-				}
-			});
+            CheckBox check = (CheckBox) rootView.findViewById(R.id.list_element_dialog_group_computer_check);
+            check.setText(item.getName());
+            check.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        if (!GroupDialogFragment.this.selectedComputers.contains(item)) {
+                            GroupDialogFragment.this.selectedComputers.add(item);
+                        }
+                    }
+                    else {
+                        GroupDialogFragment.this.selectedComputers.remove(item);
+                    }
+                }
+            });
 
-			check.setChecked(GroupDialogFragment.this.selectedComputers
-					.contains(item));
+            check.setChecked(GroupDialogFragment.this.selectedComputers.contains(item));
 
-			return rootView;
-		}
-	}
+            return rootView;
+        }
+    }
 
-	public static GroupDialogFragment newInstance() {
-		GroupDialogFragment df = new GroupDialogFragment();
-		Bundle bundle = new Bundle();
-		df.setArguments(bundle);
-		return df;
-	}
+    public static GroupDialogFragment newInstance() {
+        GroupDialogFragment df = new GroupDialogFragment();
+        Bundle bundle = new Bundle();
+        df.setArguments(bundle);
+        return df;
+    }
 
-	public static GroupDialogFragment newInstance(Group toEdit) {
-		GroupDialogFragment df = new GroupDialogFragment();
-		Bundle bundle = new Bundle();
-		bundle.putParcelable("edit", toEdit);
-		df.selectedComputers.addAll(toEdit.getChildren());
-		df.setArguments(bundle);
-		return df;
-	}
+    public static GroupDialogFragment newInstance(Group toEdit) {
+        GroupDialogFragment df = new GroupDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("edit", toEdit);
+        df.selectedComputers.addAll(toEdit.getChildren());
+        df.setArguments(bundle);
+        return df;
+    }
 
-	private final List<Computer> selectedComputers = new ArrayList<Computer>();
+    private final List<Computer> selectedComputers = new ArrayList<Computer>();
 
-	private void handleNegativeClick() {
-		((CancelHandler)this.getActivity()).handleCancel();
-	}
-	
-	private void handlePositiveClick() {
-		Dialog dialog = this.getDialog();
+    private void handleNegativeClick() {
+        ((CancelHandler) this.getActivity()).handleCancel();
+    }
 
-		EditText nameField = (EditText) dialog
-				.findViewById(R.id.dialog_group_name_field);
+    private void handlePositiveClick() {
+        Dialog dialog = this.getDialog();
 
-		String name = nameField.getText().toString();
+        EditText nameField = (EditText) dialog.findViewById(R.id.dialog_group_name_field);
 
-		Group toEdit = (Group) this.getArguments().getParcelable("edit");
-		if (toEdit != null) {
-			toEdit.setName(name);
-			toEdit.getChildren().clear();
-			toEdit.getChildren().addAll(this.selectedComputers);
-			((UpdateGroupHandler)this.getActivity()).handleUpdate(toEdit);
-		} else {
-			Group toCreate = new Group();
-			toCreate.setName(name);
-			toCreate.getChildren().addAll(this.selectedComputers);
-			((CreateGroupHandler)this.getActivity()).handleCreate(toCreate);
-		}
-	}
+        String name = nameField.getText().toString();
 
-	@Override
-	public void onActivityCreated(Bundle arg0) {
-		super.onActivityCreated(arg0);
+        Group toEdit = (Group) this.getArguments().getParcelable("edit");
+        if (toEdit != null) {
+            toEdit.setName(name);
+            toEdit.getChildren().clear();
+            toEdit.getChildren().addAll(this.selectedComputers);
+            ((UpdateGroupHandler) this.getActivity()).handleUpdate(toEdit);
+        }
+        else {
+            Group toCreate = new Group();
+            toCreate.setName(name);
+            toCreate.getChildren().addAll(this.selectedComputers);
+            ((CreateGroupHandler) this.getActivity()).handleCreate(toCreate);
+        }
+    }
 
-		final Group toEdit = this.getArguments().getParcelable("edit");
-		final AlertDialog dialog = (AlertDialog) this.getDialog();
-		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialogInterface) {
-				Button okButton = dialog
-						.getButton(DialogInterface.BUTTON_POSITIVE);
-				okButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						if (GroupDialogFragment.this.validateForm()) {
-							dialog.dismiss();
-							GroupDialogFragment.this.handlePositiveClick();
-						}
-					}
-				});
+    @Override
+    public void onActivityCreated(Bundle arg0) {
+        super.onActivityCreated(arg0);
 
-				LinearLayout computers = (LinearLayout) dialog.findViewById(R.id.dialog_group_computers_list);
-				Context context = GroupDialogFragment.this.getActivity();
-				GroupComputersAdapter adapter = new GroupComputersAdapter(
-						context, new DataSourceHelper(context).getComputerDataSource().getAllComputers());
+        final Group toEdit = this.getArguments().getParcelable("edit");
+        final AlertDialog dialog = (AlertDialog) this.getDialog();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button okButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (GroupDialogFragment.this.validateForm()) {
+                            dialog.dismiss();
+                            GroupDialogFragment.this.handlePositiveClick();
+                        }
+                    }
+                });
 
-				for (int i = 0; i < adapter.getCount(); i++) {
-					View v = adapter.getView(i, null, null);
-					computers.addView(v);
-				}
+                LinearLayout computers = (LinearLayout) dialog.findViewById(R.id.dialog_group_computers_list);
+                Context context = GroupDialogFragment.this.getActivity();
+                GroupComputersAdapter adapter = new GroupComputersAdapter(context, new DataSourceHelper(context).getComputerDataSource().getAllComputers());
 
-				if (toEdit != null) {
-					EditText nameField = (EditText) dialog
-							.findViewById(R.id.dialog_group_name_field);
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    View v = adapter.getView(i, null, null);
+                    computers.addView(v);
+                }
 
-					nameField.setText(toEdit.getName());
-				}
-			}
-		});
-	}
+                if (toEdit != null) {
+                    EditText nameField = (EditText) dialog.findViewById(R.id.dialog_group_name_field);
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		this.setRetainInstance(true);
-		super.onCreate(savedInstanceState);
-	}
+                    nameField.setText(toEdit.getName());
+                }
+            }
+        });
+    }
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		LayoutInflater inflater = this.getActivity().getLayoutInflater();
-		final Group toEdit = (Group) this.getArguments().getParcelable("edit");
-		final AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
-				.setIcon(R.drawable.ic_dialog_edit)
-				.setView(inflater.inflate(R.layout.dialog_fragment_group, null))
-				.setPositiveButton(R.string.dialog_ok, null)
-				.setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						GroupDialogFragment.this.handleNegativeClick();
-					}
-				}).create();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        this.setRetainInstance(true);
+        super.onCreate(savedInstanceState);
+    }
 
-		if (toEdit == null) {
-			dialog.setTitle(R.string.dialog_group_title_add);
-		} else {
-			dialog.setTitle(R.string.dialog_group_title_edit);
-		}
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        LayoutInflater inflater = this.getActivity().getLayoutInflater();
+        final Group toEdit = (Group) this.getArguments().getParcelable("edit");
+        final AlertDialog dialog = new AlertDialog.Builder(this.getActivity()).setIcon(R.drawable.ic_dialog_edit).setView(inflater.inflate(R.layout.dialog_fragment_group, null)).setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GroupDialogFragment.this.handleNegativeClick();
+            }
+        }).create();
 
-		return dialog;
-	}
+        if (toEdit == null) {
+            dialog.setTitle(R.string.dialog_group_title_add);
+        }
+        else {
+            dialog.setTitle(R.string.dialog_group_title_edit);
+        }
 
-	@Override
-	public void onDestroyView() {
-		if ((this.getDialog() != null) && this.getRetainInstance()) {
-			this.getDialog().setDismissMessage(null);
-		}
-		super.onDestroyView();
-	}
+        return dialog;
+    }
 
-	private boolean validateForm() {
-		boolean valid = true;
-		Dialog dialog = this.getDialog();
+    @Override
+    public void onDestroyView() {
+        if ((this.getDialog() != null) && this.getRetainInstance()) {
+            this.getDialog().setDismissMessage(null);
+        }
+        super.onDestroyView();
+    }
 
-		EditText nameField = (EditText) dialog
-				.findViewById(R.id.dialog_group_name_field);
+    private boolean validateForm() {
+        boolean valid = true;
+        Dialog dialog = this.getDialog();
 
-		if (FormValidator.isEmpty(nameField)) {
-			valid = false;
-			nameField.setError(this.getResources().getString(
-					R.string.dialog_group_error_name_empty));
-		}
-		return valid;
-	}
+        EditText nameField = (EditText) dialog.findViewById(R.id.dialog_group_name_field);
+
+        if (FormValidator.isEmpty(nameField)) {
+            valid = false;
+            nameField.setError(this.getResources().getString(R.string.dialog_group_error_name_empty));
+        }
+        return valid;
+    }
 }
