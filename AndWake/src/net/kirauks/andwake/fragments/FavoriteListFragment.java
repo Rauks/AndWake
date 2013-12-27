@@ -3,6 +3,8 @@ package net.kirauks.andwake.fragments;
 import java.util.List;
 
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.fragments.handlers.FavoriteComputerHandler;
+import net.kirauks.andwake.fragments.handlers.FavoriteGroupHandler;
 import net.kirauks.andwake.fragments.handlers.RequestDeleteComputerHandler;
 import net.kirauks.andwake.fragments.handlers.RequestDeleteGroupHandler;
 import net.kirauks.andwake.fragments.handlers.RequestUpdateComputerHandler;
@@ -21,8 +23,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class FavoriteListFragment extends ListFragment {
     public class FavoritesAdapter extends BaseAdapter {
@@ -87,6 +92,15 @@ public class FavoriteListFragment extends ListFragment {
                         new WolPacketSendHelper(FavoriteListFragment.this.getActivity()).doSendWakePacket(item.getChildren());
                     }
                 });
+                
+                CheckBox favorite = (CheckBox) rootView.findViewById(R.id.list_element_group_favorite);
+                favorite.setChecked(true);
+                favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        ((FavoriteGroupHandler) FavoriteListFragment.this.getActivity()).handleFavoriteGroup(item, isChecked);
+                    }
+                });
 
                 rootView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -122,6 +136,15 @@ public class FavoriteListFragment extends ListFragment {
                     @Override
                     public void onClick(View v) {
                         new WolPacketSendHelper(FavoriteListFragment.this.getActivity()).doSendWakePacket(item);
+                    }
+                });
+                
+                CheckBox favorite = (CheckBox) rootView.findViewById(R.id.list_element_computers_favorite);
+                favorite.setChecked(true);
+                favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        ((FavoriteComputerHandler) FavoriteListFragment.this.getActivity()).handleFavoriteComputer(item, isChecked);
                     }
                 });
 
@@ -170,8 +193,9 @@ public class FavoriteListFragment extends ListFragment {
     }
 
     public void updateList() {
-        List<Computer> favoritesComputers = new DataSourceHelper(this.getActivity()).getComputerDataSource().getAllFavoritesComputers();
-        List<Group> favoritesGroups = new DataSourceHelper(this.getActivity()).getGroupDataSource().getAllFavoritesGroups();
+        DataSourceHelper helper = new DataSourceHelper(this.getActivity());
+        List<Computer> favoritesComputers = helper.getComputerDataSource().getAllFavoritesComputers();
+        List<Group> favoritesGroups = helper.getGroupDataSource().getAllFavoritesGroups();
 
         FavoritesAdapter adapter = new FavoritesAdapter(this.getActivity(), favoritesGroups, favoritesComputers);
         this.setListAdapter(adapter);

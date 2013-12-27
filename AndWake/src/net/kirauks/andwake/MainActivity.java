@@ -109,38 +109,43 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
     @Override
     public void handleCreate(Computer computer) {
         new DataSourceHelper(this).getComputerDataSource().createComputer(computer);
-        this.showAndRefreshComputerListFragment();
+        this.showComputerListFragment();
+        this.refreshComputerListFragment();
     }
 
     @Override
     public void handleCreate(Group group) {
         new DataSourceHelper(this).getGroupDataSource().createGroup(group);
-        this.showAndRefreshGroupListFragment();
+        this.showGroupListFragment();
+        this.refreshGroupListFragment();
     }
 
     @Override
     public void handleDelete(Computer computer) {
         new DataSourceHelper(this).getComputerDataSource().deleteComputer(computer);
-        this.showAndRefreshComputerListFragment();
+        this.showComputerListFragment();
+        this.refreshComputerListFragment();
     }
 
     @Override
     public void handleDelete(Group group) {
         new DataSourceHelper(this).getGroupDataSource().deleteGroup(group);
-        this.showAndRefreshGroupListFragment();
-        this.refreshFavoriteListFragment();
+        this.showGroupListFragment();
+        this.refreshGroupListFragment();
     }
 
     @Override
     public void handleFavoriteComputer(Computer computer, boolean favorite) {
         new DataSourceHelper(this).getComputerDataSource().setFavoriteFlag(computer, favorite);
         this.refreshFavoriteListFragment();
+        this.refreshComputerListFragment();
     }
 
     @Override
     public void handleFavoriteGroup(Group group, boolean favorite) {
         new DataSourceHelper(this).getGroupDataSource().setFavoriteFlag(group, favorite);
-        
+        this.refreshFavoriteListFragment();
+        this.refreshGroupListFragment();
     }
 
     @Override
@@ -166,13 +171,15 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
     @Override
     public void handleUpdate(Computer computer) {
         new DataSourceHelper(this).getComputerDataSource().updateComputer(computer);
-        this.showAndRefreshComputerListFragment();
+        this.showComputerListFragment();
+        this.refreshComputerListFragment();
     }
 
     @Override
     public void handleUpdate(Group group) {
         new DataSourceHelper(this).getGroupDataSource().updateGroup(group);
-        this.showAndRefreshGroupListFragment();
+        this.showGroupListFragment();
+        this.refreshGroupListFragment();
     }
 
     @Override
@@ -244,23 +251,37 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
     }
 
+    private void refreshComputerListFragment() {
+        ComputerListFragment f = (ComputerListFragment) this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
+        if(f != null){
+            f.updateList();
+        }
+    }
+    
     private void refreshFavoriteListFragment() {
         FavoriteListFragment f = (FavoriteListFragment) this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_FAVORITES));
-        f.updateList();
+        if(f != null){
+            f.updateList();
+        }
     }
 
-    public void showAndRefreshComputerListFragment() {
-        this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
-        ComputerListFragment f = (ComputerListFragment) this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
-        f.updateList();
-        this.updateAllAppwidgets();
-    }
-
-    public void showAndRefreshGroupListFragment() {
-        this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
+    private void refreshGroupListFragment() {
         GroupListFragment f = (GroupListFragment) this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
-        f.updateList();
-        this.updateAllAppwidgets();
+        if(f != null){
+            f.updateList();
+        }
+    }
+
+    public void showComputerListFragment() {
+        this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
+    }
+
+    public void showFavoriteListFragment() {
+        this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_FAVORITES);
+    }
+
+    public void showGroupListFragment() {
+        this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
     }
 
     public void updateAllAppwidgets() {

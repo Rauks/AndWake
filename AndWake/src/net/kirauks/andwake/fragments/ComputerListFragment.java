@@ -3,6 +3,7 @@ package net.kirauks.andwake.fragments;
 import java.util.List;
 
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.fragments.handlers.FavoriteComputerHandler;
 import net.kirauks.andwake.fragments.handlers.RequestDeleteComputerHandler;
 import net.kirauks.andwake.fragments.handlers.RequestUpdateComputerHandler;
 import net.kirauks.andwake.packets.WolPacketSendHelper;
@@ -17,12 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class ComputerListFragment extends ListFragment {
     public class ComputersAdapter extends ArrayAdapter<Computer> {
-        public ComputersAdapter(Context context, List<Computer> data) {
+        private List<Computer> favorites;
+        public ComputersAdapter(Context context, List<Computer> data, List<Computer> favorites) {
             super(context, R.layout.list_element_computer, data);
+            this.favorites = favorites;
         }
 
         @Override
@@ -47,6 +53,17 @@ public class ComputerListFragment extends ListFragment {
                 @Override
                 public void onClick(View v) {
                     new WolPacketSendHelper(ComputerListFragment.this.getActivity()).doSendWakePacket(item);
+                }
+            });
+            
+            CheckBox favorite = (CheckBox) rootView.findViewById(R.id.list_element_computers_favorite);
+            if(this.favorites.contains(item)){
+                favorite.setChecked(true);
+            }
+            favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    ((FavoriteComputerHandler) ComputerListFragment.this.getActivity()).handleFavoriteComputer(item, isChecked);
                 }
             });
 
@@ -76,8 +93,10 @@ public class ComputerListFragment extends ListFragment {
     }
 
     public void updateList() {
-        List<Computer> values = new DataSourceHelper(this.getActivity()).getComputerDataSource().getAllComputers();
-        ComputersAdapter adapter = new ComputersAdapter(this.getActivity(), values);
+        DataSourceHelper helper = new DataSourceHelper(this.getActivity());
+        List<Computer> values = helper.getComputerDataSource().getAllComputers();
+        List<Computer> favorites = helper.getComputerDataSource().getAllFavoritesComputers();
+        ComputersAdapter adapter = new ComputersAdapter(this.getActivity(), values, favorites);
         this.setListAdapter(adapter);
     }
 }
