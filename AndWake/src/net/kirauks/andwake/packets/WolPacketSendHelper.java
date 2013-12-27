@@ -37,7 +37,6 @@ public class WolPacketSendHelper extends PacketSendHelper {
             else {
                 Toast.makeText(this.getContext(), R.string.toast_wake_init, Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this.getContext(), packets[0].toString(), Toast.LENGTH_LONG).show();
             super.doSendPackets(packets);
         }
     }
