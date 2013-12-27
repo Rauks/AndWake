@@ -142,7 +142,18 @@ public class GroupDataSource {
         group.getChildren().addAll(this.computerDataSource.getComputers(idsP));
         return group;
     }
-
+    
+    public void setFavoriteFlag(Group group, boolean flag){
+        SQLiteDatabase db = this.dbHelper.openDatabase();
+        db.delete(DatabaseHelper.FAVORITES_GROUPS_TABLE_NAME, DatabaseHelper.FAVORITES_GROUPS_FIELD_GROUP + " = " + group.getId(), null);
+        if(flag){
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.FAVORITES_GROUPS_FIELD_GROUP, group.getId());
+            db.insert(DatabaseHelper.FAVORITES_GROUPS_TABLE_NAME, null, values);
+        }
+        this.dbHelper.closeDatabase(); 
+    }
+    
     public void updateGroup(Group group) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.GROUPS_TABLE_FIELD_NAME, group.getName());

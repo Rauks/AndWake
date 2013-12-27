@@ -111,6 +111,17 @@ public class ComputerDataSource {
         this.dbHelper.closeDatabase();
         return computers;
     }
+    
+    public void setFavoriteFlag(Computer computer, boolean flag){
+        SQLiteDatabase db = this.dbHelper.openDatabase();
+        db.delete(DatabaseHelper.FAVORITES_TARGETS_TABLE_NAME, DatabaseHelper.FAVORITES_TARGETS_FIELD_TARGET + " = " + computer.getId(), null);
+        if(flag){
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.FAVORITES_TARGETS_FIELD_TARGET, computer.getId());
+            db.insert(DatabaseHelper.FAVORITES_TARGETS_TABLE_NAME, null, values);
+        }
+        this.dbHelper.closeDatabase(); 
+    }
 
     public void updateComputer(Computer computer) {
         ContentValues values = new ContentValues();
