@@ -16,6 +16,8 @@ public class GroupDataSource {
         { DatabaseHelper.GROUPS_TABLE_FIELD_ID, DatabaseHelper.GROUPS_TABLE_FIELD_NAME };
     private final String[] allLinkColumns =
         { DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP, DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET };
+    private final String[] allFavoritesColumns =
+        { DatabaseHelper.FAVORITES_GROUPS_FIELD_GROUP };
 
     private final ComputerDataSource computerDataSource;
 
@@ -73,6 +75,27 @@ public class GroupDataSource {
         this.dbHelper.closeDatabase();
         return groups;
     }
+    
+    public List<Group> getAllFavoritesGroups() {
+        List<Long> ids = new ArrayList<Long>();
+        SQLiteDatabase db = this.dbHelper.openDatabase();
+        Cursor cursor = db.query(DatabaseHelper.FAVORITES_GROUPS_TABLE_NAME, 
+                this.allFavoritesColumns, null, null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            ids.add(cursor.getLong(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        this.dbHelper.closeDatabase();
+
+        long[] idsP = new long[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            idsP[i] = ids.get(i);
+        }
+        
+        return this.getGroups(idsP);
+    }
 
     public List<Group> getGroups(long[] ids) {
         List<Group> groups = new ArrayList<Group>();
@@ -104,7 +127,7 @@ public class GroupDataSource {
         Cursor cursor = db.query(DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME, this.allLinkColumns, DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP + " = " + group.getId(), null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            ids.add((long) cursor.getInt(1));
+            ids.add(cursor.getLong(1));
             cursor.moveToNext();
         }
         cursor.close();

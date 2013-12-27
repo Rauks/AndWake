@@ -13,6 +13,8 @@ public class ComputerDataSource {
     private final DatabaseHelper dbHelper;
     private final String[] allColumns =
         { DatabaseHelper.TARGETS_TABLE_FIELD_ID, DatabaseHelper.TARGETS_TABLE_FIELD_NAME, DatabaseHelper.TARGETS_TABLE_FIELD_ADDRESS, DatabaseHelper.TARGETS_TABLE_FIELD_MAC, DatabaseHelper.TARGETS_TABLE_FIELD_PORT };
+    private final String[] allFavoritesColumns =
+        { DatabaseHelper.FAVORITES_TARGETS_FIELD_TARGET };
 
     public ComputerDataSource(Context context) {
         this.dbHelper = DatabaseHelper.getInstance(context);
@@ -63,6 +65,27 @@ public class ComputerDataSource {
         cursor.close();
         this.dbHelper.closeDatabase();
         return computers;
+    }
+    
+    public List<Computer> getAllFavoritesComputers() {
+        List<Long> ids = new ArrayList<Long>();
+        SQLiteDatabase db = this.dbHelper.openDatabase();
+        Cursor cursor = db.query(DatabaseHelper.FAVORITES_TARGETS_TABLE_NAME, 
+                this.allFavoritesColumns, null, null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            ids.add(cursor.getLong(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        this.dbHelper.closeDatabase();
+
+        long[] idsP = new long[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            idsP[i] = ids.get(i);
+        }
+        
+        return this.getComputers(idsP);
     }
 
     public List<Computer> getComputers(long[] ids) {

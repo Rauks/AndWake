@@ -15,28 +15,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private static final String DATABASE_NAME = "andwake_targets.db";
+    
     public static final String TARGETS_TABLE_NAME = "targets";
-
     public static final String TARGETS_TABLE_FIELD_ID = "_id";
     public static final String TARGETS_TABLE_FIELD_NAME = "name";
     public static final String TARGETS_TABLE_FIELD_MAC = "mac";
     public static final String TARGETS_TABLE_FIELD_ADDRESS = "address";
     public static final String TARGETS_TABLE_FIELD_PORT = "port";
     private static final String TARGETS_TABLE_CREATE = "CREATE TABLE " + DatabaseHelper.TARGETS_TABLE_NAME + " (" + DatabaseHelper.TARGETS_TABLE_FIELD_ID + " INTEGER PRIMARY KEY, " + DatabaseHelper.TARGETS_TABLE_FIELD_NAME + " TEXT, " + DatabaseHelper.TARGETS_TABLE_FIELD_ADDRESS + " TEXT, " + DatabaseHelper.TARGETS_TABLE_FIELD_MAC + " TEXT, " + DatabaseHelper.TARGETS_TABLE_FIELD_PORT + " INTEGER);";
+    
     public static final String GROUPS_TABLE_NAME = "groups";
-
     public static final String GROUPS_TABLE_FIELD_ID = "_id";
     public static final String GROUPS_TABLE_FIELD_NAME = "name";
     private static final String GROUPS_TABLE_CREATE = "CREATE TABLE " + DatabaseHelper.GROUPS_TABLE_NAME + " (" + DatabaseHelper.GROUPS_TABLE_FIELD_ID + " INTEGER PRIMARY KEY, " + DatabaseHelper.GROUPS_TABLE_FIELD_NAME + " TEXT);";
+    
     public static final String LINK_TARGET_GROUP_TABLE_NAME = "link_target_group";
-
     public static final String LINK_TARGET_GROUP_FIELD_GROUP = "group_id";
     public static final String LINK_TARGET_GROUP_FIELD_TARGET = "target_id";
     private static final String LINK_TARGET_GROUP_TABLE_CREATE = "CREATE TABLE " + DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME + " (" + DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP + " INTEGER, " + DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET + " INTEGER);";
-    private static final String LINK_TARGET_GROUP_DELETE_TARGET_TRIGGER = "CREATE TRIGGER delete_link_target_group_target BEFORE DELETE ON " + DatabaseHelper.TARGETS_TABLE_NAME + " " + "FOR EACH ROW BEGIN " + "DELETE FROM " + DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME + " WHERE " + DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET + " = OLD." + DatabaseHelper.TARGETS_TABLE_FIELD_ID + "; " + "END";
+    private static final String LINK_TARGET_GROUP_DELETE_TARGET_TRIGGER = "CREATE TRIGGER delete_link_target_group_target BEFORE DELETE ON " + DatabaseHelper.TARGETS_TABLE_NAME + " FOR EACH ROW BEGIN " + "DELETE FROM " + DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME + " WHERE " + DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET + " = OLD." + DatabaseHelper.TARGETS_TABLE_FIELD_ID + "; " + "END";
+    private static final String LINK_TARGET_GROUP_DELETE_GROUP_TRIGGER = "CREATE TRIGGER delete_link_target_group_group BEFORE DELETE ON " + DatabaseHelper.GROUPS_TABLE_NAME + " FOR EACH ROW BEGIN " + "DELETE FROM " + DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME + " WHERE " + DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP + " = OLD." + DatabaseHelper.GROUPS_TABLE_FIELD_ID + "; " + "END";
 
-    private static final String LINK_TARGET_GROUP_DELETE_GROUP_TRIGGER = "CREATE TRIGGER delete_link_target_group_group BEFORE DELETE ON " + DatabaseHelper.GROUPS_TABLE_NAME + " " + "FOR EACH ROW BEGIN " + "DELETE FROM " + DatabaseHelper.LINK_TARGET_GROUP_TABLE_NAME + " WHERE " + DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP + " = OLD." + DatabaseHelper.GROUPS_TABLE_FIELD_ID + "; " + "END";
+    public static final String FAVORITES_TARGETS_TABLE_NAME = "favorites_targets";
+    public static final String FAVORITES_TARGETS_FIELD_TARGET = "target_id";
+    private static final String FAVORITES_TARGETS_TABLE_CREATE = 
+            "CREATE TABLE " + DatabaseHelper.FAVORITES_TARGETS_TABLE_NAME + 
+            " (" + DatabaseHelper.FAVORITES_TARGETS_FIELD_TARGET + " INTEGER);";
+    private static final String FAVORITES_TARGETS_DELETE_TARGET_TRIGGER = 
+            "CREATE TRIGGER delete_favorites_targets_target BEFORE DELETE ON " + 
+            DatabaseHelper.TARGETS_TABLE_NAME + 
+            " FOR EACH ROW BEGIN " + 
+            "DELETE FROM " + DatabaseHelper.FAVORITES_TARGETS_TABLE_NAME + 
+            " WHERE " + DatabaseHelper.FAVORITES_TARGETS_FIELD_TARGET + 
+            " = OLD." + DatabaseHelper.TARGETS_TABLE_FIELD_ID + "; " + "END";
 
+    public static final String FAVORITES_GROUPS_TABLE_NAME = "favorites_groups";
+    public static final String FAVORITES_GROUPS_FIELD_GROUP = "group_id";
+    private static final String FAVORITES_GROUPS_TABLE_CREATE = 
+            "CREATE TABLE " + DatabaseHelper.FAVORITES_GROUPS_TABLE_NAME + 
+            " (" + DatabaseHelper.FAVORITES_GROUPS_FIELD_GROUP + " INTEGER);";
+    private static final String FAVORITES_GROUPS_DELETE_GROUP_TRIGGER = 
+            "CREATE TRIGGER delete_favorites_groups_group BEFORE DELETE ON " + 
+            DatabaseHelper.GROUPS_TABLE_NAME + 
+            " FOR EACH ROW BEGIN " + 
+            "DELETE FROM " + DatabaseHelper.FAVORITES_GROUPS_TABLE_NAME + 
+            " WHERE " + DatabaseHelper.FAVORITES_GROUPS_FIELD_GROUP + 
+            " = OLD." + DatabaseHelper.GROUPS_TABLE_FIELD_ID + "; " + "END";
+    
     public static synchronized DatabaseHelper getInstance(Context context) {
         if (DatabaseHelper.instance == null) {
             DatabaseHelper.instance = new DatabaseHelper(context.getApplicationContext());
@@ -50,9 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void closeDatabase() {
         if (this.mOpenCounter.decrementAndGet() == 0) {
-            // Closing database
             this.mDatabase.close();
-
         }
     }
 
@@ -63,6 +86,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DatabaseHelper.LINK_TARGET_GROUP_TABLE_CREATE);
         db.execSQL(DatabaseHelper.LINK_TARGET_GROUP_DELETE_TARGET_TRIGGER);
         db.execSQL(DatabaseHelper.LINK_TARGET_GROUP_DELETE_GROUP_TRIGGER);
+        db.execSQL(DatabaseHelper.FAVORITES_TARGETS_TABLE_CREATE);
+        db.execSQL(DatabaseHelper.FAVORITES_TARGETS_DELETE_TARGET_TRIGGER);
+        db.execSQL(DatabaseHelper.FAVORITES_GROUPS_TABLE_CREATE);
+        db.execSQL(DatabaseHelper.FAVORITES_GROUPS_DELETE_GROUP_TRIGGER);
     }
 
     @Override
@@ -72,7 +99,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public SQLiteDatabase openDatabase() {
         if (this.mOpenCounter.incrementAndGet() == 1) {
-            // Opening new database
             this.mDatabase = DatabaseHelper.instance.getWritableDatabase();
         }
         return this.mDatabase;
