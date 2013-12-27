@@ -32,5 +32,14 @@
         <item name="android:textSize">20sp</item>
         <item name="android:paddingLeft">10dp</item>
     </style>
+    
+    <!-- List headers theme -->
+    <style name="ListHeader">
+        <item name="android:background">#000</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+    <style name="ListHeader.Text">
+        <item name="android:textSize">@android:style/TextAppearance.Small</item>
+    </style>
 
 </resources>

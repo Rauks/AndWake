@@ -8,5 +8,10 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- API 14 theme customizations can go here. -->
     </style>
+    
+    <!-- List header theme -->
+    <style name="ListHeader.Text">
+        <item name="android:textAllCaps">true</item>
+    </style>
 
 </resources>

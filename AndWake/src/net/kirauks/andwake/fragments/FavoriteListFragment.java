@@ -1,5 +1,7 @@
 package net.kirauks.andwake.fragments;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.kirauks.andwake.R;
@@ -50,16 +52,33 @@ public class FavoriteListFragment extends ListFragment {
             }
         }
         
-        private Context context;
+        private final int HEAD_COUNT = 3;
+        private final int HEAD_TYPE_GROUP = 0;
+        private final int HEAD_TYPE_COMPUTER = 1;
+        private final int HEAD_TYPE_HEADER = 2;
         
-        private List<Group> groups;
-        private List<Computer> computers;
+        private Context context;
+
+        private List<Object> datas;
+        private List<Integer> datasType;
         
         public FavoritesAdapter(Context context, List<Group> groups, List<Computer> computers) {
             super();
             this.context = context;
-            this.groups = groups;
-            this.computers = computers;
+            this.datas = new ArrayList<Object>();
+            this.datasType = new ArrayList<Integer>();
+            if(!groups.isEmpty()){
+                this.datas.add(context.getResources().getString(R.string.fragment_groups_title));
+                this.datasType.add(this.HEAD_TYPE_HEADER);
+                this.datas.addAll(groups);
+                this.datasType.addAll(Collections.nCopies(groups.size(), this.HEAD_TYPE_GROUP));
+            }
+            if(!computers.isEmpty()){
+                this.datas.add(context.getResources().getString(R.string.fragment_computers_title));
+                this.datasType.add(this.HEAD_TYPE_HEADER);
+                this.datas.addAll(computers);
+                this.datasType.addAll(Collections.nCopies(computers.size(), this.HEAD_TYPE_COMPUTER));
+            }
         }
 
         @Override
@@ -70,7 +89,9 @@ public class FavoriteListFragment extends ListFragment {
 
             View rootView = convertView;
 
-            if (rawItem instanceof Group) {
+            int itemType = this.getItemViewType(position);
+            
+            if (itemType == this.HEAD_TYPE_GROUP) {
                 final Group item = (Group)rawItem;
                 rootView = inflater.inflate(R.layout.list_element_group, parent, false);
             
@@ -117,7 +138,7 @@ public class FavoriteListFragment extends ListFragment {
                     }
                 });
             }
-            else if (rawItem instanceof Computer) {
+            else if (itemType == this.HEAD_TYPE_COMPUTER) {
                 final Computer item = (Computer)rawItem;
                 rootView = inflater.inflate(R.layout.list_element_computer, parent, false);
                 
@@ -163,26 +184,39 @@ public class FavoriteListFragment extends ListFragment {
                     }
                 });
             }
+            else if (itemType == this.HEAD_TYPE_HEADER){
+                rootView = inflater.inflate(R.layout.list_header_favorites, parent, false);
+                
+                TextView header = (TextView) rootView.findViewById(R.id.list_header_favorites_name);
+                header.setText((String)rawItem);
+            }
             
             return rootView;
         }
 
         @Override
         public int getCount() {
-            return this.groups.size() + this.computers.size();
+            return this.datas.size();
         }
 
         @Override
         public Object getItem(int position) {
-            if(position >= this.groups.size()){
-                return this.computers.get(position - this.groups.size());
-            }
-            return this.groups.get(position);
+            return this.datas.get(position);
         }
 
         @Override
         public long getItemId(int position) {
             return position;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return this.datasType.get(position);
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return this.HEAD_COUNT;
         }
     }
 

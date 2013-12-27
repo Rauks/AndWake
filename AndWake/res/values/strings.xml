@@ -36,6 +36,7 @@
     <string name="list_element_computer_wake">Wake</string>
     <string name="list_element_computer_port_separator">:</string>
     <string name="list_element_computer_favorite">Favorite</string>
+    <string name="list_header_name">Header</string>
     <string name="toast_wake_init">Sending wake packet&#8230;</string>
     <string name="toast_wake_done">Wake packet sent.</string>
     <string name="toast_wake_error">An error has occurred, the packet has not been sent.</string>
