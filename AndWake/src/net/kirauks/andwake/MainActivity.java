@@ -16,6 +16,8 @@ import net.kirauks.andwake.fragments.handlers.CreateComputerHandler;
 import net.kirauks.andwake.fragments.handlers.CreateGroupHandler;
 import net.kirauks.andwake.fragments.handlers.DeleteComputerHandler;
 import net.kirauks.andwake.fragments.handlers.DeleteGroupHandler;
+import net.kirauks.andwake.fragments.handlers.FavoriteComputerHandler;
+import net.kirauks.andwake.fragments.handlers.FavoriteGroupHandler;
 import net.kirauks.andwake.fragments.handlers.RequestDeleteComputerHandler;
 import net.kirauks.andwake.fragments.handlers.RequestDeleteGroupHandler;
 import net.kirauks.andwake.fragments.handlers.RequestUpdateComputerHandler;
@@ -43,6 +45,7 @@ import android.view.MenuItem;
 public class MainActivity extends FragmentActivity implements CancelHandler,
         CreateGroupHandler, UpdateGroupHandler, DeleteGroupHandler,
         CreateComputerHandler, UpdateComputerHandler, DeleteComputerHandler,
+        FavoriteGroupHandler, FavoriteComputerHandler,
         RequestUpdateGroupHandler, RequestDeleteGroupHandler,
         RequestUpdateComputerHandler, RequestDeleteComputerHandler,
         ActionBar.TabListener {
@@ -125,6 +128,19 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
     public void handleDelete(Group group) {
         new DataSourceHelper(this).getGroupDataSource().deleteGroup(group);
         this.showAndRefreshGroupListFragment();
+        this.refreshFavoriteListFragment();
+    }
+
+    @Override
+    public void handleFavoriteComputer(Computer computer, boolean favorite) {
+        new DataSourceHelper(this).getComputerDataSource().setFavoriteFlag(computer, favorite);
+        this.refreshFavoriteListFragment();
+    }
+
+    @Override
+    public void handleFavoriteGroup(Group group, boolean favorite) {
+        new DataSourceHelper(this).getGroupDataSource().setFavoriteFlag(group, favorite);
+        
     }
 
     @Override
@@ -228,6 +244,11 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
     }
 
+    private void refreshFavoriteListFragment() {
+        FavoriteListFragment f = (FavoriteListFragment) this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_FAVORITES));
+        f.updateList();
+    }
+
     public void showAndRefreshComputerListFragment() {
         this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
         ComputerListFragment f = (ComputerListFragment) this.getSupportFragmentManager().findFragmentByTag(this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
@@ -252,6 +273,5 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
             this.sendBroadcast(intent);
         }
-
     }
 }
