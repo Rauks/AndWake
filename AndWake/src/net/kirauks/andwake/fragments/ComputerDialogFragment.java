@@ -2,14 +2,17 @@ package net.kirauks.andwake.fragments;
 
 import java.util.Locale;
 
-import net.kirauks.andwake.MainActivity;
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.fragments.handlers.CancelHandler;
+import net.kirauks.andwake.fragments.handlers.CreateComputerHandler;
+import net.kirauks.andwake.fragments.handlers.UpdateComputerHandler;
 import net.kirauks.andwake.packets.WolPacket;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.utils.FormValidator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -18,20 +21,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ComputerEditDialogFragment extends DialogFragment {
-	public static ComputerEditDialogFragment newInstance() {
-		ComputerEditDialogFragment df = new ComputerEditDialogFragment();
+public class ComputerDialogFragment extends DialogFragment {
+	public static ComputerDialogFragment newInstance() {
+		ComputerDialogFragment df = new ComputerDialogFragment();
 		Bundle bundle = new Bundle();
 		df.setArguments(bundle);
 		return df;
 	}
 
-	public static ComputerEditDialogFragment newInstance(Computer toEdit) {
-		ComputerEditDialogFragment df = new ComputerEditDialogFragment();
+	public static ComputerDialogFragment newInstance(Computer toEdit) {
+		ComputerDialogFragment df = new ComputerDialogFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("edit", toEdit);
 		df.setArguments(bundle);
 		return df;
+	}
+
+	private void handleNegativeClick() {
+		((CancelHandler)this.getActivity()).handleCancel();
 	}
 
 	private void handlePositiveClick() {
@@ -75,10 +82,14 @@ public class ComputerEditDialogFragment extends DialogFragment {
 			toEdit.setMac(mac);
 			toEdit.setAddress(address);
 			toEdit.setPort(port);
-			((MainActivity) this.getActivity()).doEditComputer(toEdit);
+			((UpdateComputerHandler)this.getActivity()).handleUpdate(toEdit);
 		} else {
-			((MainActivity) this.getActivity()).doAddComputer(name, mac,
-					address, port);
+			Computer toCreate = new Computer();
+			toCreate.setName(name);
+			toCreate.setMac(mac);
+			toCreate.setAddress(address);
+			toCreate.setPort(port);
+			((CreateComputerHandler)this.getActivity()).handleCreate(toCreate);
 		}
 	}
 
@@ -91,15 +102,19 @@ public class ComputerEditDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = this.getActivity().getLayoutInflater();
-		final Computer toEdit = (Computer) this.getArguments().getParcelable(
-				"edit");
+		final Computer toEdit = this.getArguments().getParcelable("edit");
 		final AlertDialog dialog = new AlertDialog.Builder(this.getActivity())
 				.setIcon(R.drawable.ic_dialog_edit)
 				.setView(
 						inflater.inflate(R.layout.dialog_fragment_computer,
 								null))
 				.setPositiveButton(R.string.dialog_ok, null)
-				.setNegativeButton(R.string.dialog_cancel, null).create();
+				.setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ComputerDialogFragment.this.handleNegativeClick();
+					}
+				}).create();
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialogInterface) {
@@ -108,9 +123,9 @@ public class ComputerEditDialogFragment extends DialogFragment {
 				okButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						if (ComputerEditDialogFragment.this.validateForm()) {
+						if (ComputerDialogFragment.this.validateForm()) {
 							dialog.dismiss();
-							ComputerEditDialogFragment.this
+							ComputerDialogFragment.this
 									.handlePositiveClick();
 						}
 					}

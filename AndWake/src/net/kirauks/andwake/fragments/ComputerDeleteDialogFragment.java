@@ -1,7 +1,8 @@
 package net.kirauks.andwake.fragments;
 
-import net.kirauks.andwake.MainActivity;
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.fragments.handlers.CancelHandler;
+import net.kirauks.andwake.fragments.handlers.DeleteComputerHandler;
 import net.kirauks.andwake.targets.Computer;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,11 +22,12 @@ public class ComputerDeleteDialogFragment extends DialogFragment {
 	}
 
 	private void handlePositiveClick() {
-		Computer toDelete = (Computer) this.getArguments().getParcelable(
-				"delete");
-		if (toDelete != null) {
-			((MainActivity) this.getActivity()).doDeleteComputer(toDelete);
-		}
+		Computer toDelete = (Computer) this.getArguments().getParcelable("delete");
+		((DeleteComputerHandler)this.getActivity()).handleDelete(toDelete);
+	}
+
+	private void handleNegativeClick() {
+		((CancelHandler)this.getActivity()).handleCancel();
 	}
 
 	@Override
@@ -49,7 +51,12 @@ public class ComputerDeleteDialogFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int which) {
 						ComputerDeleteDialogFragment.this.handlePositiveClick();
 					}
-				}).setNegativeButton(R.string.dialog_cancel, null).create();
+				}).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ComputerDeleteDialogFragment.this.handleNegativeClick();
+					}
+				}).create();
 
 		return dialog;
 	}

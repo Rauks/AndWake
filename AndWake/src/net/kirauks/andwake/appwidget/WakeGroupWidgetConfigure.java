@@ -1,8 +1,8 @@
 package net.kirauks.andwake.appwidget;
 
 import net.kirauks.andwake.appwidget.fragments.ConfigureGroupDialogFragment;
-import net.kirauks.andwake.appwidget.fragments.OnConfigureCancelListener;
-import net.kirauks.andwake.appwidget.fragments.OnConfigureGroupListener;
+import net.kirauks.andwake.appwidget.fragments.listeners.OnConfigureCancelListener;
+import net.kirauks.andwake.appwidget.fragments.listeners.OnConfigureGroupListener;
 import net.kirauks.andwake.targets.Group;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;

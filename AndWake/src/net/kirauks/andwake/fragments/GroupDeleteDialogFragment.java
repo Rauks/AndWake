@@ -1,7 +1,8 @@
 package net.kirauks.andwake.fragments;
 
-import net.kirauks.andwake.MainActivity;
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.fragments.handlers.CancelHandler;
+import net.kirauks.andwake.fragments.handlers.DeleteGroupHandler;
 import net.kirauks.andwake.targets.Group;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,9 +23,11 @@ public class GroupDeleteDialogFragment extends DialogFragment {
 
 	private void handlePositiveClick() {
 		Group toDelete = (Group) this.getArguments().getParcelable("delete");
-		if (toDelete != null) {
-			((MainActivity) this.getActivity()).doDeleteGroup(toDelete);
-		}
+		((DeleteGroupHandler)this.getActivity()).handleDelete(toDelete);
+	}
+
+	private void handleNegativeClick() {
+		((CancelHandler)this.getActivity()).handleCancel();
 	}
 
 	@Override
@@ -48,7 +51,12 @@ public class GroupDeleteDialogFragment extends DialogFragment {
 					public void onClick(DialogInterface dialog, int which) {
 						GroupDeleteDialogFragment.this.handlePositiveClick();
 					}
-				}).setNegativeButton(R.string.dialog_cancel, null).create();
+				}).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						GroupDeleteDialogFragment.this.handleNegativeClick();
+					}
+				}).create();
 		return dialog;
 	}
 

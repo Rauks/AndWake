@@ -1,4 +1,4 @@
-package net.kirauks.andwake.appwidget.fragments;
+package net.kirauks.andwake.appwidget.fragments.listeners;
 
 import net.kirauks.andwake.targets.Computer;
 

@@ -2,10 +2,12 @@ package net.kirauks.andwake.fragments;
 
 import java.util.List;
 
-import net.kirauks.andwake.MainActivity;
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.fragments.handlers.RequestDeleteComputerHandler;
+import net.kirauks.andwake.fragments.handlers.RequestUpdateComputerHandler;
 import net.kirauks.andwake.packets.WolPacketSendHelper;
 import net.kirauks.andwake.targets.Computer;
+import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ComputersFragment extends ListFragment {
+public class ComputerListFragment extends ListFragment{
 	public class ComputersAdapter extends ArrayAdapter<Computer> {
 		public ComputersAdapter(Context context, List<Computer> data) {
 			super(context, R.layout.list_element_computer, data);
@@ -51,7 +53,7 @@ public class ComputersFragment extends ListFragment {
 			wake.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					new WolPacketSendHelper(ComputersFragment.this
+					new WolPacketSendHelper(ComputerListFragment.this
 							.getActivity()).doSendWakePacket(item);
 				}
 			});
@@ -59,16 +61,16 @@ public class ComputersFragment extends ListFragment {
 			rootView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((MainActivity) ComputersFragment.this.getActivity())
-							.showEditComputer(item);
+					((RequestUpdateComputerHandler)ComputerListFragment.this.getActivity())
+							.handleRequestUpdate(item);
 				}
 			});
 
 			rootView.setOnLongClickListener(new View.OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
-					((MainActivity) ComputersFragment.this.getActivity())
-							.showDeleteComputer(item);
+					((RequestDeleteComputerHandler)ComputerListFragment.this.getActivity())
+							.handleRequestDelete(item);
 					return true;
 				}
 			});
@@ -76,7 +78,7 @@ public class ComputersFragment extends ListFragment {
 			return rootView;
 		}
 	}
-
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -84,11 +86,8 @@ public class ComputersFragment extends ListFragment {
 	}
 
 	public void updateList() {
-		List<Computer> values = ((MainActivity) this.getActivity())
-				.getDataSourceHelper().getComputerDataSource()
-				.getAllComputers();
-		ComputersAdapter adapter = new ComputersAdapter(this.getActivity(),
-				values);
+		List<Computer> values = new DataSourceHelper(this.getActivity()).getComputerDataSource().getAllComputers();
+		ComputersAdapter adapter = new ComputersAdapter(this.getActivity(), values);
 		this.setListAdapter(adapter);
 	}
 }

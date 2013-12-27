@@ -1,8 +1,8 @@
 package net.kirauks.andwake.appwidget;
 
 import net.kirauks.andwake.appwidget.fragments.ConfigureComputerDialogFragment;
-import net.kirauks.andwake.appwidget.fragments.OnConfigureCancelListener;
-import net.kirauks.andwake.appwidget.fragments.OnConfigureComputerListener;
+import net.kirauks.andwake.appwidget.fragments.listeners.OnConfigureCancelListener;
+import net.kirauks.andwake.appwidget.fragments.listeners.OnConfigureComputerListener;
 import net.kirauks.andwake.targets.Computer;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;

@@ -2,11 +2,13 @@ package net.kirauks.andwake.fragments;
 
 import java.util.List;
 
-import net.kirauks.andwake.MainActivity;
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.fragments.handlers.RequestDeleteGroupHandler;
+import net.kirauks.andwake.fragments.handlers.RequestUpdateGroupHandler;
 import net.kirauks.andwake.packets.WolPacketSendHelper;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
+import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -19,7 +21,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GroupsFragment extends ListFragment {
+public class GroupListFragment extends ListFragment{
 	public class GroupsAdapter extends ArrayAdapter<Group> {
 		public class GroupComputersAdapter extends ArrayAdapter<Computer> {
 			public GroupComputersAdapter(Context context, List<Computer> objects) {
@@ -75,7 +77,7 @@ public class GroupsFragment extends ListFragment {
 			wake.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					new WolPacketSendHelper(GroupsFragment.this.getActivity())
+					new WolPacketSendHelper(GroupListFragment.this.getActivity())
 							.doSendWakePacket(item.getChildren());
 				}
 			});
@@ -83,16 +85,16 @@ public class GroupsFragment extends ListFragment {
 			rootView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((MainActivity) GroupsFragment.this.getActivity())
-							.showEditGroup(item);
+					((RequestUpdateGroupHandler)GroupListFragment.this.getActivity())
+							.handleRequestUpdate(item);
 				}
 			});
 
 			rootView.setOnLongClickListener(new View.OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
-					((MainActivity) GroupsFragment.this.getActivity())
-							.showDeleteGroup(item);
+					((RequestDeleteGroupHandler)GroupListFragment.this.getActivity())
+							.handleRequestDelete(item);
 					return true;
 				}
 			});
@@ -100,7 +102,7 @@ public class GroupsFragment extends ListFragment {
 			return rootView;
 		}
 	}
-
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -108,8 +110,7 @@ public class GroupsFragment extends ListFragment {
 	}
 
 	public void updateList() {
-		List<Group> values = ((MainActivity) this.getActivity())
-				.getDataSourceHelper().getGroupDataSource().getAllGroups();
+		List<Group> values = new DataSourceHelper(this.getActivity()).getGroupDataSource().getAllGroups();
 		GroupsAdapter adapter = new GroupsAdapter(this.getActivity(), values);
 		this.setListAdapter(adapter);
 	}

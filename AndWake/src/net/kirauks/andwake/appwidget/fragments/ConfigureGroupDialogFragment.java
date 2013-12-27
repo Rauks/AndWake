@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.appwidget.fragments.listeners.OnConfigureGroupListener;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.AlertDialog;
@@ -12,7 +13,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 public class ConfigureGroupDialogFragment extends ConfigureDialogFragment {
-	OnConfigureGroupListener configureListener;
+	private OnConfigureGroupListener configureListener;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.kirauks.andwake.R;
+import net.kirauks.andwake.appwidget.fragments.listeners.OnConfigureComputerListener;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
 import android.app.AlertDialog;
@@ -11,8 +12,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class ConfigureComputerDialogFragment extends ConfigureDialogFragment {
-	OnConfigureComputerListener configureListener;
+public class ConfigureComputerDialogFragment extends ConfigureDialogFragment{
+	private OnConfigureComputerListener configureListener;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {

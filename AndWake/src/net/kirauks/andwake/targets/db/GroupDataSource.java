@@ -26,14 +26,14 @@ public class GroupDataSource {
 		this.computerDataSource = computerDataSource;
 	}
 
-	public Group createGroup(String name, List<Computer> computers) {
+	public Group createGroup(Group group) {
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHelper.GROUPS_TABLE_FIELD_NAME, name);
+		values.put(DatabaseHelper.GROUPS_TABLE_FIELD_NAME, group.getName());
 		SQLiteDatabase db = this.dbHelper.openDatabase();
 		long insertId = db.insert(DatabaseHelper.GROUPS_TABLE_NAME, null,
 				values);
 
-		for (Computer computer : computers) {
+		for (Computer computer : group.getChildren()) {
 			ContentValues linkValues = new ContentValues();
 			linkValues.put(DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET,
 					computer.getId());

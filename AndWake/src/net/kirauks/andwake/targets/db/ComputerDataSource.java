@@ -22,14 +22,13 @@ public class ComputerDataSource {
 		this.dbHelper = DatabaseHelper.getInstance(context);
 	}
 
-	public Computer createComputer(String name, String mac, String address,
-			int port) {
+	public Computer createComputer(Computer computer) {
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_NAME, name);
-		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_ADDRESS, address);
-		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_MAC, mac);
+		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_NAME, computer.getName());
+		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_ADDRESS, computer.getAddress());
+		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_MAC, computer.getMac());
 		values.put(DatabaseHelper.TARGETS_TABLE_FIELD_PORT,
-				String.valueOf(port));
+				String.valueOf(computer.getPort()));
 		SQLiteDatabase db = this.dbHelper.openDatabase();
 		long insertId = db.insert(DatabaseHelper.TARGETS_TABLE_NAME, null,
 				values);

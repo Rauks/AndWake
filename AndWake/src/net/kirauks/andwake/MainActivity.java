@@ -1,17 +1,27 @@
 package net.kirauks.andwake;
 
-import java.util.List;
 import java.util.Locale;
 
 import net.kirauks.andwake.appwidget.WakeComputerWidget;
 import net.kirauks.andwake.appwidget.WakeGroupWidget;
 import net.kirauks.andwake.fragments.ComputerDeleteDialogFragment;
-import net.kirauks.andwake.fragments.ComputerEditDialogFragment;
-import net.kirauks.andwake.fragments.ComputersFragment;
-import net.kirauks.andwake.fragments.FavoritesFragment;
+import net.kirauks.andwake.fragments.ComputerDialogFragment;
+import net.kirauks.andwake.fragments.ComputerListFragment;
+import net.kirauks.andwake.fragments.FavoriteListFragment;
 import net.kirauks.andwake.fragments.GroupDeleteDialogFragment;
-import net.kirauks.andwake.fragments.GroupEditDialogFragment;
-import net.kirauks.andwake.fragments.GroupsFragment;
+import net.kirauks.andwake.fragments.GroupDialogFragment;
+import net.kirauks.andwake.fragments.GroupListFragment;
+import net.kirauks.andwake.fragments.handlers.CancelHandler;
+import net.kirauks.andwake.fragments.handlers.CreateComputerHandler;
+import net.kirauks.andwake.fragments.handlers.CreateGroupHandler;
+import net.kirauks.andwake.fragments.handlers.DeleteComputerHandler;
+import net.kirauks.andwake.fragments.handlers.DeleteGroupHandler;
+import net.kirauks.andwake.fragments.handlers.RequestDeleteComputerHandler;
+import net.kirauks.andwake.fragments.handlers.RequestDeleteGroupHandler;
+import net.kirauks.andwake.fragments.handlers.RequestUpdateComputerHandler;
+import net.kirauks.andwake.fragments.handlers.RequestUpdateGroupHandler;
+import net.kirauks.andwake.fragments.handlers.UpdateComputerHandler;
+import net.kirauks.andwake.fragments.handlers.UpdateGroupHandler;
 import net.kirauks.andwake.targets.Computer;
 import net.kirauks.andwake.targets.Group;
 import net.kirauks.andwake.targets.db.DataSourceHelper;
@@ -30,8 +40,12 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+public class MainActivity extends FragmentActivity implements CancelHandler,
+		CreateGroupHandler, UpdateGroupHandler, DeleteGroupHandler,
+		CreateComputerHandler, UpdateComputerHandler,
+		DeleteComputerHandler, RequestUpdateGroupHandler,
+		RequestDeleteGroupHandler, RequestUpdateComputerHandler,
+		RequestDeleteComputerHandler, ActionBar.TabListener {
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		private static final int COUNT_PAGES = 3;
 		private static final int PAGE_FAVORITES = 0;
@@ -52,13 +66,13 @@ public class MainActivity extends FragmentActivity implements
 		public Fragment getItem(int position) {
 			switch (position) {
 			case PAGE_FAVORITES:
-				return new FavoritesFragment();
+				return new FavoriteListFragment();
 			case PAGE_GROUPS:
-				return new GroupsFragment();
+				return new GroupListFragment();
 			case PAGE_COMPUTERS:
-				return new ComputersFragment();
+				return new ComputerListFragment();
 			default:
-				return new FavoritesFragment();
+				return new FavoriteListFragment();
 			}
 		}
 
@@ -84,71 +98,17 @@ public class MainActivity extends FragmentActivity implements
 
 	private ViewPager mViewPager;
 
-	private DataSourceHelper dataSourceHelper;
-
-	public void doAddComputer(String name, String mac, String address, int port) {
-		this.dataSourceHelper.getComputerDataSource().createComputer(name, mac,
-				address, port);
-		this.goAndRefreshComputersFragmentList();
-	}
-
-	public void doAddGroup(String name, List<Computer> computers) {
-		this.dataSourceHelper.getGroupDataSource().createGroup(name, computers);
-		this.goAndRefreshGroupsFragmentList();
-	}
-
-	public void doDeleteComputer(Computer delete) {
-		this.dataSourceHelper.getComputerDataSource().deleteComputer(delete);
-		this.goAndRefreshComputersFragmentList();
-	}
-
-	public void doDeleteGroup(Group delete) {
-		this.dataSourceHelper.getGroupDataSource().deleteGroup(delete);
-		this.goAndRefreshGroupsFragmentList();
-	}
-
-	public void doEditComputer(Computer edit) {
-		this.dataSourceHelper.getComputerDataSource().updateComputer(edit);
-		this.goAndRefreshComputersFragmentList();
-	}
-
-	public void doEditGroup(Group edit) {
-		this.dataSourceHelper.getGroupDataSource().updateGroup(edit);
-		this.goAndRefreshGroupsFragmentList();
-	}
-
-	public DataSourceHelper getDataSourceHelper() {
-		return this.dataSourceHelper;
-	}
-
 	private String getFragmentTag(int pos) {
 		return "android:switcher:" + R.id.pager + ":" + pos;
 	}
 
-	public void goAndRefreshComputersFragmentList() {
-		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
-		ComputersFragment f = (ComputersFragment) this
-				.getSupportFragmentManager()
-				.findFragmentByTag(
-						this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
-		f.updateList();
-		this.updateAllWidgets();
-	}
-
-	public void goAndRefreshGroupsFragmentList() {
-		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
-		GroupsFragment f = (GroupsFragment) this.getSupportFragmentManager()
-				.findFragmentByTag(
-						this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
-		f.updateList();
-		this.updateAllWidgets();
+	@Override
+	public void handleCancel() {
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		this.dataSourceHelper = new DataSourceHelper(this);
 
 		this.setContentView(R.layout.activity_main);
 
@@ -177,6 +137,19 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
+	public void handleCreate(Computer computer) {
+		new DataSourceHelper(this).getComputerDataSource().createComputer(
+				computer);
+		this.showAndRefreshComputerListFragment();
+	}
+
+	@Override
+	public void handleCreate(Group group) {
+		new DataSourceHelper(this).getGroupDataSource().createGroup(group);
+		this.showAndRefreshGroupListFragment();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		this.getMenuInflater().inflate(R.menu.main, menu);
@@ -184,18 +157,59 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
+	public void handleDelete(Computer computer) {
+		new DataSourceHelper(this).getComputerDataSource().deleteComputer(
+				computer);
+		this.showAndRefreshComputerListFragment();
+	}
+
+	@Override
+	public void handleDelete(Group group) {
+		new DataSourceHelper(this).getGroupDataSource().deleteGroup(group);
+		this.showAndRefreshGroupListFragment();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.menu_add_computer:
-			this.showAddComputer();
+			this.onRequestCreateComputer();
 			return true;
 		case R.id.menu_add_group:
-			this.showAddGroup();
+			this.onRequestCreateGroup();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	public void onRequestCreateComputer() {
+		ComputerDialogFragment.newInstance().show(this.getSupportFragmentManager(), "add_computer_dialog");
+	}
+
+	public void onRequestCreateGroup() {
+		GroupDialogFragment.newInstance().show(this.getSupportFragmentManager(), "add_group_dialog");
+	}
+
+	@Override
+	public void handleRequestDelete(Computer computer) {
+		ComputerDeleteDialogFragment.newInstance(computer).show(this.getSupportFragmentManager(), "delete_computer_dialog");
+	}
+
+	@Override
+	public void handleRequestDelete(Group group) {
+		GroupDeleteDialogFragment.newInstance(group).show(this.getSupportFragmentManager(), "delete_group_dialog");
+	}
+
+	@Override
+	public void handleRequestUpdate(Computer computer) {
+		ComputerDialogFragment.newInstance(computer).show(this.getSupportFragmentManager(), "edit_computer_dialog");
+	}
+
+	@Override
+	public void handleRequestUpdate(Group group) {
+		GroupDialogFragment.newInstance(group).show(this.getSupportFragmentManager(), "edit_group_dialog");
 	}
 
 	@Override
@@ -212,37 +226,39 @@ public class MainActivity extends FragmentActivity implements
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 	}
 
-	public void showAddComputer() {
-		ComputerEditDialogFragment.newInstance().show(
-				this.getSupportFragmentManager(), "add_computer_dialog");
+	@Override
+	public void handleUpdate(Group group) {
+		new DataSourceHelper(this).getGroupDataSource().updateGroup(group);
+		this.showAndRefreshGroupListFragment();
 	}
 
-	public void showAddGroup() {
-		GroupEditDialogFragment.newInstance().show(
-				this.getSupportFragmentManager(), "add_group_dialog");
+	@Override
+	public void handleUpdate(Computer computer) {
+		new DataSourceHelper(this).getComputerDataSource().updateComputer(
+				computer);
+		this.showAndRefreshComputerListFragment();
 	}
 
-	public void showDeleteComputer(Computer item) {
-		ComputerDeleteDialogFragment.newInstance(item).show(
-				this.getSupportFragmentManager(), "delete_computer_dialog");
+	public void showAndRefreshComputerListFragment() {
+		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
+		ComputerListFragment f = (ComputerListFragment) this
+				.getSupportFragmentManager()
+				.findFragmentByTag(
+						this.getFragmentTag(SectionsPagerAdapter.PAGE_COMPUTERS));
+		f.updateList();
+		this.updateAllAppwidgets();
 	}
 
-	public void showDeleteGroup(Group item) {
-		GroupDeleteDialogFragment.newInstance(item).show(
-				this.getSupportFragmentManager(), "delete_group_dialog");
+	public void showAndRefreshGroupListFragment() {
+		this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
+		GroupListFragment f = (GroupListFragment) this
+				.getSupportFragmentManager().findFragmentByTag(
+						this.getFragmentTag(SectionsPagerAdapter.PAGE_GROUPS));
+		f.updateList();
+		this.updateAllAppwidgets();
 	}
 
-	public void showEditComputer(Computer item) {
-		ComputerEditDialogFragment.newInstance(item).show(
-				this.getSupportFragmentManager(), "edit_computer_dialog");
-	}
-
-	public void showEditGroup(Group item) {
-		GroupEditDialogFragment.newInstance(item).show(
-				this.getSupportFragmentManager(), "edit_group_dialog");
-	}
-
-	public void updateAllWidgets() {
+	public void updateAllAppwidgets() {
 		final Class<?>[] providerClasses = new Class<?>[] {
 				WakeComputerWidget.class, WakeGroupWidget.class };
 		for (Class<?> providerClass : providerClasses) {
