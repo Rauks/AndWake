@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="appwidget_computer_name">AndWake Ordinateur</string>
+    <string name="appwidget_computer_dialog_config_title">Choix d'Ordinateur</string>
+    <string name="appwidget_group_name">AndWake Groupe</string>
+    <string name="appwidget_group_dialog_config_title">Choix de Groupe</string>
+    <string name="appwidget_loading">Chargement&#8230;</string>
+    <string name="appwidget_computer_wake">WoL</string>
+    <string name="appwidget_group_wake">Multi-WoL</string>
+    <string name="menu_add_group">Nouveau Groupe</string>
+    <string name="fragment_favorites_title">Favoris</string>
+    <string name="fragment_groups_title">Groupes</string>
+    <string name="fragment_computers_title">Ordinateurs</string>
+    <string name="menu_add_computer">Nouvel Ordinateur</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Annuler</string>
+    <string name="dialog_computer_name">Nom :</string>
+    <string name="dialog_computer_name_hint">MonOrdinateur</string>
+    <string name="dialog_computer_mac">Addresse Mac :</string>
+    <string name="dialog_computer_address">Addresse Réseau :</string>
+    <string name="dialog_computer_port">Port :</string>
+    <string name="dialog_computer_error_name_empty">Le nom ne peut pas être vide</string>
+    <string name="dialog_computer_error_mac_hex">Adresse mac invalide</string>
+    <string name="dialog_computer_error_port_empty">Le port ne peut pas être vide</string>
+    <string name="dialog_computer_error_address_empty">L'addresse réseau ne peut pas être vide</string>
+    <string name="list_element_computer_wake">WoL</string>
+    <string name="list_element_computer_favorite">Favoris</string>
+    <string name="toast_wake_init">Envoi du paquet&#8230;</string>
+    <string name="toast_wake_done">Paquet envoyé.</string>
+    <string name="toast_wake_error">Une erreur est survenue, le paquet n'a pas été envoyé.</string>
+    <string name="dialog_computer_title_add">Nouvel Ordinateur</string>
+    <string name="dialog_computer_title_edit">Edition de l'Ordinateur</string>
+    <string name="dialog_group_name">Nom :</string>
+    <string name="dialog_group_name_hint">MonGroupe</string>
+    <string name="dialog_group_error_name_empty">Le nom ne peut pas être vide</string>
+    <string name="dialog_group_title_add">Nouveau Groupe</string>
+    <string name="dialog_group_title_edit">Edition du Group</string>
+    <string name="dialog_delete_computer_text">Êtes-vous sûr de vouloir supprimer cet ordinateur ?</string>
+    <string name="dialog_delete_group_text">Êtes-vous sûr de vouloir supprimer ce groupe ?</string>
+    <string name="dialog_delete_computer_title">Supprimer l'Ordinateur</string>
+    <string name="dialog_delete_group_title">Supprimer le Groupe</string>
+    <string name="list_element_group_wake">Multi-WoL</string>
+    <string name="list_element_group_favorite">Favoris</string>
+    <string name="dialog_group_computers">Ordinateurs :</string>
+    <string name="toast_wake_group_init">Envoi des paquets&#8230;</string>
+    <string name="toast_wake_group_done">Tous les paquets ont été envoyés.</string>
+    <string name="toast_wake_group_error">Une erreur est survenue, tous les paquets n'ont pas été envoyés.</string>
+    <string name="toast_wake_group_empty_error">Groupe vide, aucun paquet n'a été envoyé.</string>
+
+</resources>
