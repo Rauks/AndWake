@@ -18,4 +18,4 @@ AppWidgets
 The application content two appwidgets.
 One to wake a computer and an other to wake a group in the phone desktop.
 
-![Groups](sample-group.png)
+![Groups](sample-appwidget.png)
