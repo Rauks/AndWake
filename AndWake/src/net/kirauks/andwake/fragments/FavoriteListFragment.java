@@ -41,14 +41,16 @@ public class FavoriteListFragment extends ListFragment {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 final Computer item = this.getItem(position);
-    
-                LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
-                View rootView = inflater.inflate(R.layout.list_element_group_computer, parent, false);
-    
-                TextView name = (TextView) rootView.findViewById(R.id.list_element_group_computer_name);
+
+                if(convertView == null){
+	                LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
+	                convertView = inflater.inflate(R.layout.list_element_group_computer, parent, false);
+                }
+                
+                TextView name = (TextView) convertView.findViewById(R.id.list_element_group_computer_name);
                 name.setText(item.getName());
     
-                return rootView;
+                return convertView;
             }
         }
         
@@ -84,29 +86,38 @@ public class FavoriteListFragment extends ListFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final Object rawItem = this.getItem(position);
-
-            LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
-
-            View rootView = convertView;
-
             int itemType = this.getItemViewType(position);
+
+            if(convertView == null){
+            	LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
+
+                if (itemType == this.HEAD_TYPE_GROUP) {
+                	convertView = inflater.inflate(R.layout.list_element_group, parent, false);
+                }
+                else if (itemType == this.HEAD_TYPE_COMPUTER) {
+                	convertView = inflater.inflate(R.layout.list_element_computer, parent, false);
+                }
+                else if (itemType == this.HEAD_TYPE_HEADER){
+                	convertView = inflater.inflate(R.layout.list_header_favorites, parent, false);
+                }
+            }
             
             if (itemType == this.HEAD_TYPE_GROUP) {
                 final Group item = (Group)rawItem;
-                rootView = inflater.inflate(R.layout.list_element_group, parent, false);
             
-                TextView name = (TextView) rootView.findViewById(R.id.list_element_group_name);
-                LinearLayout computers = (LinearLayout) rootView.findViewById(R.id.list_element_group_computers);
+                TextView name = (TextView) convertView.findViewById(R.id.list_element_group_name);
+                LinearLayout computers = (LinearLayout) convertView.findViewById(R.id.list_element_group_computers);
 
                 name.setText(item.getName());
                 GroupComputersAdapter adapter = new GroupComputersAdapter(this.context, item.getChildren());
 
+                computers.removeAllViews();
                 for (int i = 0; i < adapter.getCount(); i++) {
                     View v = adapter.getView(i, null, null);
                     computers.addView(v);
                 }
 
-                Button wake = (Button) rootView.findViewById(R.id.list_element_group_wake);
+                Button wake = (Button) convertView.findViewById(R.id.list_element_group_wake);
                 wake.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -114,7 +125,7 @@ public class FavoriteListFragment extends ListFragment {
                     }
                 });
                 
-                CheckBox favorite = (CheckBox) rootView.findViewById(R.id.list_element_group_favorite);
+                CheckBox favorite = (CheckBox) convertView.findViewById(R.id.list_element_group_favorite);
                 favorite.setChecked(true);
                 favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
@@ -123,14 +134,14 @@ public class FavoriteListFragment extends ListFragment {
                     }
                 });
 
-                rootView.setOnClickListener(new View.OnClickListener() {
+                convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((RequestUpdateGroupHandler) FavoriteListFragment.this.getActivity()).handleRequestUpdate(item);
                     }
                 });
 
-                rootView.setOnLongClickListener(new View.OnLongClickListener() {
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         ((RequestDeleteGroupHandler) FavoriteListFragment.this.getActivity()).handleRequestDelete(item);
@@ -140,19 +151,18 @@ public class FavoriteListFragment extends ListFragment {
             }
             else if (itemType == this.HEAD_TYPE_COMPUTER) {
                 final Computer item = (Computer)rawItem;
-                rootView = inflater.inflate(R.layout.list_element_computer, parent, false);
                 
-                TextView name = (TextView) rootView.findViewById(R.id.list_element_computer_name);
-                TextView mac = (TextView) rootView.findViewById(R.id.list_element_computer_mac);
-                TextView address = (TextView) rootView.findViewById(R.id.list_element_computer_address);
-                TextView port = (TextView) rootView.findViewById(R.id.list_element_computer_port);
+                TextView name = (TextView) convertView.findViewById(R.id.list_element_computer_name);
+                TextView mac = (TextView) convertView.findViewById(R.id.list_element_computer_mac);
+                TextView address = (TextView) convertView.findViewById(R.id.list_element_computer_address);
+                TextView port = (TextView) convertView.findViewById(R.id.list_element_computer_port);
 
                 name.setText(item.getName());
                 mac.setText(item.getMac());
                 address.setText(item.getAddress());
                 port.setText(String.valueOf(item.getPort()));
                 
-                Button wake = (Button) rootView.findViewById(R.id.list_element_computers_wake);
+                Button wake = (Button) convertView.findViewById(R.id.list_element_computers_wake);
                 wake.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -160,7 +170,7 @@ public class FavoriteListFragment extends ListFragment {
                     }
                 });
                 
-                CheckBox favorite = (CheckBox) rootView.findViewById(R.id.list_element_computers_favorite);
+                CheckBox favorite = (CheckBox) convertView.findViewById(R.id.list_element_computers_favorite);
                 favorite.setChecked(true);
                 favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
@@ -169,14 +179,14 @@ public class FavoriteListFragment extends ListFragment {
                     }
                 });
 
-                rootView.setOnClickListener(new View.OnClickListener() {
+                convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((RequestUpdateComputerHandler) FavoriteListFragment.this.getActivity()).handleRequestUpdate(item);
                     }
                 });
 
-                rootView.setOnLongClickListener(new View.OnLongClickListener() {
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         ((RequestDeleteComputerHandler) FavoriteListFragment.this.getActivity()).handleRequestDelete(item);
@@ -185,13 +195,11 @@ public class FavoriteListFragment extends ListFragment {
                 });
             }
             else if (itemType == this.HEAD_TYPE_HEADER){
-                rootView = inflater.inflate(R.layout.list_header_favorites, parent, false);
-                
-                TextView header = (TextView) rootView.findViewById(R.id.list_header_favorites_name);
+                TextView header = (TextView) convertView.findViewById(R.id.list_header_favorites_name);
                 header.setText((String)rawItem);
             }
             
-            return rootView;
+            return convertView;
         }
 
         @Override

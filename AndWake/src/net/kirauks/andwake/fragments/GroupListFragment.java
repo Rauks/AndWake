@@ -36,13 +36,15 @@ public class GroupListFragment extends ListFragment {
             public View getView(int position, View convertView, ViewGroup parent) {
                 final Computer item = this.getItem(position);
 
-                LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
-                View rootView = inflater.inflate(R.layout.list_element_group_computer, parent, false);
-
-                TextView name = (TextView) rootView.findViewById(R.id.list_element_group_computer_name);
+                if(convertView == null){
+	                LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
+	                convertView = inflater.inflate(R.layout.list_element_group_computer, parent, false);
+                }
+                
+                TextView name = (TextView) convertView.findViewById(R.id.list_element_group_computer_name);
                 name.setText(item.getName());
 
-                return rootView;
+                return convertView;
             }
         }
         
@@ -57,21 +59,24 @@ public class GroupListFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             final Group item = this.getItem(position);
 
-            LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
-            View rootView = inflater.inflate(R.layout.list_element_group, parent, false);
-
-            TextView name = (TextView) rootView.findViewById(R.id.list_element_group_name);
-            LinearLayout computers = (LinearLayout) rootView.findViewById(R.id.list_element_group_computers);
+            if(convertView == null){
+            	LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
+            	convertView = inflater.inflate(R.layout.list_element_group, parent, false);
+            }
+            
+            TextView name = (TextView) convertView.findViewById(R.id.list_element_group_name);
+            LinearLayout computers = (LinearLayout) convertView.findViewById(R.id.list_element_group_computers);
 
             name.setText(item.getName());
             GroupComputersAdapter adapter = new GroupComputersAdapter(this.getContext(), item.getChildren());
 
+            computers.removeAllViews();
             for (int i = 0; i < adapter.getCount(); i++) {
                 View v = adapter.getView(i, null, null);
                 computers.addView(v);
             }
 
-            Button wake = (Button) rootView.findViewById(R.id.list_element_group_wake);
+            Button wake = (Button) convertView.findViewById(R.id.list_element_group_wake);
             wake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -79,10 +84,8 @@ public class GroupListFragment extends ListFragment {
                 }
             });
             
-            CheckBox favorite = (CheckBox) rootView.findViewById(R.id.list_element_group_favorite);
-            if(this.favorites.contains(item)){
-                favorite.setChecked(true);
-            }
+            CheckBox favorite = (CheckBox) convertView.findViewById(R.id.list_element_group_favorite);
+            favorite.setChecked(this.favorites.contains(item));
             favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -90,14 +93,14 @@ public class GroupListFragment extends ListFragment {
                 }
             });
 
-            rootView.setOnClickListener(new View.OnClickListener() {
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((RequestUpdateGroupHandler) GroupListFragment.this.getActivity()).handleRequestUpdate(item);
                 }
             });
 
-            rootView.setOnLongClickListener(new View.OnLongClickListener() {
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     ((RequestDeleteGroupHandler) GroupListFragment.this.getActivity()).handleRequestDelete(item);
@@ -105,7 +108,7 @@ public class GroupListFragment extends ListFragment {
                 }
             });
 
-            return rootView;
+            return convertView;
         }
     }
 

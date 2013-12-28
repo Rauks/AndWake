@@ -35,20 +35,22 @@ public class ComputerListFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             final Computer item = this.getItem(position);
 
-            LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
-            View rootView = inflater.inflate(R.layout.list_element_computer, parent, false);
+            if(convertView == null){
+                LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
+                convertView = inflater.inflate(R.layout.list_element_computer, parent, false);
+            }
 
-            TextView name = (TextView) rootView.findViewById(R.id.list_element_computer_name);
-            TextView mac = (TextView) rootView.findViewById(R.id.list_element_computer_mac);
-            TextView address = (TextView) rootView.findViewById(R.id.list_element_computer_address);
-            TextView port = (TextView) rootView.findViewById(R.id.list_element_computer_port);
+            TextView name = (TextView) convertView.findViewById(R.id.list_element_computer_name);
+            TextView mac = (TextView) convertView.findViewById(R.id.list_element_computer_mac);
+            TextView address = (TextView) convertView.findViewById(R.id.list_element_computer_address);
+            TextView port = (TextView) convertView.findViewById(R.id.list_element_computer_port);
 
             name.setText(item.getName());
             mac.setText(item.getMac());
             address.setText(item.getAddress());
             port.setText(String.valueOf(item.getPort()));
 
-            Button wake = (Button) rootView.findViewById(R.id.list_element_computers_wake);
+            Button wake = (Button) convertView.findViewById(R.id.list_element_computers_wake);
             wake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -56,10 +58,8 @@ public class ComputerListFragment extends ListFragment {
                 }
             });
             
-            CheckBox favorite = (CheckBox) rootView.findViewById(R.id.list_element_computers_favorite);
-            if(this.favorites.contains(item)){
-                favorite.setChecked(true);
-            }
+            CheckBox favorite = (CheckBox) convertView.findViewById(R.id.list_element_computers_favorite);
+            favorite.setChecked(this.favorites.contains(item));
             favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -67,14 +67,14 @@ public class ComputerListFragment extends ListFragment {
                 }
             });
 
-            rootView.setOnClickListener(new View.OnClickListener() {
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((RequestUpdateComputerHandler) ComputerListFragment.this.getActivity()).handleRequestUpdate(item);
                 }
             });
 
-            rootView.setOnLongClickListener(new View.OnLongClickListener() {
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     ((RequestDeleteComputerHandler) ComputerListFragment.this.getActivity()).handleRequestDelete(item);
@@ -82,7 +82,7 @@ public class ComputerListFragment extends ListFragment {
                 }
             });
 
-            return rootView;
+            return convertView;
         }
     }
 
