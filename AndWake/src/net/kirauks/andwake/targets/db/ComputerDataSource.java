@@ -15,6 +15,7 @@ public class ComputerDataSource {
         { DatabaseHelper.TARGETS_TABLE_FIELD_ID, DatabaseHelper.TARGETS_TABLE_FIELD_NAME, DatabaseHelper.TARGETS_TABLE_FIELD_ADDRESS, DatabaseHelper.TARGETS_TABLE_FIELD_MAC, DatabaseHelper.TARGETS_TABLE_FIELD_PORT };
     private final String[] allFavoritesColumns =
         { DatabaseHelper.FAVORITES_TARGETS_FIELD_TARGET };
+    private final String sortColumn = DatabaseHelper.TARGETS_TABLE_FIELD_NAME;
 
     public ComputerDataSource(Context context) {
         this.dbHelper = DatabaseHelper.getInstance(context);
@@ -55,7 +56,7 @@ public class ComputerDataSource {
     public List<Computer> getAllComputers() {
         List<Computer> computers = new ArrayList<Computer>();
         SQLiteDatabase db = this.dbHelper.openDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TARGETS_TABLE_NAME, this.allColumns, null, null, null, null, null);
+        Cursor cursor = db.query(DatabaseHelper.TARGETS_TABLE_NAME, this.allColumns, null, null, null, null, this.sortColumn);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Computer computer = this.cursorToComputer(cursor);
@@ -100,7 +101,7 @@ public class ComputerDataSource {
         }
         sb.append(')');
         SQLiteDatabase db = this.dbHelper.openDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TARGETS_TABLE_NAME, this.allColumns, DatabaseHelper.TARGETS_TABLE_FIELD_ID + " IN " + sb.toString(), null, null, null, null);
+        Cursor cursor = db.query(DatabaseHelper.TARGETS_TABLE_NAME, this.allColumns, DatabaseHelper.TARGETS_TABLE_FIELD_ID + " IN " + sb.toString(), null, null, null, this.sortColumn);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Computer computer = this.cursorToComputer(cursor);

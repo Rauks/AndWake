@@ -18,6 +18,7 @@ public class GroupDataSource {
         { DatabaseHelper.LINK_TARGET_GROUP_FIELD_GROUP, DatabaseHelper.LINK_TARGET_GROUP_FIELD_TARGET };
     private final String[] allFavoritesColumns =
         { DatabaseHelper.FAVORITES_GROUPS_FIELD_GROUP };
+    private final String sortColumn = DatabaseHelper.GROUPS_TABLE_FIELD_NAME;
 
     private final ComputerDataSource computerDataSource;
 
@@ -64,7 +65,7 @@ public class GroupDataSource {
     public List<Group> getAllGroups() {
         List<Group> groups = new ArrayList<Group>();
         SQLiteDatabase db = this.dbHelper.openDatabase();
-        Cursor cursor = db.query(DatabaseHelper.GROUPS_TABLE_NAME, this.allColumns, null, null, null, null, null);
+        Cursor cursor = db.query(DatabaseHelper.GROUPS_TABLE_NAME, this.allColumns, null, null, null, null, this.sortColumn);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Group group = this.populateChildren(this.cursorToGroup(cursor));
@@ -109,7 +110,7 @@ public class GroupDataSource {
         }
         sb.append(')');
         SQLiteDatabase db = this.dbHelper.openDatabase();
-        Cursor cursor = db.query(DatabaseHelper.GROUPS_TABLE_NAME, this.allColumns, DatabaseHelper.GROUPS_TABLE_FIELD_ID + " IN " + sb.toString(), null, null, null, null);
+        Cursor cursor = db.query(DatabaseHelper.GROUPS_TABLE_NAME, this.allColumns, DatabaseHelper.GROUPS_TABLE_FIELD_ID + " IN " + sb.toString(), null, null, null, this.sortColumn);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Group group = this.populateChildren(this.cursorToGroup(cursor));
