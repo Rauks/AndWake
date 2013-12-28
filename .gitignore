@@ -26,3 +26,6 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# Proguard
+proguard/
