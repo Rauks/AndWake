@@ -68,13 +68,13 @@ public class FavoriteListFragment extends ListFragment {
             this.datas = new ArrayList<Object>();
             this.datasType = new ArrayList<Integer>();
             if(!groups.isEmpty()){
-                this.datas.add(context.getResources().getString(R.string.fragment_groups_title));
+                this.datas.add(context.getResources().getString(R.string.list_header_group_name));
                 this.datasType.add(this.HEAD_TYPE_HEADER);
                 this.datas.addAll(groups);
                 this.datasType.addAll(Collections.nCopies(groups.size(), this.HEAD_TYPE_GROUP));
             }
             if(!computers.isEmpty()){
-                this.datas.add(context.getResources().getString(R.string.fragment_computers_title));
+                this.datas.add(context.getResources().getString(R.string.list_header_computer_name));
                 this.datasType.add(this.HEAD_TYPE_HEADER);
                 this.datas.addAll(computers);
                 this.datasType.addAll(Collections.nCopies(computers.size(), this.HEAD_TYPE_COMPUTER));
