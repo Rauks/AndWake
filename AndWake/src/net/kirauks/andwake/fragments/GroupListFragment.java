@@ -134,6 +134,9 @@ public class GroupListFragment extends ListFragment {
     
     public void updateList() {
         DataSourceHelper helper = new DataSourceHelper(this.getActivity());
+        if(this.values == null || this.values == null || this.adapter == null){
+        	this.createList();
+        }
         this.values.clear();
         this.values.addAll(helper.getGroupDataSource().getAllGroups());
         this.favorites.clear();

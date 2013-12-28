@@ -266,6 +266,9 @@ public class FavoriteListFragment extends ListFragment {
     
     public void updateList() {
         DataSourceHelper helper = new DataSourceHelper(this.getActivity());
+        if(this.favoritesComputers == null || this.favoritesGroups == null || this.adapter == null){
+        	this.createList();
+        }
         this.favoritesComputers.clear();
         this.favoritesComputers.addAll(helper.getComputerDataSource().getAllFavoritesComputers());
         this.favoritesGroups.clear();
