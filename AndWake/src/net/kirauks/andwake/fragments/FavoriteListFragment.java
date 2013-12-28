@@ -182,6 +182,7 @@ public class FavoriteListFragment extends ListFragment {
                 });
                 
                 CheckBox favorite = (CheckBox) convertView.findViewById(R.id.list_element_computers_favorite);
+                favorite.setOnCheckedChangeListener(null);
                 favorite.setChecked(true);
                 favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
