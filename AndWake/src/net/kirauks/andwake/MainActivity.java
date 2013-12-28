@@ -125,6 +125,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getComputerDataSource().deleteComputer(computer);
         this.showComputerListFragment();
         this.refreshComputerListFragment();
+        this.refreshFavoriteListFragment();
         this.updateAllAppwidgets();
     }
 
@@ -133,6 +134,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getGroupDataSource().deleteGroup(group);
         this.showGroupListFragment();
         this.refreshGroupListFragment();
+        this.refreshFavoriteListFragment();
         this.updateAllAppwidgets();
     }
 
@@ -175,6 +177,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getComputerDataSource().updateComputer(computer);
         this.showComputerListFragment();
         this.refreshComputerListFragment();
+        this.refreshFavoriteListFragment();
         this.updateAllAppwidgets();
     }
 
@@ -183,6 +186,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getGroupDataSource().updateGroup(group);
         this.showGroupListFragment();
         this.refreshGroupListFragment();
+        this.refreshFavoriteListFragment();
         this.updateAllAppwidgets();
     }
 
