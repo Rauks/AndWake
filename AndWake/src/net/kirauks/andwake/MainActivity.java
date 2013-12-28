@@ -125,6 +125,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getComputerDataSource().deleteComputer(computer);
         this.showComputerListFragment();
         this.refreshComputerListFragment();
+        this.updateAllAppwidgets();
     }
 
     @Override
@@ -132,6 +133,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getGroupDataSource().deleteGroup(group);
         this.showGroupListFragment();
         this.refreshGroupListFragment();
+        this.updateAllAppwidgets();
     }
 
     @Override
@@ -173,6 +175,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getComputerDataSource().updateComputer(computer);
         this.showComputerListFragment();
         this.refreshComputerListFragment();
+        this.updateAllAppwidgets();
     }
 
     @Override
@@ -180,6 +183,7 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         new DataSourceHelper(this).getGroupDataSource().updateGroup(group);
         this.showGroupListFragment();
         this.refreshGroupListFragment();
+        this.updateAllAppwidgets();
     }
 
     @Override
@@ -272,19 +276,19 @@ public class MainActivity extends FragmentActivity implements CancelHandler,
         }
     }
 
-    public void showComputerListFragment() {
+    private void showComputerListFragment() {
         this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_COMPUTERS);
     }
 
-    public void showFavoriteListFragment() {
+    private void showFavoriteListFragment() {
         this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_FAVORITES);
     }
 
-    public void showGroupListFragment() {
+    private void showGroupListFragment() {
         this.mViewPager.setCurrentItem(SectionsPagerAdapter.PAGE_GROUPS);
     }
-
-    public void updateAllAppwidgets() {
+    
+    private void updateAllAppwidgets() {
         final Class<?>[] providerClasses = new Class<?>[]
             { WakeComputerWidget.class, WakeGroupWidget.class };
         for (Class<?> providerClass : providerClasses) {
