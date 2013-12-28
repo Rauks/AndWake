@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" >AndWake</string>
+    <string name="appwidget_computer_port_separator">:</string>
+    <string name="appwidget_computer_mac">FF:FF:FF:FF:FF:FF</string>
+    <string name="appwidget_computer_address">192.168.0.255</string>
+    <string name="appwidget_computer_port">9</string>
+    <string name="dialog_computer_mac_hint">FF</string>
+    <string name="dialog_computer_address_hint">192.168.0.255</string>
+    <string name="dialog_computer_port_defaut">9</string>
+    <string name="dialog_computer_port_hint">9</string>
+    <string name="list_element_computer_port_separator">:</string>
+    <string name="list_header_name">Header</string>
+    
+</resources>
