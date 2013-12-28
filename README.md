@@ -1,7 +1,7 @@
 AndWake
 =======
 
-Wake-on-Lan application for Android 3.0+
+Wake-on-Lan application for Android 3.0+. Actually available on the Google Play Store : [AndWake](https://play.google.com/store/apps/details?id=net.kirauks.andwake)
 
 Previews
 --------
