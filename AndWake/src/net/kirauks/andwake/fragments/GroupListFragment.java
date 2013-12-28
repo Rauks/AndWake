@@ -86,6 +86,7 @@ public class GroupListFragment extends ListFragment {
             });
             
             CheckBox favorite = (CheckBox) convertView.findViewById(R.id.list_element_group_favorite);
+            favorite.setOnCheckedChangeListener(null);
             favorite.setChecked(this.favorites.contains(item));
             favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
