@@ -63,23 +63,33 @@ public class FavoriteListFragment extends ListFragment {
 
         private List<Object> datas;
         private List<Integer> datasType;
+        private List<Group> groups;
+        private List<Computer> computers;
         
         public FavoritesAdapter(Context context, List<Group> groups, List<Computer> computers) {
             super();
             this.context = context;
+            this.groups = groups;
+            this.computers = computers;
             this.datas = new ArrayList<Object>();
             this.datasType = new ArrayList<Integer>();
-            if(!groups.isEmpty()){
-                this.datas.add(context.getResources().getString(R.string.list_header_group_name));
+            this.updateDatas();
+        }
+        
+        private void updateDatas(){
+        	this.datas.clear();
+        	this.datasType.clear();
+            if(!this.groups.isEmpty()){
+                this.datas.add(this.context.getResources().getString(R.string.list_header_group_name));
                 this.datasType.add(this.HEAD_TYPE_HEADER);
-                this.datas.addAll(groups);
-                this.datasType.addAll(Collections.nCopies(groups.size(), this.HEAD_TYPE_GROUP));
+                this.datas.addAll(this.groups);
+                this.datasType.addAll(Collections.nCopies(this.groups.size(), this.HEAD_TYPE_GROUP));
             }
-            if(!computers.isEmpty()){
-                this.datas.add(context.getResources().getString(R.string.list_header_computer_name));
+            if(!this.computers.isEmpty()){
+                this.datas.add(this.context.getResources().getString(R.string.list_header_computer_name));
                 this.datasType.add(this.HEAD_TYPE_HEADER);
-                this.datas.addAll(computers);
-                this.datasType.addAll(Collections.nCopies(computers.size(), this.HEAD_TYPE_COMPUTER));
+                this.datas.addAll(this.computers);
+                this.datasType.addAll(Collections.nCopies(this.computers.size(), this.HEAD_TYPE_COMPUTER));
             }
         }
 
@@ -202,7 +212,7 @@ public class FavoriteListFragment extends ListFragment {
             return convertView;
         }
 
-        @Override
+		@Override
         public int getCount() {
             return this.datas.size();
         }
@@ -226,20 +236,38 @@ public class FavoriteListFragment extends ListFragment {
         public int getViewTypeCount() {
             return this.HEAD_COUNT;
         }
+
+        @Override
+		public void notifyDataSetChanged() {
+        	this.updateDatas();
+			super.notifyDataSetChanged();
+		}
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.updateList();
+        this.createList();
     }
 
+    private List<Computer> favoritesComputers;
+    private List<Group> favoritesGroups;
+    private FavoritesAdapter adapter;
+    
+    private void createList(){
+        this.favoritesComputers = new ArrayList<Computer>();
+        this.favoritesGroups = new ArrayList<Group>();
+        this.adapter = new FavoritesAdapter(this.getActivity(), this.favoritesGroups, this.favoritesComputers);
+        this.setListAdapter(this.adapter);
+        this.updateList();
+    }
+    
     public void updateList() {
         DataSourceHelper helper = new DataSourceHelper(this.getActivity());
-        List<Computer> favoritesComputers = helper.getComputerDataSource().getAllFavoritesComputers();
-        List<Group> favoritesGroups = helper.getGroupDataSource().getAllFavoritesGroups();
-
-        FavoritesAdapter adapter = new FavoritesAdapter(this.getActivity(), favoritesGroups, favoritesComputers);
-        this.setListAdapter(adapter);
+        this.favoritesComputers.clear();
+        this.favoritesComputers.addAll(helper.getComputerDataSource().getAllFavoritesComputers());
+        this.favoritesGroups.clear();
+        this.favoritesGroups.addAll(helper.getGroupDataSource().getAllFavoritesGroups());
+        this.adapter.notifyDataSetChanged();
     }
 }

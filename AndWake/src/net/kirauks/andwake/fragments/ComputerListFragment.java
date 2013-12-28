@@ -1,5 +1,6 @@
 package net.kirauks.andwake.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.kirauks.andwake.R;
@@ -89,14 +90,27 @@ public class ComputerListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.updateList();
+        this.createList();
     }
 
+    private List<Computer> values;
+    private List<Computer> favorites;
+    private ComputersAdapter adapter;
+    
+    private void createList(){
+        this.values = new ArrayList<Computer>();
+        this.favorites = new ArrayList<Computer>();
+        this.adapter = new ComputersAdapter(this.getActivity(), this.values, this.favorites);
+        this.setListAdapter(this.adapter);
+        this.updateList();
+    }
+    
     public void updateList() {
         DataSourceHelper helper = new DataSourceHelper(this.getActivity());
-        List<Computer> values = helper.getComputerDataSource().getAllComputers();
-        List<Computer> favorites = helper.getComputerDataSource().getAllFavoritesComputers();
-        ComputersAdapter adapter = new ComputersAdapter(this.getActivity(), values, favorites);
-        this.setListAdapter(adapter);
+        this.values.clear();
+        this.values.addAll(helper.getComputerDataSource().getAllComputers());
+        this.favorites.clear();
+        this.favorites.addAll(helper.getComputerDataSource().getAllFavoritesComputers());
+        this.adapter.notifyDataSetChanged();
     }
 }
